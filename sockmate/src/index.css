@@ -63,8 +63,8 @@ nav{
 }
 
 nav .nav-button{
-    color: white;
-    background: linear-gradient(45deg , #fe3072, #ff5940);
+    color: #fe3072;
+    background: white;
     font-size: 20px;
     padding: 10px 20px;
     border-radius: 10px;
@@ -72,11 +72,11 @@ nav .nav-button{
 }
 
 nav .nav-button:hover{
-    background: linear-gradient(45deg , #ff5940 ,#fe3072);
+    background:gainsboro;
 }
 
 nav .nav-button:disabled{
-    background: linear-gradient(45deg , #880835, #ad250c);
+    background: gainsboro;
 }
 
 
@@ -136,4 +136,77 @@ nav .logo-container .logo{
     padding: 8px;
     margin: 8px;
     font-size: 17px;
+}
+
+/*------ OnBoarding Page ------*/
+
+.onboarding form{
+    display: flex;
+    justify-content: center;
+}
+
+.onboarding form section {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    width: 35%;
+    text-align: start;
+}
+
+.onboarding form input{
+    padding: 15px 30px;
+    margin: 10px 0;
+    font-size:  15px;
+    border: solid 2px rgb(219,219,219);
+    border-radius: 10px;
+}
+.onboarding form input::-webkit-inner-spin-button,
+.onboarding form input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin:0;
+}
+
+.onboarding form label{
+    margin: 10px 0;
+}
+
+
+.onboarding form .multiple-input-container {
+    display: flex;
+    flex-direction: row;
+}
+
+
+.onboarding form .multiple-input-container input {
+    margin-right: 10px;
+}
+
+.onboarding form .multiple-input-container label {
+    padding: 10px;
+    border: solid 2px rgb(144,144,144);
+    border-radius: 10px;
+    transition: all 0.3s;
+    margin-right: 10px;
+}
+
+.onboarding form input[type="radio"] {
+    display: none;
+}
+
+.onboarding form input[type="number"] {
+    width: 10%;
+    -moz-appearance: textfield;
+}
+
+.onboarding form input[type="radio"]:checked + label {
+    border: solid 2px rgb(221,39,22);
+}
+
+.onboarding form input[type="submit"]:hover{
+    background-color: rgb(235,235,235);
+}
+
+.onboarding form input[type="submit"]:active{
+    background-color: rgb(226,115,155);
+
 }
