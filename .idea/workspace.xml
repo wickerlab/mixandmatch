@@ -1,20 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="770b6b1b-3ba6-40bc-bf48-c8c93bbd7ff1" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/sockmate_frontend/src/App.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sockmate.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sockmate/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sockmate/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sockmate/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sockmate/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sockmate/public/vite.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sockmate/src/App.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sockmate/src/App.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sockmate/src/assets/react.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sockmate/src/index.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sockmate/src/main.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sockmate/vite.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sockmate/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/sockmate_frontend/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sockmate/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/sockmate_frontend/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sockmate/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/sockmate_frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sockmate/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/sockmate_frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sockmate/public/vite.svg" beforeDir="false" afterPath="$PROJECT_DIR$/sockmate_frontend/public/vite.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sockmate/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/sockmate_backend/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sockmate/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/sockmate_frontend/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sockmate/src/assets/react.svg" beforeDir="false" afterPath="$PROJECT_DIR$/sockmate_frontend/src/assets/react.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sockmate/src/components/AuthModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/sockmate_frontend/src/components/AuthModal.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sockmate/src/components/Chat.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/sockmate_frontend/src/components/Chat.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sockmate/src/components/ChatContainer.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/sockmate_frontend/src/components/ChatContainer.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sockmate/src/components/ChatDisplay.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/sockmate_frontend/src/components/ChatDisplay.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sockmate/src/components/ChatHeader.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/sockmate_frontend/src/components/ChatHeader.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sockmate/src/components/ChatInput.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/sockmate_frontend/src/components/ChatInput.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sockmate/src/components/MatchesDisplay.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/sockmate_frontend/src/components/MatchesDisplay.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sockmate/src/components/Nav.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/sockmate_frontend/src/components/Nav.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sockmate/src/images/images.png" beforeDir="false" afterPath="$PROJECT_DIR$/sockmate_frontend/src/images/images.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sockmate/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/sockmate_frontend/src/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sockmate/src/main.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/sockmate_frontend/src/main.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sockmate/src/pages/Dashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/sockmate_frontend/src/pages/Dashboard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sockmate/src/pages/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/sockmate_frontend/src/pages/Home.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sockmate/src/pages/OnBoarding.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/sockmate_frontend/src/pages/OnBoarding.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sockmate/vite.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/sockmate_frontend/vite.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,6 +38,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2NjWB1XgeinRSlyAZMyR8E61jjK" />
   <component name="ProjectViewState">
@@ -35,10 +53,80 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;last_opened_file_path&quot;: &quot;/Users/baba/Documents/GitHub/cs732-se75-assignment-lche262&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
+  <component name="RunManager" selected="npm.start:frontend">
+    <configuration name="dev (1)" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/sockmate_frontend/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="dev" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/sockmate/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="dev" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="start:backend" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/sockmate_backend/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="start:backend" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="start:frontend" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/sockmate_frontend/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="start:frontend" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="test" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/sockmate_backend/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="test" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="npm.start:backend" />
+        <item itemvalue="npm.start:frontend" />
+        <item itemvalue="npm.test" />
+        <item itemvalue="npm.dev (1)" />
+        <item itemvalue="npm.dev" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -50,10 +138,24 @@
       <workItem from="1680177834918" duration="170000" />
       <workItem from="1680178981962" duration="60000" />
       <workItem from="1680179078444" duration="30000" />
+      <workItem from="1680400562098" duration="162000" />
+      <workItem from="1680400749351" duration="3371000" />
+      <workItem from="1680408822367" duration="3114000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/sockmate_backend/index.jsx</url>
+          <line>57</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
