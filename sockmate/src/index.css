@@ -260,3 +260,80 @@ nav .logo-container .logo{
     bottom: 0;
     padding: 20px;
 }
+
+
+/*------ ChatContainer Page ------*/
+
+.chat-container {
+    background-color: white;
+    box-shadow: rgba(0,0,0,0.05) 0px 6px 24px 0px,
+    rgba(0,0,0,0.08) 0px 0px 0px 1px;
+    width: 30%;
+    text-align: left;
+}
+
+.chat-container .chat-container-header{
+    background: linear-gradient(45deg , #fe3072, #ff5940);
+    height: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-container .option {
+    border: none;
+    background-color: white;
+    border-bottom: solid 4px rgb(243, 33, 33);
+    font-size: 20px;
+    margin: 2px;
+    padding: 10px;
+}
+
+.chat-container-header h3 {
+    font-size: 20px;
+    color: white;
+    position: center;
+    margin-bottom: 0;
+}
+
+.card-container .option:disabled{
+    border-bottom: solid 4px rgb(187,187,187);
+}
+
+.chat-container .profile {
+}
+
+.chat-container .log-out-icon{
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    color: white;
+}
+
+.img-container{
+    height: 30px;
+    width: 30px;
+    border-radius: 15px;
+    overflow: hidden;
+    margin: 10px;
+}
+
+.img-container img{
+    width: 100%;
+}
+
+/*------ Chat Display ------*/
+
+.chat-display{
+    padding: 20px;
+        height: 60vh;
+        overflow-y: auto;
+}
+
+/*------ Chat Input ------*/
+
+.chat-input{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
