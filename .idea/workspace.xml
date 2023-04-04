@@ -5,13 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="770b6b1b-3ba6-40bc-bf48-c8c93bbd7ff1" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/cs732-se75-assignment-lche262.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/PartIV_Project.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sockmate_backend/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/sockmate_backend/index.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sockmate_frontend/node_modules/.package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/sockmate_frontend/node_modules/.package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sockmate_frontend/node_modules/.vite/deps/_metadata.json" beforeDir="false" afterPath="$PROJECT_DIR$/sockmate_frontend/node_modules/.vite/deps/_metadata.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sockmate_frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/sockmate_frontend/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sockmate_frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/sockmate_frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sockmate_frontend/src/components/AuthModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/sockmate_frontend/src/components/AuthModal.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,38 +28,38 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/baba/Documents/GitHub/cs732-se75-assignment-lche262&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/Users/baba/Documents/GitHub/PartIV_Project",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
   <component name="RunManager" selected="npm.start:frontend">
-    <configuration name="dev (1)" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+    <configuration name="build" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/sockmate_frontend/package.json" />
       <command value="run" />
       <scripts>
-        <script value="dev" />
+        <script value="build" />
       </scripts>
       <node-interpreter value="project" />
       <envs />
       <method v="2" />
     </configuration>
-    <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/sockmate/package.json" />
+    <configuration name="dev (1)" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/sockmate_frontend/package.json" />
       <command value="run" />
       <scripts>
         <script value="dev" />
@@ -102,10 +101,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="npm.start:frontend" />
+        <item itemvalue="npm.build" />
         <item itemvalue="npm.start:backend" />
         <item itemvalue="npm.test" />
         <item itemvalue="npm.dev (1)" />
-        <item itemvalue="npm.dev" />
       </list>
     </recent_temporary>
   </component>
@@ -123,6 +122,8 @@
       <workItem from="1680400562098" duration="162000" />
       <workItem from="1680400749351" duration="3371000" />
       <workItem from="1680408822367" duration="4301000" />
+      <workItem from="1680596307612" duration="559000" />
+      <workItem from="1680596914033" duration="1465000" />
     </task>
     <servers />
   </component>
