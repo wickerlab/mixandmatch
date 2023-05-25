@@ -4,8 +4,9 @@ const {MongoClient} = require('mongodb')
 const {v4: uuidv4} = require('uuid');
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken')
-const uri = 'mongodb+srv://admin:admin@cluster0.vsqizjh.mongodb.net/?retryWrites=true&w=majority'
+const uri = 'mongodb+srv://admin:admin@cluster0.w6nghug.mongodb.net/?retryWrites=true&w=majority'
 const cors = require('cors')
+const req = require("express/lib/request");
 
 const app = express()
 app.use(cors())
@@ -15,6 +16,7 @@ app.get('/', (req, res) => {
     res.json('Hello to my app')
 })
 
+// User sign up
 app.post('/signup', async (req, res) => {
     const client = new MongoClient(uri)
     const {email, password} = req.body
@@ -24,8 +26,8 @@ app.post('/signup', async (req, res) => {
 
     try {
         await client.connect()
-        const database = client.db('app-data')
-        const users = database.collection('users')
+        const database = client.db('CenterOne')
+        const users = database.collection('authentication')
 
 
         const sanitizesEmail = email.toLowerCase()
@@ -53,21 +55,5 @@ app.post('/signup', async (req, res) => {
         console.log(err)
     }
 })
-
-app.get('/users', async (req, res) => {
-    const client = new MongoClient(uri)
-    try {
-        await client.connect()
-        const database = client.db('app-data')
-        const users = database.collection('users')
-
-        const returnedUsers = await users.find().toArray()
-        res.send(returnedUsers)
-    } finally {
-        await client.close()
-    }
-
-})
-
 
 app.listen(PORT, () => console.log('Server running on PORT' + PORT))
