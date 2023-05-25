@@ -2,7 +2,7 @@ const ChatContainer = () =>{
     return <div className="chat-container-header">
         <div className="profile">
             <div className="img-container">
-                <img src="" alt=""/>
+                <img src="src/components" alt=""/>
 
             </div>
 

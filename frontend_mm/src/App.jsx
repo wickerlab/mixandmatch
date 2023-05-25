@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import './App.css'
-import Home from './pages/Home'
-import Dashboard from './pages/Dashboard'
-import OnBoarding from './pages/OnBoarding'
+import Home from './pages/Home.jsx'
+import Dashboard from './pages/Dashboard.jsx'
+import OnBoarding from './pages/OnBoarding.jsx'
 import {BrowserRouter, Routes, Route } from 'react-router-dom'
 
 const App = () => {

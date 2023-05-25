@@ -1,4 +1,4 @@
-import Nav from "../components/Nav"
+import Nav from "../components/Nav.jsx"
 import AuthModal from "../components/AuthModal.jsx";
 import {useState} from "react";
 
@@ -22,7 +22,7 @@ const Home = () => {
                  setIsSignUp={setIsSignUp}
             />
             <div className="home">
-                <h1 className="primary-title">Swipe Right</h1>
+                <h1 className="primary-title">Mix & Match</h1>
                 <button className="primary-button" onClick={handleClick}>
                     {authToken ? 'Sign-out' : 'Create Account'}
                 </button>

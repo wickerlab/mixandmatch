@@ -87,6 +87,7 @@ nav .logo-container{
 nav .logo-container .logo{
     /*TODO*/
     width: 100%;
+    height: 100px
 }
 
 /*------ Home page ------*/
@@ -98,7 +99,7 @@ nav .logo-container .logo{
             to bottom,
             rgba(0,0,0,0.65) 0%,
             rgba(0,0,0,0) 100%),
-    url('images/images.png')
+    url('src/images/background.jpg')
 }
 
 .home{

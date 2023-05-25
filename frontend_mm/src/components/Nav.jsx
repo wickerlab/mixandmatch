@@ -1,4 +1,4 @@
-import whiteLogo from '../images/images.png'
+import whiteLogo from '../images/images.webp'
 import colourLogo from '../images/images.png'
 
 const Nav = ({minimal, setShowModal, showModal, setIsSignUp}) =>{
