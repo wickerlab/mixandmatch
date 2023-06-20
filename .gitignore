@@ -24,3 +24,5 @@ dist-ssr
 *.sw?
 
 .idea/workspace.xml
+backend_mm/mix_and_match_env/
+backend_mm/__pycache__/
