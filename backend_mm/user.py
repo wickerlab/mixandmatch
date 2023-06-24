@@ -90,7 +90,7 @@ def reciprocal_preference(u1: User, u2: User):
     u2_pref = unidirectional_preference(u2, u1)
 
     # calculate harmonic of preference values
-    r_pref = 2 / ((1/u1_pref) + (2/u2_pref))
+    r_pref = 2 / ((1/u1_pref) + (1/u2_pref))
 
     return r_pref
 
