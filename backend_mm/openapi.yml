@@ -1,0 +1,61 @@
+info:
+  version: "1.0.0"
+  title: "Dating App API"
+  description: "API for a Dating Application"
+
+paths:
+  /users/:
+    post:
+      summary: "Create a new user"
+      responses:
+        '200':
+          description: "Successful operation"
+        '400':
+          description: "Invalid input"
+    get:
+      summary: "Get list of all users"
+      responses:
+        '200':
+          description: "Successful operation"
+  /users/{userId}:
+    get:
+      summary: "Get details of a specific user"
+      parameters:
+        - name: "userId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+      responses:
+        '200':
+          description: "Successful operation"
+        '404':
+          description: "User not found"
+
+  /matches/:
+    post:
+      summary: "Create a new match"
+      responses:
+        '200':
+          description: "Successful operation"
+        '400':
+          description: "Invalid input"
+    get:
+      summary: "Get list of all matches"
+      responses:
+        '200':
+          description: "Successful operation"
+  /matches/{matchId}:
+    get:
+      summary: "Get details of a specific match"
+      parameters:
+        - name: "matchId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+      responses:
+        '200':
+          description: "Successful operation"
+        '404':
+          description: "Match not found"
