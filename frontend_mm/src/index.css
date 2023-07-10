@@ -220,48 +220,89 @@ nav .logo-container .logo{
 }
 
 /*------ Dashboard Page ------*/
-.dashboard{
+.dashboard {
     display: flex;
-    justify-content: space-between;
+    height: 100vh;
+    flex-direction: row;
+    justify-content: center;
 }
 
-.dashboard .swipe-container{
-    width: 70%;
+.dashboard .swipe-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    width: fit-content;
+    margin: auto;
+    max-width: calc(100vw - 400px);
+    position: relative;
 }
 
 .swipe {
-    position: absolute;
+    position: fixed;
+    top: 2%;
+    left: 35%;
+    transform: translate(-50%, -50%);
 }
 
 .dashboard .card-container {
-    width: 400px;
+    display: flex;
+    align-items: center;
+    position: relative;
     height: 650px;
+    width: 100%;
 }
 
 .card {
     background-color: #fff;
-    width: 400px;
+    width: 100%;
     height: 650px;
     border-radius: 30px;
     background-size: cover;
     background-position: center;
+    display: flex;
 }
 
-.card h3 {
+.image-half {
+    width: 50%;
+
+}
+
+.image-half img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    user-drag: none;
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+.info-half {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+}
+
+.info-half h3 {
     margin-top: 0;
+    margin-bottom: 10px;
 }
 
-.dashboard .swipe-info{
+.dashboard .swipe-info {
     position: absolute;
     bottom: 0;
     padding: 20px;
 }
-
 
 /*------ ChatContainer Page ------*/
 
@@ -293,7 +334,7 @@ nav .logo-container .logo{
 .chat-container-header h3 {
     font-size: 20px;
     color: white;
-    position: center;
+    position: relative;
     margin-bottom: 0;
 }
 
