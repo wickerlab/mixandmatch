@@ -1,5 +1,6 @@
 from asyncio.windows_events import NULL
 from types import MethodType
+from functools import wraps
 from flasgger import Swagger, swag_from
 from flask import Flask, request, session, jsonify
 from flask.views import MethodView
@@ -87,18 +88,18 @@ class UserAPI(MethodView):
 
         # initialize empty user profile and history
         user_data_2 = (user_id)
-        query_age = 'INSERT INTO user_history_age (user_id) VALUES %s'
-        query_attractiveness = 'INSERT INTO user_history_attractiveness (user_id) VALUES %s'
-        query_education = 'INSERT INTO user_history_education (user_id) VALUES %s'
-        query_gender = 'INSERT INTO user_history_gender (user_id) VALUES %s'
-        query_salary = 'INSERT INTO user_history_salary (user_id) VALUES %s'
-        query_profile = 'INSERT INTO user_profile (user_id) VALUES %s'
-        cursor.execute(query_age, user_data_2)
-        cursor.execute(query_attractiveness, user_data_2)
-        cursor.execute(query_education, user_data_2)
-        cursor.execute(query_gender, user_data_2)
-        cursor.execute(query_salary, user_data_2)
-        cursor.execute(query_profile, user_data_2)
+        query_age = 'INSERT INTO user_history_age (user_id) VALUES (%s)'
+        query_attractiveness = 'INSERT INTO user_history_attractiveness (user_id) VALUES (%s)'
+        query_education = 'INSERT INTO user_history_education (user_id) VALUES (%s)'
+        query_gender = 'INSERT INTO user_history_gender (user_id) VALUES (%s)'
+        query_salary = 'INSERT INTO user_history_salary (user_id) VALUES (%s)'
+        query_profile = 'INSERT INTO user_profile (user_id) VALUES (%s)'
+        cursor.execute(query_age, (user_data_2,))
+        cursor.execute(query_attractiveness, (user_data_2,))
+        cursor.execute(query_education, (user_data_2,))
+        cursor.execute(query_gender, (user_data_2,))
+        cursor.execute(query_salary, (user_data_2,))
+        cursor.execute(query_profile, (user_data_2,))
         cnx.commit()
 
         return jsonify({'message': 'User attributes updated successfully!'}), 200
@@ -116,7 +117,14 @@ class UserAPI(MethodView):
 
         if user:
             # Set the user's email in the session to represent a logged-in user
+            id_query = "SELECT id FROM user WHERE email = %s"
+            cursor.execute(id_query, (email,))
+            user_id = cursor.fetchone()
+
+            ## session stores email and id
             session['email'] = email
+            session['user_id'] = user_id
+
             return jsonify({'message': 'Login successful'}), 200
         else:
             return jsonify({'message': 'Invalid email or password'}), 401
@@ -139,6 +147,7 @@ class UserAPI(MethodView):
         pass
 
 
+## MIGRATE TO MATCH.PY LATER
 class MatchAPI(MethodView) :
     ## incorporate the match algorithm later
     ''' UPDATES A MATCH PAIR AFTER A SWIPE '''
@@ -147,7 +156,7 @@ class MatchAPI(MethodView) :
     def match_user(other_user_id):
         # Get the currently authenticated user's ID from the session
         match_decision = request.form.get('match_decision')
-        user_id = session['user_id']
+        user_id = session['user_id'][0]
         match_bool = 0
 
         # match decision boolean
@@ -156,36 +165,30 @@ class MatchAPI(MethodView) :
 
         # Perform the matching operation in the database
         # Check if the match exists between user1_id and user2_id
-        select_query = "SELECT COUNT(*) FROM match WHERE (user1_id = %s AND user2_id = %s) OR (user1_id = %s AND user2_id = %s)"
+        select_query = "SELECT COUNT(*) FROM mixnmatch.match WHERE (user1_id = %s AND user2_id = %s) OR (user1_id = %s AND user2_id = %s)"
         match_data = (user_id, other_user_id, other_user_id, user_id)
         cursor.execute(select_query, match_data)
         match_count = cursor.fetchone()[0]
 
         if match_count == 0:
             # If the match does not exist, create a new match entry
-            insert_query = "INSERT INTO match (user1_id, user2_id, user1_match, updated_time) VALUES (%s, %s, %s, NOW())"
-            cursor.execute(insert_query, match_data, match_bool)
-            cnx.commit()
+            insert_query = "INSERT INTO mixnmatch.match (user1_id, user2_id, user1_match, update_time) VALUES (%s, %s, %s, NOW())"
+            match_data = (user_id, other_user_id, match_bool)
 
             # TODO: CODE TO UPDATE PREFERENCE CONNECT TO RECOMMENDER.PY TO UPDATE DATABASE USER PROFILE
             
         else:
             # check match time
-            update_query = "UPDATE match SET updated_time = NOW(), user1_match = %s WHERE (user1_id = %s AND user2_id = %s) OR (user1_id = %s AND user2_id = %s)"
+            insert_query = "UPDATE mixnmatch.match SET update_time = NOW(), user1_match = %s WHERE (user1_id = %s AND user2_id = %s) OR (user1_id = %s AND user2_id = %s)"
             match_data = (match_bool, user_id, other_user_id, other_user_id, user_id)
-            cursor.execute(update_query, match_data)
-            cnx.commit()
 
             # TODO: CODE TO UPDATE PREFERENCE CONNECT TO RECOMMENDER.PY TO UPDATE DATABASE USER PROFILE
 
-
-        # Example: Updating a 'matches' table with the user IDs
-        insert_query = "INSERT INTO matches (user1_id, user2_id) VALUES (%s, %s)"
-        match_data = (user_id, other_user_id)
+        ## only execute if no errors
         cursor.execute(insert_query, match_data)
         cnx.commit()
 
-        return jsonify({'message': f'Successfully updated match history with {other_user_id}'})
+        return jsonify({'message': f'Successfully updated match history with user_id: {other_user_id}'})
     
     ''' RETRIEVE 15 RANDOM USERS RANKED VIA '''
     # deploy this to compare with control
