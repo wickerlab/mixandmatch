@@ -124,7 +124,7 @@ const Dashboard = () => {
     const characters = [
         {
             name: 'Richard Hendricks',
-            url: 'https://cataas.com/cat/says/hello%20world!'
+            url: 'https://media.discordapp.net/attachments/1093846572145582111/1130356342494863440/IMG_6151.png?width=406&height=878'
         },
         {
             name: 'Erlich Bachman',
@@ -140,7 +140,7 @@ const Dashboard = () => {
         },
         {
             name: 'Dinesh Chugtai',
-            url: 'https://cataas.com/cat/says/hello%20world!'
+            url: 'https://media.discordapp.net/attachments/1093846572145582111/1130356342494863440/IMG_6151.png?width=406&height=878'
         }
     ]
     const [lastDirection, setLastDirection] = useState()

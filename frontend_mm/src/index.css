@@ -9,7 +9,7 @@ html, body{
 }
 
 *{
-    font-family: sans-serif;
+    font-family:"Heebo", sans-serif;
 }
 
 h2{
@@ -60,6 +60,7 @@ nav{
     width: 100%;
     display: flex;
     justify-content: space-between;
+
 }
 
 nav .nav-button{
@@ -225,6 +226,10 @@ nav .logo-container .logo{
     flex-direction: row;
     justify-content: center;
     overflow: hidden;
+    background: linear-gradient(
+            45deg,
+            rgba(112, 26, 55),
+            rgb(243, 93, 46) )
 }
 
 .dashboard .swipe-container {
@@ -241,12 +246,11 @@ nav .logo-container .logo{
     bottom: 10vh;
     left: 12vw;
     right: 8vw;
-    min-height: 85vh;
     transform: translate(-50%, -50%);
 }
 
 .card {
-    background-color: #fd8f7f;
+    background-color: #791414;
     width: 100%;
     scroll-behavior: smooth;
     border-radius: 30px;
@@ -266,7 +270,7 @@ nav .logo-container .logo{
 
 .image-half img {
     width: 100%;
-    height: 85vh;
+    height: 90vh;
     object-fit: cover;
     border-top-left-radius: 30px;
     border-bottom-left-radius: 30px;
@@ -289,15 +293,108 @@ nav .logo-container .logo{
     border-bottom-right-radius: 30px;
 }
 
+.info-content{
+    text-align: left;
+    margin-left: 2vh;
+}
+
 .info-half h3 {
+    background: linear-gradient(45deg, #ffffff, #e8ccff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     margin-top: 0;
     margin-bottom: 10px;
+    font-size: xxx-large;
 }
+
+.info-half p {
+    background: linear-gradient(45deg, #ffffff, #e8ccff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: x-large;
+}
+
 
 .dashboard .swipe-info {
     position: absolute;
     bottom: 0;
     padding: 20px;
+}
+
+.button-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: flex-end;
+    position: absolute;
+    bottom: 2vh;
+    right: 2vw;
+}
+
+.like-button{
+    background: linear-gradient(20deg , #1F90E2, #900DF8);
+    border: none;
+    border-radius: 50%;
+    width: 7vw;
+    min-width: 15vh;
+    height: 7vw;
+    min-height: 15vh;
+    margin: 10px;
+    cursor: pointer;
+    position: relative;
+}
+
+.like-button:hover{
+    background: linear-gradient(45deg , #2481c7, #7d14d2);
+}
+
+.like-button-image {
+    position: absolute;
+    padding-top: 1vh;
+    width: 75%;
+    user-drag: none;
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.dislike-button{
+    background: linear-gradient(20deg , #91139C, #900DF8);
+    border: none;
+    border-radius: 50%;
+    width: 5vw;
+    min-width: 10vh;
+    height: 5vw;
+    min-height: 10vh;
+    margin: 10px;
+    cursor: pointer;
+    position: relative;
+}
+
+.dislike-button:hover{
+    background: linear-gradient(20deg , #75157e, #7f12d7);
+}
+
+.dislike-button-image {
+    position: absolute;
+    padding-top: 1vh;
+    width: 60%;
+    user-drag: none;
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 /*------ ChatContainer Page ------*/
@@ -382,8 +479,8 @@ nav .logo-container .logo{
     top: 0;
     left: 0;
     bottom: 0;
-    width: 7vw;
-    background-color: #f1f1f1;
+    min-width: 7vw;
+    background-color: transparent;
     padding: 10px;
     overflow-y: auto;
     transition: transform 0.3s ease-in-out;
