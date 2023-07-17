@@ -220,48 +220,86 @@ nav .logo-container .logo{
 }
 
 /*------ Dashboard Page ------*/
-.dashboard{
+.dashboard {
     display: flex;
-    justify-content: space-between;
+    height: 100vh;
+    flex-direction: row;
+    justify-content: center;
+    overflow: hidden;
 }
 
-.dashboard .swipe-container{
-    width: 70%;
+.dashboard .swipe-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-width: calc(100vw - 20vw);
 }
 
 .swipe {
-    position: absolute;
-}
-
-.dashboard .card-container {
-    width: 400px;
-    height: 650px;
+    position: fixed;
+    top: 5vh;
+    bottom: 10vh;
+    left: 12vw;
+    right: 8vw;
+    min-height: 85vh;
+    transform: translate(-50%, -50%);
 }
 
 .card {
-    background-color: #fff;
-    width: 400px;
-    height: 650px;
+    background-color: #fd8f7f;
+    width: 100%;
+    scroll-behavior: smooth;
     border-radius: 30px;
     background-size: cover;
     background-position: center;
+    display: flex;
 }
 
-.card h3 {
+.card:hover{
+    overflow: auto;
+}
+
+.image-half {
+    width: 50%;
+
+}
+
+.image-half img {
+    width: 100%;
+    height: 85vh;
+    object-fit: cover;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    user-drag: none;
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+.info-half {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+}
+
+.info-half h3 {
     margin-top: 0;
+    margin-bottom: 10px;
 }
 
-.dashboard .swipe-info{
+.dashboard .swipe-info {
     position: absolute;
     bottom: 0;
     padding: 20px;
 }
-
 
 /*------ ChatContainer Page ------*/
 
@@ -293,7 +331,7 @@ nav .logo-container .logo{
 .chat-container-header h3 {
     font-size: 20px;
     color: white;
-    position: center;
+    position: relative;
     margin-bottom: 0;
 }
 
@@ -337,4 +375,66 @@ nav .logo-container .logo{
     padding: 20px;
     display: flex;
     flex-direction: column;
+}
+
+/*------ Match Sidebar ------*/
+.matches-display {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 7vw;
+    background-color: #f1f1f1;
+    padding: 10px;
+    overflow-y: auto;
+    transition: transform 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+    overflow-y: scroll;
+}
+
+.matches-display:hover {
+    /* Show the scrollbar on hover */
+    scrollbar-color: #bbb transparent;
+}
+
+.matches-display::-webkit-scrollbar {
+    width: 6px;
+    background-color: transparent;
+}
+
+.matches-display::-webkit-scrollbar-thumb {
+    background-color: transparent;
+}
+
+.matches-display:hover::-webkit-scrollbar-thumb {
+    background-color: #bbb;
+}
+
+.matches-display.hidden {
+    transform: translateX(-100%);
+}
+
+.match-icons-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.match-icon {
+    width: 5vw;
+    height: 5vw;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.match-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
