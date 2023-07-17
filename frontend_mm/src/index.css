@@ -24,14 +24,14 @@ h2{
     color: aliceblue;
     text-transform: uppercase;
     font-size: 15px;
-    background: linear-gradient(45deg , #fe3072, #ff5940);
+    background: linear-gradient(20deg , #1F90E2, #900DF8);
     padding: 12px 30px;
     border-radius:  30px;
     border: none;
 }
 
 .primary-button:hover{
-    background: linear-gradient(45deg , #ff5940 ,#fe3072);
+    background: linear-gradient(45deg , #2481c7, #7d14d2);
 }
 
 .secondary-button{
@@ -96,10 +96,9 @@ nav .logo-container .logo{
     height: 100vh;
     position: fixed;
     background: linear-gradient(
-            to bottom,
-            rgba(0,0,0,0.65) 0%,
-            rgba(0,0,0,0) 100%),
-    url('src/images/background.jpg')
+            45deg,
+            rgba(112, 26, 55),
+            rgb(243, 93, 46) )
 }
 
 .home{
