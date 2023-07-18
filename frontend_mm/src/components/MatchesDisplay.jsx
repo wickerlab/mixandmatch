@@ -17,14 +17,16 @@ const MatchesDisplay = ({ matches, setClickedUser }) => {
     };
 
     return (
+    <div className="matches-display" >
+        {!sidebarVisible && (
+            <button className="matches-button" onClick={handleShowSidebar}>
+                SHOW
+            </button>
+        )}
         <div className={`matches-display ${sidebarVisible ? "" : "hidden"}`}>
-            {!sidebarVisible && (
-                <button className="show-sidebar-button" onClick={handleShowSidebar}>
-                    Show Sidebar
-                </button>
-            )}
-            <button className="hide-sidebar-button" onClick={handleHideSidebar}>
-                Hide Sidebar
+
+            <button className="matches-button" onClick={handleHideSidebar}>
+                HIDE
             </button>
             <div className="match-icons-container">
                 {matches.map((match) => (
@@ -42,6 +44,7 @@ const MatchesDisplay = ({ matches, setClickedUser }) => {
                 ))}
             </div>
         </div>
+    </div>
     );
 };
 
