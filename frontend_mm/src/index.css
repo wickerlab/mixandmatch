@@ -296,6 +296,7 @@ nav .logo-container .logo{
 .info-content{
     text-align: left;
     margin-left: 2vh;
+    user-select: none;
 }
 
 .info-half h3 {
@@ -524,13 +525,36 @@ nav .logo-container .logo{
     width: 5vw;
     height: 5vw;
     border-radius: 50%;
-    margin-bottom: 10px;
+    margin-bottom: 2vw;
     overflow: hidden;
     cursor: pointer;
+    border: double 5px transparent;
+    background-image: linear-gradient(white, white),
+    linear-gradient(20deg , #1F90E2, #900DF8);
+    background-origin: border-box;
+    background-clip: content-box, border-box;
 }
 
 .match-icon img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 50%;
+}
+
+.matches-button {
+    background: linear-gradient(45deg, #ffffff, #e8ccff);
+    border: none;
+    padding: 0;
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: x-large;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+}
+
+matches-button:hover {
+    background: linear-gradient(45deg, #dadada, #bca5ce);
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
 }
