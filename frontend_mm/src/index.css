@@ -19,6 +19,7 @@ h2{
 .primary-title{
     font-size: 90px;
     color: aliceblue;
+    margin-top: 20vh;
 }
 .primary-button{
     color: aliceblue;
@@ -39,7 +40,7 @@ h2{
     text-transform: uppercase;
     font-size: 15px;
     text-transform: uppercase;
-    background: linear-gradient(45deg , #fd5184, #fd8f7f);
+    background: linear-gradient(20deg , #1F90E2, #900DF8);
     padding: 12px 30px;
     border-radius:  30px;
     border: none;
@@ -47,7 +48,7 @@ h2{
 }
 
 .secondary-button:hover{
-    background: linear-gradient(45deg , #d0436d, #d7796e);
+    background: linear-gradient(45deg , #2481c7, #7d14d2);
 }
 
 body{

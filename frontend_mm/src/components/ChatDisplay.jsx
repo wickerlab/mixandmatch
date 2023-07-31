@@ -1,4 +1,4 @@
-import Chat from './Chat'
+import Chat from '../pages/Chat.jsx'
 import ChatInput from './ChatInput'
 import axios from 'axios'
 import {useState, useEffect} from "react"

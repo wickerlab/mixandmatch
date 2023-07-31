@@ -4,8 +4,7 @@ const MatchesDisplay = ({ matches, setClickedUser }) => {
     const [sidebarVisible, setSidebarVisible] = useState(true);
 
     const handleIconClick = (userId) => {
-        setClickedUser(userId);
-        setSidebarVisible(false);
+        window.location.href = `/chat`;
     };
 
     const handleHideSidebar = () => {

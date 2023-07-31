@@ -71,10 +71,7 @@ const AuthModal = ({setShowModal, isSignUp}) =>{
                 <input className="secondary-button" type="submit"/>
                 <p>{error}</p>
                 <hr/>
-                <h2>GET THE APP</h2>
             </form>
-
-            AUTH MODAL
         </div>
     )
 }
