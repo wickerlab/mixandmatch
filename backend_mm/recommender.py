@@ -37,8 +37,9 @@ class Gender(Enum):
     FEMALE = 'FEMALE'
 
 class User:
-    def __init__(self, salary, age, gender, education):
+    def __init__(self, id, salary, age, gender, education):
         self.age = age
+        self.id = id
 
 
         ## sort age
@@ -121,7 +122,7 @@ def get_user_attributes_by_id(user_id):
 
     if result:
         attr_age, attr_gender, attr_career, attr_education = result
-        user = User(attr_career, attr_age, attr_gender, attr_education)
+        user = User(user_id, attr_career, attr_age, attr_gender, attr_education)
     else:
         return None
     
@@ -234,6 +235,8 @@ def order_by_preference(u1: User, user_arr) :
             if (reciprocal_preference(u1, user_arr[j])) > (reciprocal_preference(u1, user_arr[j+1])):
 
                 user_arr[j], user_arr[j + 1] = user_arr[j + 1], user_arr[j]
+                
+    user_arr.reverse()
 
 
 if __name__ == '__main__' :

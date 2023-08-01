@@ -213,29 +213,31 @@ class MatchAPI(MethodView) :
     ''' RETRIEVE 15 RANDOM USERS RANKED VIA '''
     # deploy this to compare with control
 
-    ''' RETRIEVE 5 RANDOM USERS RANKED VIA '''
-    # deploy this one as the control
-    # TODO: ORDER THE LIST USING RECOMMENDER
+    #ORDER THE LIST USING RECOMMENDER
     @app.route('/match', methods=['GET'])
     @login_required
     def recommend_users():
         # Query the database to get 15 random users
-        query = "SELECT * FROM user ORDER BY RAND() LIMIT 5"
+        query = "SELECT * FROM user WHERE (id != " + str(session['user_id']['id']) + ") ORDER BY RAND() LIMIT 20"
         cursor.execute(query)
         users = cursor.fetchall()
-
         print(users)
 
+        session_user = recommender.get_user_attributes_by_id(session['user_id']['id'])
+        
         # Format the user data as needed
         recommended_users = []
         for user in users:
-            id, email, username, password, attr_age, attr_gender, attr_career, attr_education = user
-            recommended_users.append({'username': username, 'attr_age': attr_age, 'attr_gender': attr_gender,
-                                    'attr_career': attr_career, 'attr_education': attr_education})
-            
-        # TODO: connect to recommender
+            recommended_users.append(recommender.get_user_attributes_by_id(user['id']))
 
-        return jsonify({'recommended_users': recommended_users})
+        # call recommender function
+        recommender.order_by_preference(session_user, recommended_users) 
+
+        output_user_json = []
+        for user in recommended_users:
+            output_user_json.append(next(item for item in users if item["id"] == user.id))
+
+        return jsonify({'recommended_users': output_user_json})
 
 ## maybe refactor this i gave up
 def sort_profile_update_query(attribute, decision) :
@@ -258,6 +260,8 @@ def sort_profile_update_query(attribute, decision) :
         query_input = 'category4'
     elif (attribute == 'BACHELORS') :
         query_input = 'bachelors'
+    elif (attribute == 'MASTERS') :
+        query_input = 'bachelors'    
     elif (attribute == 'DOCTORAL') :
         query_input = 'doctoral'
     elif (attribute == 'DIPLOMA') :
