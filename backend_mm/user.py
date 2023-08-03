@@ -40,15 +40,26 @@ def login_required(f):
     return decorated_function
 
 class UserAPI(MethodView):
-
+    @app.route('/user/<int:user_id>', methods=['GET'])
     @swag_from('openapi.yml')
-    def get(self, user_id):
+    def get_user(self, user_id):
+
         if user_id is None:
             # return a list of users
-            pass
+            query = "SELECT * FROM user"
+            cursor.execute(query)
+            users = cursor.fetchall()
+            jsonify({'all_users': users}), 200
         else:
-            # expose a single user
-            pass
+            query = "SELECT * FROM user WHERE (id = " + user_id + ")"
+            cursor.execute(query)
+            user = cursor.fetchone()
+            if user:
+                # expose a single user
+                jsonify({'user': user}), 200
+            else:
+                # user does not exist
+                jsonify({'message': 'This user does not exist!'}), 404
     
     @app.route('/signup', methods=['POST'])
     @swag_from('openapi.yml')
@@ -135,16 +146,38 @@ class UserAPI(MethodView):
         # Clear the session to log out the user
         session.clear()
         return jsonify({'message': 'Logged out successfully'}), 200
-
+    
+    # update a single user
     @app.route('/update-user/<int:user_id>', methods=['PUT'])
     @swag_from('openapi.yml')
-    def put(self, user_id):
+    def update_user(self, user_id):
         # update a single user
-        pass
+        query = "SELECT * FROM user WHERE (id = " + user_id + ")"
+        cursor.execute(query)
+        user = cursor.fetchone()
+
+        if not user:
+            return jsonify({'message': 'User not found'}), 404
+
+        new_email = request.json.get('email')
+        new_username = request.json.get('username')
+
+        if new_email:
+            query = "UPDATE user SET email = %s WHERE user_id = %s"
+            cursor.execute(query, (new_email, user_id))
+            
+
+        if new_username:
+            query = "UPDATE user SET username = %s WHERE user_id = %s"
+            cursor.execute(query, (new_username, user_id))
+
+        cnx.commit()
+        return jsonify({'message': 'User updated successfully'})
 
     @swag_from('openapi.yml')
     def delete(self, user_id):
         # delete a single user
+        # we prob dont need
         pass
 
 
@@ -221,7 +254,6 @@ class MatchAPI(MethodView) :
         query = "SELECT * FROM user WHERE (id != " + str(session['user_id']['id']) + ") ORDER BY RAND() LIMIT 20"
         cursor.execute(query)
         users = cursor.fetchall()
-        print(users)
 
         session_user = recommender.get_user_attributes_by_id(session['user_id']['id'])
         
