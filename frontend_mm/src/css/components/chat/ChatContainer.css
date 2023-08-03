@@ -1,0 +1,35 @@
+/* ChatContainer.css */
+.chat-container {
+    margin: 0 auto;
+    background-color: #791414;
+    padding: 3vw;
+    position: fixed;
+    top: 5vh;
+    bottom: 10vh;
+    left: 12vw;
+    right: 8vw;
+    scroll-behavior: smooth;
+    border-radius: 30px;
+    flex-grow: 1; /* Allows the chat container to expand and fill available space */
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-container-header h3 {
+
+}
+
+.card-container .option:disabled{
+    border-bottom: solid 4px rgb(187,187,187);
+}
+
+.chat-container .profile {
+}
+
+.chat-container .log-out-icon {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    color: white;
+}

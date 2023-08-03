@@ -1,0 +1,147 @@
+/*------ Chatting Display ------*//* ChatDisplay.css */
+/* ChatDisplay.css */
+
+.chat-display {
+
+}
+
+.chat-bubble {
+    display: flex;
+    position: relative;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 12px;
+    height: fit-content;
+    font-size: 16px;
+    max-width: 70%;
+    word-wrap: break-word;
+    line-height: 1;
+}
+
+.chat-bubble .chat-text {
+    display: inline-block;
+    margin: 0; /* To remove any default margin that may cause issues */
+}
+
+.sent {
+    align-self: flex-end;
+    color: white;
+    background: #F35D2E;
+    right: 20px;
+}
+
+.sent:before {
+    content: "";
+    position: absolute;
+    right: -5px;
+    bottom: 0%;
+    width: 15px;
+    height: 20px;
+    background-color: #F35D2E;
+    border-bottom-left-radius: 16px 14px;
+    z-index: 1;
+}
+
+.sent:after {
+    content: "";
+    position: absolute;
+    right: -20px;
+    bottom: 0%;
+    width: 20px;
+    height: 25px;
+    background-color: #791414;
+    border-bottom-left-radius: 10px;
+    z-index: 1;
+}
+
+.received {
+    align-self: flex-start;
+    left: 20px;
+    color: white;
+    background: #007bff;
+}
+
+.received:before {
+    content: "";
+    position: absolute;
+    left: -5px;
+    bottom: 0%;
+    width: 15px;
+    height: 20px;
+    background-color: #007bff;
+    border-bottom-right-radius: 16px 14px;
+    z-index: 1;
+}
+
+.received:after {
+    content: "";
+    position: absolute;
+    left: -20px;
+    bottom: 0%;
+    width: 20px;
+    height: 25px;
+    background-color: #791414;
+    border-bottom-right-radius: 10px;
+    z-index: 1;
+}
+
+.noTail {
+    margin-bottom: 2px;
+}
+
+.noTail:before,
+.noTail:after {
+    opacity: 0;
+}
+
+
+/* chat-bubbles.css */
+
+/* Chat Bubble Container */
+.chat-bubble-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* Chat Bubble */
+.chat-bubble {
+    display: inline-block;
+    max-width: 70%;
+    padding: 10px 15px;
+    border-radius: 20px;
+    word-wrap: break-word;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+}
+
+/* Sender Chat Bubble */
+.chat-bubble.sender {
+    background-color: #007bff;
+    color: #fff;
+    align-self: flex-end;
+}
+
+/* Receiver Chat Bubble */
+.chat-bubble.receiver {
+    background-color: #f0f0f0;
+    color: #000;
+    align-self: flex-start;
+}
+
+/* Profile Image */
+.chat-profile-img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: inline-block;
+    margin-right: 8px;
+}
+
+.chat-profile-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}

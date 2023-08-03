@@ -1,0 +1,10 @@
+.overlay {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    background: linear-gradient(45deg, rgba(112, 26, 55), rgb(243, 93, 46));
+}
+
+.home {
+    margin-top: 40px;
+}

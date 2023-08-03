@@ -2,6 +2,7 @@ import {useState} from "react";
 import axios from 'axios';
 import {useNavigate} from "react-router-dom";
 import { useCookies } from 'react-cookie';
+import "../css/components/AuthModal.css";
 
 const AuthModal = ({setShowModal, isSignUp}) =>{
     const [email, setEmail] = useState(null)
@@ -71,10 +72,7 @@ const AuthModal = ({setShowModal, isSignUp}) =>{
                 <input className="secondary-button" type="submit"/>
                 <p>{error}</p>
                 <hr/>
-                <h2>GET THE APP</h2>
             </form>
-
-            AUTH MODAL
         </div>
     )
 }

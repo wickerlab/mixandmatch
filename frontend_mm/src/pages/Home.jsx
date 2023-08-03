@@ -1,6 +1,7 @@
 import Nav from "../components/Nav.jsx"
 import AuthModal from "../components/AuthModal.jsx";
 import {useState} from "react";
+import "../css/pages/Home.css"
 
 const Home = () => {
     const [showModal, setShowModal] = useState(false)

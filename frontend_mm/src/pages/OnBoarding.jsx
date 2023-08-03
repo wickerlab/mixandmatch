@@ -1,5 +1,6 @@
 import {useState} from "react";
 import Nav from "../components/Nav.jsx";
+import "../css/pages/OnBoarding.css";
 
 const OnBoarding = () => {
     const [formData, setFormData] = useState({

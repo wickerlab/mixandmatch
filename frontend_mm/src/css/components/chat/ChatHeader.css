@@ -1,0 +1,27 @@
+/* ChatHeader.css */
+
+.chat-container-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+.chat-container-header h3 {
+    background: linear-gradient(45deg, #ffffff, #e8ccff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: xxx-large;
+}
+
+.chat-container .profile {
+}
+
+.chat-container .log-out-icon {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    color: white;
+}
