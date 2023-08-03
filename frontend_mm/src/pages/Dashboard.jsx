@@ -2,9 +2,10 @@
 
 import TinderCard from 'react-tinder-card'
 import React, {useMemo, useState} from "react";
-import ChatContainer from '../components/ChatContainer.jsx'
 import SwipingCard from "../components/SwipeCard.jsx";
 import MatchesDisplay from "../components/MatchesDisplay.jsx";
+import "../css/pages/Dashboard.css"
+
 
 const Dashboard = () => {
 

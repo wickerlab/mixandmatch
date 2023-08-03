@@ -1,0 +1,32 @@
+nav {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+nav .nav-button {
+    color: #fe3072;
+    background: white;
+    font-size: 20px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    margin: 10px;
+}
+
+nav .nav-button:hover {
+    background: gainsboro;
+}
+
+nav .nav-button:disabled {
+    background: gainsboro;
+}
+
+nav .logo-container {
+    /*TODO*/
+}
+
+nav .logo-container .logo {
+    /*TODO*/
+    width: 100%;
+    height: 100px;
+}

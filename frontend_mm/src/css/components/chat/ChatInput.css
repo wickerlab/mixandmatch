@@ -1,0 +1,29 @@
+/* ChatInput.css */
+.chat-input{
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: auto;
+}
+
+.chat-textarea {
+    flex: 1; /* The textarea will take up the available space */
+    margin-right: 10px; /* Add some spacing between the textarea and the button */
+    border-radius: 30px;
+    font-size: 16px !important;
+    font-family: Arial, sans-serif !important;
+    align-items: center;
+    padding: 10px;
+    resize: none;
+}
+
+.sent-button {
+    color: aliceblue;
+    text-transform: uppercase;
+    font-size: 15px;
+    background: linear-gradient(20deg, #1F90E2, #900DF8);
+    padding: 12px 30px;
+    border-radius: 30px;
+    border: none;
+}
