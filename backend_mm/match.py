@@ -43,7 +43,7 @@ def login_required(f):
 class MatchAPI(MethodView) :
     ## incorporate the match algorithm later
     ''' UPDATES A MATCH PAIR AFTER A SWIPE '''
-    @app.route('/match/<int:other_user_id>', methods=['POST'])
+    # @app.route('/match/<int:other_user_id>', methods=['POST'])
     @login_required
     def match_user(other_user_id):
         # Get the currently authenticated user's ID from the session
@@ -105,14 +105,13 @@ class MatchAPI(MethodView) :
     # deploy this to compare with control
 
     #ORDER THE LIST USING RECOMMENDER
-    @app.route('/match', methods=['GET'])
+    # @app.route('/match', methods=['GET'])
     @login_required
     def recommend_users():
         # Query the database to get 15 random users
         query = "SELECT * FROM user WHERE (id != " + str(session['user_id']['id']) + ") ORDER BY RAND() LIMIT 20"
         cursor.execute(query)
         users = cursor.fetchall()
-        print(users)
 
         session_user = recommender.get_user_attributes_by_id(session['user_id']['id'])
         
@@ -129,30 +128,6 @@ class MatchAPI(MethodView) :
             output_user_json.append(next(item for item in users if item["id"] == user.id))
 
         return jsonify({'recommended_users': output_user_json})
-    
-    # @swag_from('openapi.yml')
-    # def get(self, user_id):
-    #     if user_id is None:
-    #         # return a list of matches
-    #         pass
-    #     else:
-    #         # expose a single match
-    #         pass
-
-    # @swag_from('openapi.yml')
-    # def post(self):
-    #     # create a new match
-    #     pass
-
-    # @swag_from('openapi.yml')
-    # def put(self, match_id):
-    #     # update a single match
-    #     pass
-
-    # @swag_from('openapi.yml')
-    # def delete(self, match_id):
-    #     # delete a single match
-    #     pass
 
 ## maybe refactor this i gave up
 def sort_profile_update_query(attribute, decision) :
