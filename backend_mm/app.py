@@ -35,6 +35,7 @@ app.add_url_rule('/login', view_func=UserAPI.login, methods=['POST'])
 app.add_url_rule('/logout', view_func=UserAPI.logout, methods=['GET'])
 app.add_url_rule('/signup', view_func=UserAPI.create_user, methods=['POST'])
 app.add_url_rule('/onboarding/<int:user_id>', view_func=UserAPI.onboard, methods=['PUT'])
+app.add_url_rule('/chat', view_func=UserAPI.get_chat, methods=['GET'])
 
 
 # MatchAPI

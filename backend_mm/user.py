@@ -26,20 +26,32 @@ cnx = mysql.connector.connect(
 # Create a cursor object to execute SQL queries
 cursor = cnx.cursor(buffered=True,dictionary=True)
 
-# checks session via email
-def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if 'email' not in session:
-            return jsonify({'message': 'Login required'}), 401
-
-        # Additional validation can be performed if required, such as checking if the user exists in the database
-
-        return f(*args, **kwargs)
-
-    return decorated_function
 
 class UserAPI(MethodView):
+    # checks session via email
+    def login_required(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            if 'email' not in session:
+                return jsonify({'message': 'Login required'}), 401
+
+            # Additional validation can be performed if required, such as checking if the user exists in the database
+
+            return f(*args, **kwargs)
+
+        return decorated_function
+    def login_required(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            if 'email' not in session:
+                return jsonify({'message': 'Login required'}), 401
+
+            # Additional validation can be performed if required, such as checking if the user exists in the database
+
+            return f(*args, **kwargs)
+
+        return decorated_function
+
     # @app.route('/user/<int:user_id>', methods=['GET'])
     @swag_from('openapi.yml')
     def get_user(user_id):
@@ -178,8 +190,38 @@ class UserAPI(MethodView):
 
         cnx.commit()
         return jsonify({'message': 'User updated successfully'})
+    
+    @login_required
+    def delete(self, user_id):
+        # delete a single user
+        # we prob dont need
+        pass  
 
-    @swag_from('openapi.yml')
+    # get id and username of all users that session user can chat with
+    def get_chat() : 
+        # Get the currently authenticated user's ID from the session
+        user_id = session['user_id']['id']
+
+        # query for user id 
+        select_query = "SELECT DISTINCT user2_id AS user_id FROM mixnmatch.match WHERE user1_id = %s AND (user1_match = 1 OR user2_match = 1)" \
+                    + " UNION DISTINCT " \
+                    + "SELECT DISTINCT user1_id AS user_id FROM mixnmatch.match WHERE user2_id = %s AND (user1_match = 1 OR user2_match = 1)" 
+        query_data = (user_id, user_id)
+        cursor.execute(select_query, query_data)
+        chat_users = cursor.fetchall()
+
+        # retrieve usernames
+        for user in chat_users:
+            current_id = user['user_id']
+            select_query = "SELECT username FROM mixnmatch.user WHERE id = %s"
+            query_data = (current_id,)
+            cursor.execute(select_query, query_data)
+            chat_user = cursor.fetchone()
+            user['username'] = chat_user['username']
+        
+
+        return jsonify({'chat_users': chat_users})
+
     def delete(self, user_id):
         # delete a single user
         # we prob dont need
