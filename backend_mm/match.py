@@ -48,6 +48,8 @@ class MatchAPI(MethodView) :
     def match_user(other_user_id):
         # Get the currently authenticated user's ID from the session
         match_decision = request.form.get('match_decision')
+        match_time = request.form.get('match_time')
+        match_time = float(match_time)
         user_id = session['user_id']['id']
 
         match_bool = 0
@@ -55,29 +57,49 @@ class MatchAPI(MethodView) :
         if (match_decision == 'accept'):
             match_bool = 1
 
+
         # Perform the matching operation in the database
-        # Check if the match exists between user1_id and user2_id
-        select_query = "SELECT COUNT(*) FROM mixnmatch.match WHERE (user1_id = %s AND user2_id = %s) OR (user1_id = %s AND user2_id = %s)"
-        match_data = (user_id, other_user_id, other_user_id, user_id)
+        # Check if an incomplete match exists between user1_id and user2_id
+        # select_query = "SELECT COUNT(*) FROM mixnmatch.match WHERE (user1_id = %s AND user2_id = %s) OR (user1_id = %s AND user2_id = %s)"
+        select_query = "SELECT COUNT(*) FROM mixnmatch.match WHERE (user1_id = %s AND user2_id = %s ) AND (user1_match IS NULL OR user2_match IS NULL)"
+        match_data = (user_id, other_user_id)
         cursor.execute(select_query, match_data)
-        match_count = cursor.fetchone()['COUNT(*)']
+        match_count_1 = cursor.fetchone()['COUNT(*)']
+        print(match_count_1)
 
-        if match_count == 0:
-            # If the match does not exist, create a new match entry
-            insert_query = "INSERT INTO mixnmatch.match (user1_id, user2_id, user1_match, update_time) VALUES (%s, %s, %s, NOW())"
-            match_data = (user_id, other_user_id, match_bool)
+        select_query = "SELECT COUNT(*) FROM mixnmatch.match WHERE (user2_id = %s AND user1_id = %s ) AND (user1_match IS NULL OR user2_match IS NULL)"
+        match_data = (user_id, other_user_id)
+        cursor.execute(select_query, match_data)
+        match_count_2 = cursor.fetchone()['COUNT(*)']
+        print(match_count_2)
 
+        ## classify the match situation
+        match_class = 0  ## no partial matches
+        if (match_count_1 == 1) :
+            match_class = 1  ## partial match + session user is user 1
+        elif (match_count_2 == 1) :
+            match_class = 2  ## partial match + session user is user 2
+
+        ## update match history
+        if match_class == 0:
+            # If an incomplete match does not exist, create a new match entry
+            insert_query = "INSERT INTO mixnmatch.match (user1_id, user2_id, user1_match, user1_update_time, user1_decision_time) VALUES (%s, %s, %s, NOW(), %s)"
+            match_data = (user_id, other_user_id, match_bool, match_time)
+
+        elif match_class == 1:
+            # If an incomplete match does not exist, create a new match entry
+            insert_query = "UPDATE mixnmatch.match SET user1_update_time = NOW(), user1_match = %s, user1_decision_time = %s WHERE (user1_id = %s AND user2_id = %s ) AND (user1_match IS NULL OR user2_match IS NULL)"
+            match_data = (match_bool, match_time, user_id, other_user_id)
             
-        else:
+        elif match_class == 2:
             # check match time
-            insert_query = "UPDATE mixnmatch.match SET update_time = NOW(), user1_match = %s WHERE (user1_id = %s AND user2_id = %s) OR (user1_id = %s AND user2_id = %s)"
-            match_data = (match_bool, user_id, other_user_id, other_user_id, user_id)
+            insert_query = "UPDATE mixnmatch.match SET user2_update_time = NOW(), user2_match = %s, user2_decision_time = %s WHERE (user2_id = %s AND user1_id = %s ) AND (user1_match IS NULL OR user2_match IS NULL)"
+            match_data = (match_bool, match_time, user_id, other_user_id)
 
         # 
         other_user = recommender.get_user_attributes_by_id(other_user_id)
 
-        # TO UPDATE PREFERENCE CONNECT TO RECOMMENDER.PY TO UPDATE DATABASE USER PROFILE
-        ## update user 1's preference profile & user 2's attractiveness
+        # update user preference profile
         attribute_category_insert = sort_profile_update_query(other_user.age_category.value, match_decision)
         age_insert_query = "UPDATE mixnmatch.user_history_age SET " + attribute_category_insert + " = " + attribute_category_insert + " + 1 WHERE user_id = %s"
         attribute_category_insert = sort_profile_update_query(other_user.salary_category.value, match_decision)
@@ -108,7 +130,7 @@ class MatchAPI(MethodView) :
     # @app.route('/match', methods=['GET'])
     @login_required
     def recommend_users():
-        # Query the database to get 15 random users
+        # Query the database to get 15 random users excluding session user
         query = "SELECT * FROM user WHERE (id != " + str(session['user_id']['id']) + ") ORDER BY RAND() LIMIT 20"
         cursor.execute(query)
         users = cursor.fetchall()

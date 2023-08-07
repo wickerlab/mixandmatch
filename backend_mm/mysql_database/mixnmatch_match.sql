@@ -23,16 +23,21 @@ DROP TABLE IF EXISTS `match`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `match` (
+  `id` int NOT NULL AUTO_INCREMENT,
   `user1_id` int NOT NULL,
   `user2_id` int NOT NULL,
   `user1_match` tinyint DEFAULT NULL,
   `user2_match` tinyint DEFAULT NULL,
-  `update_time` timestamp(2) NOT NULL,
+  `user1_update_time` timestamp(2) NULL DEFAULT NULL,
+  `user2_update_time` timestamp(2) NULL DEFAULT NULL,
+  `user1_decision_time` decimal(6,5) DEFAULT NULL,
+  `user2_decision_time` decimal(6,5) DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `user1_id_idx` (`user1_id`),
   KEY `user2_id_idx` (`user2_id`),
   CONSTRAINT `user1_id` FOREIGN KEY (`user1_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `user2_id` FOREIGN KEY (`user2_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +46,7 @@ CREATE TABLE `match` (
 
 LOCK TABLES `match` WRITE;
 /*!40000 ALTER TABLE `match` DISABLE KEYS */;
-INSERT INTO `match` VALUES (5,6,1,NULL,'2023-08-01 02:52:29.00'),(5,7,1,NULL,'2023-08-01 02:52:27.00'),(5,8,1,NULL,'2023-08-01 02:52:24.00'),(5,9,1,NULL,'2023-08-01 02:52:19.00'),(5,5,1,NULL,'2023-08-01 02:52:32.00');
+INSERT INTO `match` VALUES (1,5,6,1,1,'2023-08-07 03:42:12.00','2023-08-07 03:43:28.00',3.12000,3.12000),(2,5,6,1,NULL,'2023-08-07 03:43:56.00',NULL,3.12000,NULL);
 /*!40000 ALTER TABLE `match` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -54,4 +59,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-04  0:50:18
+-- Dump completed on 2023-08-07 15:45:31

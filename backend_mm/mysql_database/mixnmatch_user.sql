@@ -32,7 +32,7 @@ CREATE TABLE `user` (
   `attr_career` varchar(32) DEFAULT NULL,
   `attr_education` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +41,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (5,'viableuser1@gmail.com','viableuser1','viableuser1',24,'MALE','15TO30','MASTERS'),(6,'viableuser2@gmail.com','viableuser2','viableuser2',31,'FEMALE','30TO50','BACHELORS'),(7,'viableuser3@gmail.com','viableuser3','viableuser3',18,'MALE','OVER50','DOCTORAL'),(8,'viableuser4@gmail.com','viableuser4','viableuser4',27,'FEMALE','UNDER15','DIPLOMA'),(9,'viableuser5@gmail.com','viableuser5','viableuser5',22,'FEMALE','30TO50','MASTERS');
+INSERT INTO `user` VALUES (5,'viableuser1@gmail.com','viableuser1','viableuser1',24,'MALE','15TO30','MASTERS'),(6,'viableuser2@gmail.com','viableuser2','viableuser2',31,'FEMALE','30TO50','BACHELORS'),(7,'viableuser3@gmail.com','viableuser3','viableuser3',18,'MALE','OVER50','DOCTORAL'),(8,'viableuser4@gmail.com','viableuser4','viableuser4',27,'FEMALE','UNDER15','DIPLOMA'),(9,'viableuser5@gmail.com','viableuser5','viableuser5',22,'FEMALE','30TO50','MASTERS'),(40,'viableuser6@gmail.com','viableuser6','viableuser6',25,'MALE','15TO30','UNDERGRADUATE'),(41,'viableuser7@gmail.com','viableuser7','viableuser7',29,'FEMALE','UNDER15','MASTERS');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -54,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-04  0:50:19
+-- Dump completed on 2023-08-07 15:45:31
