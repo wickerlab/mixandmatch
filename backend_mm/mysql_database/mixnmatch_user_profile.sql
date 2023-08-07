@@ -24,13 +24,13 @@ DROP TABLE IF EXISTS `user_profile`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user_profile` (
   `user_id` int NOT NULL,
-  `pref_salary` decimal(6,6) DEFAULT NULL,
-  `pref_age` decimal(6,6) DEFAULT NULL,
-  `pref_gender` decimal(6,6) DEFAULT NULL,
-  `pref_education` decimal(6,6) DEFAULT NULL,
-  `pref_attractiveness` decimal(6,6) DEFAULT NULL,
+  `pref_salary` decimal(6,6) DEFAULT '0.500000',
+  `pref_age` decimal(6,6) DEFAULT '0.500000',
+  `pref_gender` decimal(6,6) DEFAULT '0.500000',
+  `pref_education` decimal(6,6) DEFAULT '0.500000',
+  `pref_attractiveness` decimal(6,6) DEFAULT '0.500000',
   PRIMARY KEY (`user_id`),
-  CONSTRAINT `profile_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+  CONSTRAINT `profile_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -40,6 +40,7 @@ CREATE TABLE `user_profile` (
 
 LOCK TABLES `user_profile` WRITE;
 /*!40000 ALTER TABLE `user_profile` DISABLE KEYS */;
+INSERT INTO `user_profile` VALUES (40,0.500000,0.500000,0.500000,0.500000,0.500000),(41,0.500000,0.500000,0.500000,0.500000,0.500000);
 /*!40000 ALTER TABLE `user_profile` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -52,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-11 16:06:57
+-- Dump completed on 2023-08-07 15:45:31

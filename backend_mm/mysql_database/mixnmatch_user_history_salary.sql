@@ -24,16 +24,16 @@ DROP TABLE IF EXISTS `user_history_salary`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user_history_salary` (
   `user_id` int NOT NULL,
-  `category1_accept` int(10) unsigned zerofill DEFAULT NULL,
-  `category1_reject` int(10) unsigned zerofill DEFAULT NULL,
-  `category2_accept` int(10) unsigned zerofill DEFAULT NULL,
-  `category2_reject` int(10) unsigned zerofill DEFAULT NULL,
-  `category3_accept` int(10) unsigned zerofill DEFAULT NULL,
-  `category3_reject` int(10) unsigned zerofill DEFAULT NULL,
-  `category4_accept` int(10) unsigned zerofill DEFAULT NULL,
-  `category4_reject` int(10) unsigned zerofill DEFAULT NULL,
+  `category1_accept` int(10) unsigned zerofill DEFAULT '0000000000',
+  `category1_reject` int(10) unsigned zerofill DEFAULT '0000000000',
+  `category2_accept` int(10) unsigned zerofill DEFAULT '0000000000',
+  `category2_reject` int(10) unsigned zerofill DEFAULT '0000000000',
+  `category3_accept` int(10) unsigned zerofill DEFAULT '0000000000',
+  `category3_reject` int(10) unsigned zerofill DEFAULT '0000000000',
+  `category4_accept` int(10) unsigned zerofill DEFAULT '0000000000',
+  `category4_reject` int(10) unsigned zerofill DEFAULT '0000000000',
   PRIMARY KEY (`user_id`),
-  CONSTRAINT `salary_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+  CONSTRAINT `salary_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -43,6 +43,7 @@ CREATE TABLE `user_history_salary` (
 
 LOCK TABLES `user_history_salary` WRITE;
 /*!40000 ALTER TABLE `user_history_salary` DISABLE KEYS */;
+INSERT INTO `user_history_salary` VALUES (5,0000000001,0000000001,0000000001,0000000002,0000000019,0000000005,0000000001,0000000001),(6,0000000000,0000000000,0000000014,0000000000,0000000001,0000000000,0000000000,0000000000),(7,0000000000,0000000000,0000000000,0000000000,0000000000,0000000000,0000000000,0000000000),(8,0000000000,0000000000,0000000000,0000000000,0000000000,0000000000,0000000000,0000000000),(9,0000000000,0000000000,0000000000,0000000000,0000000000,0000000000,0000000000,0000000000),(40,0000000000,0000000000,0000000000,0000000000,0000000000,0000000000,0000000000,0000000000),(41,0000000000,0000000000,0000000000,0000000000,0000000000,0000000000,0000000000,0000000000);
 /*!40000 ALTER TABLE `user_history_salary` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -55,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-11 16:06:57
+-- Dump completed on 2023-08-07 15:45:31

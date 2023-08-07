@@ -16,29 +16,31 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `user_history_attractiveness`
+-- Table structure for table `message`
 --
 
-DROP TABLE IF EXISTS `user_history_attractiveness`;
+DROP TABLE IF EXISTS `message`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `user_history_attractiveness` (
-  `user_id` int NOT NULL,
-  `received_accept` int(10) unsigned zerofill DEFAULT '0000000000',
-  `received_reject` int(10) unsigned zerofill DEFAULT '0000000000',
-  PRIMARY KEY (`user_id`),
-  CONSTRAINT `attractiveness_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+CREATE TABLE `message` (
+  `sender_id` int NOT NULL,
+  `message` varchar(2048) DEFAULT NULL,
+  `update_time` timestamp(2) NOT NULL,
+  `receiver_id` int NOT NULL,
+  KEY `receiver_id_idx` (`sender_id`,`receiver_id`),
+  KEY `receiver_id_idx1` (`receiver_id`),
+  CONSTRAINT `receiver_id` FOREIGN KEY (`receiver_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `sender_id` FOREIGN KEY (`sender_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user_history_attractiveness`
+-- Dumping data for table `message`
 --
 
-LOCK TABLES `user_history_attractiveness` WRITE;
-/*!40000 ALTER TABLE `user_history_attractiveness` DISABLE KEYS */;
-INSERT INTO `user_history_attractiveness` VALUES (5,0000000015,0000000000),(6,0000000015,0000000004),(7,0000000001,0000000001),(8,0000000001,0000000001),(9,0000000005,0000000001),(40,0000000000,0000000002),(41,0000000000,0000000000);
-/*!40000 ALTER TABLE `user_history_attractiveness` ENABLE KEYS */;
+LOCK TABLES `message` WRITE;
+/*!40000 ALTER TABLE `message` DISABLE KEYS */;
+/*!40000 ALTER TABLE `message` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -50,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-07 15:45:31
+-- Dump completed on 2023-08-07 15:45:30
