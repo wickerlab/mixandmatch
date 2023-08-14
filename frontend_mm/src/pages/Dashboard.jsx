@@ -1,7 +1,7 @@
 // Dashboard.jsx
 
 import TinderCard from 'react-tinder-card'
-import React, {useMemo, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import SwipingCard from "../components/SwipeCard.jsx";
 import MatchesDisplay from "../components/MatchesDisplay.jsx";
 import "../css/pages/Dashboard.css"
@@ -9,7 +9,31 @@ import "../css/pages/Dashboard.css"
 
 const Dashboard = () => {
 
-    //const [user, setUser] = useState(null)
+   // const [user, setUser] = useState(null); // Mock user data, replace with actual user data
+    const [matches, setMatches] = useState([]); // State to hold fetched matches
+
+    useEffect(() => {
+        // Fetch matches from the API
+        async function fetchMatches() {
+            try {
+                const response = await fetch("http://127.0.0.1:5000/matches");
+                const data = await response.json();
+                setMatches(data.recommended_users);
+            } catch (error) {
+                console.error("Error fetching matches:", error);
+            }
+        }
+
+        fetchMatches();
+    }, []);
+
+    const getCharacterData = () => {
+        // Return matches data or any other data you need
+        return matches.map(match => ({
+            name: match.username, // Adjust this based on your data
+            url: match.email // Adjust this based on your data
+        }));
+    };
 
     //Mock user data delete later
     const user = {
@@ -170,7 +194,7 @@ const Dashboard = () => {
         <div className="dashboard">
             <MatchesDisplay matches={user.matches} setClickedUser={user}/>
             <div className="swipe-container">
-                    {characters.map((character, index) => (
+                    {getCharacterData().map((character, index) => (
                         <SwipingCard
                             key={character.name}
                             character={character}

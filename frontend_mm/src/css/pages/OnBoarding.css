@@ -38,6 +38,9 @@
     flex-direction: row;
 }
 
+.onboarding form .multiple-input-container :hover {
+    border: solid 2px rgb(159, 36, 27);
+}
 .onboarding form .multiple-input-container input {
     margin-right: 10px;
 }
@@ -48,6 +51,19 @@
     border-radius: 10px;
     transition: all 0.3s;
     margin-right: 10px;
+}
+
+.onboarding form select{
+    padding: 15px 30px;
+    margin: 10px 0;
+    font-size: 15px;
+    border: solid 2px rgb(219, 219, 219);
+    border-radius: 10px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-size: 20px;
+    /*TODO add arrow*/
 }
 
 .onboarding form input[type="radio"] {

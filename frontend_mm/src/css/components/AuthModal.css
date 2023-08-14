@@ -22,7 +22,8 @@
 }
 
 .auth-modal input[type=password],
-.auth-modal input[type=email] {
+.auth-modal input[type=email],
+.auth-modal input[type=username]{
     padding: 8px;
     margin: 8px;
     font-size: 17px;

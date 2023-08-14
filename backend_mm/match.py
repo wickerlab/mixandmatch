@@ -1,16 +1,19 @@
-from asyncio.windows_events import NULL
+# from asyncio.windows_events import NULL
 from types import MethodType
 from functools import wraps
 from flasgger import Swagger, swag_from
 from flask import Flask, request, session, jsonify
 from flask.views import MethodView
 import mysql.connector
+from flask_cors import CORS
+
 import recommender
 import match
 import os
 
 app = Flask(__name__)
-swagger = Swagger(app)
+swagger = Swagger(app, template_file='openapi.yml')
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 app.secret_key = os.urandom(24) # temp authentication key
 
