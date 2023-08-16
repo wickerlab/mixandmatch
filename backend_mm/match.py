@@ -1,19 +1,21 @@
-from asyncio.windows_events import NULL
+# from asyncio.windows_events import NULL
 from types import MethodType
 from functools import wraps
 from flasgger import Swagger, swag_from
 from flask import Flask, request, session, jsonify
 from flask.views import MethodView
 import mysql.connector
+from flask_cors import CORS, cross_origin
+
 import recommender
 import match
 import os
 
 app = Flask(__name__)
-swagger = Swagger(app)
+swagger = Swagger(app, template_file='openapi.yml')
+CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
 
-app.secret_key = os.urandom(24) # temp authentication key
-
+app.secret_key = os.urandom(24)  # temp authentication key
 
 ## change when deploy use admin1
 cnx = mysql.connector.connect(
@@ -24,7 +26,8 @@ cnx = mysql.connector.connect(
 )
 
 # Create a cursor object to execute SQL queries
-cursor = cnx.cursor(buffered=True,dictionary=True)
+cursor = cnx.cursor(buffered=True, dictionary=True)
+
 
 # checks session via email
 def login_required(f):
@@ -39,10 +42,12 @@ def login_required(f):
 
     return decorated_function
 
+
 ## MIGRATE TO MATCH.PY LATER
-class MatchAPI(MethodView) :
+class MatchAPI(MethodView):
     ## incorporate the match algorithm later
     ''' UPDATES A MATCH PAIR AFTER A SWIPE '''
+
     # @app.route('/match/<int:other_user_id>', methods=['POST'])
     @login_required
     def match_user(other_user_id):
@@ -56,7 +61,6 @@ class MatchAPI(MethodView) :
         # match decision boolean
         if (match_decision == 'accept'):
             match_bool = 1
-
 
         # Perform the matching operation in the database
         # Check if an incomplete match exists between user1_id and user2_id
@@ -75,9 +79,9 @@ class MatchAPI(MethodView) :
 
         ## classify the match situation
         match_class = 0  ## no partial matches
-        if (match_count_1 == 1) :
+        if (match_count_1 == 1):
             match_class = 1  ## partial match + session user is user 1
-        elif (match_count_2 == 1) :
+        elif (match_count_2 == 1):
             match_class = 2  ## partial match + session user is user 2
 
         ## update match history
@@ -90,7 +94,7 @@ class MatchAPI(MethodView) :
             # If an incomplete match does not exist, create a new match entry
             insert_query = "UPDATE mixnmatch.match SET user1_update_time = NOW(), user1_match = %s, user1_decision_time = %s WHERE (user1_id = %s AND user2_id = %s ) AND (user1_match IS NULL OR user2_match IS NULL)"
             match_data = (match_bool, match_time, user_id, other_user_id)
-            
+
         elif match_class == 2:
             # check match time
             insert_query = "UPDATE mixnmatch.match SET user2_update_time = NOW(), user2_match = %s, user2_decision_time = %s WHERE (user2_id = %s AND user1_id = %s ) AND (user1_match IS NULL OR user2_match IS NULL)"
@@ -111,7 +115,6 @@ class MatchAPI(MethodView) :
         attribute_category_insert = sort_profile_update_query('attractiveness', match_decision)
         attractive_insert_query = "UPDATE mixnmatch.user_history_attractiveness SET " + attribute_category_insert + " = " + attribute_category_insert + " + 1 WHERE user_id = %s"
 
-
         ## only execute if no errors
         cursor.execute(insert_query, match_data)
         cursor.execute(age_insert_query, (user_id,))
@@ -122,11 +125,12 @@ class MatchAPI(MethodView) :
         cnx.commit()
 
         return jsonify({'message': f'Successfully updated match history with user_id: {other_user_id}'})
-    
+
     ''' RETRIEVE 15 RANDOM USERS RANKED VIA '''
+
     # deploy this to compare with control
 
-    #ORDER THE LIST USING RECOMMENDER
+    # ORDER THE LIST USING RECOMMENDER
     # @app.route('/match', methods=['GET'])
     @login_required
     def recommend_users():
@@ -136,14 +140,14 @@ class MatchAPI(MethodView) :
         users = cursor.fetchall()
 
         session_user = recommender.get_user_attributes_by_id(session['user_id']['id'])
-        
+
         # Format the user data as needed
         recommended_users = []
         for user in users:
             recommended_users.append(recommender.get_user_attributes_by_id(user['id']))
 
         # call recommender function
-        recommender.order_by_preference(session_user, recommended_users) 
+        recommender.order_by_preference(session_user, recommended_users)
 
         output_user_json = []
         for user in recommended_users:
@@ -151,43 +155,44 @@ class MatchAPI(MethodView) :
 
         return jsonify({'recommended_users': output_user_json})
 
+
 ## maybe refactor this i gave up
-def sort_profile_update_query(attribute, decision) :
+def sort_profile_update_query(attribute, decision):
     query_input = ''
-    if (attribute == 'UNDER15') :
+    if (attribute == 'UNDER15'):
         query_input = 'category1'
-    elif (attribute == '15TO30') :
+    elif (attribute == '15TO30'):
         query_input = 'category2'
-    elif (attribute == '30TO50') :
+    elif (attribute == '30TO50'):
         query_input = 'category3'
-    elif (attribute == 'OVER50') :
+    elif (attribute == 'OVER50'):
         query_input = 'category4'
-    elif (attribute == '18TO22') :
+    elif (attribute == '18TO22'):
         query_input = 'category1'
-    elif (attribute == '22TO26') :
+    elif (attribute == '22TO26'):
         query_input = 'category2'
-    elif (attribute == '26TO30') :
+    elif (attribute == '26TO30'):
         query_input = 'category3'
-    elif (attribute == 'OVER30') :
+    elif (attribute == 'OVER30'):
         query_input = 'category4'
-    elif (attribute == 'BACHELORS') :
+    elif (attribute == 'BACHELORS'):
         query_input = 'bachelors'
-    elif (attribute == 'MASTERS') :
-        query_input = 'bachelors'    
-    elif (attribute == 'DOCTORAL') :
+    elif (attribute == 'MASTERS'):
+        query_input = 'bachelors'
+    elif (attribute == 'DOCTORAL'):
         query_input = 'doctoral'
-    elif (attribute == 'DIPLOMA') :
+    elif (attribute == 'DIPLOMA'):
         query_input = 'diploma'
-    elif (attribute == 'MALE') :
+    elif (attribute == 'MALE'):
         query_input = 'male'
-    elif (attribute == 'FEMALE') :
+    elif (attribute == 'FEMALE'):
         query_input = 'female'
-    elif (attribute == 'FEMALE') :
+    elif (attribute == 'FEMALE'):
         query_input = 'female'
-    elif (attribute == 'attractiveness') :
+    elif (attribute == 'attractiveness'):
         query_input = 'received'
-    if (decision == 'accept') :
+    if (decision == 'accept'):
         query_input = query_input + '_accept'
-    elif (decision == 'reject') :
+    elif (decision == 'reject'):
         query_input = query_input + '_reject'
-    return query_input    
+    return query_input

@@ -3,36 +3,73 @@ import Nav from "../components/Nav.jsx";
 import "../css/pages/OnBoarding.css";
 
 const OnBoarding = () => {
+
+    const degreeOptions = ["BACHELORS", "MASTERS", "DOCTORAL", "DIPLOMA"];
+    const salaryOptions = ["Under $15,000", "$15,000 - $30,000", "$30,000 - $50,000", "Above $50,000"];
+
     const [formData, setFormData] = useState({
         user_id: '',
         first_name: '',
         dob_day: '',
         dob_month: '',
         dob_year: '',
-        show_gender: false,
-        gender_identity: "man",
-        gender_interest: 'woman',
-        email: '',
+        gender_identity: "woman",
+        gender_interest: 'man',
+        degree: '',
+        salary:'',
         url: '',
         about: '',
         matches: []
     })
 
-    const handleSubmit = () => {
-        console.log('submitted')
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        // Calculate age from date of birth
+        const currentDate = new Date();
+        const birthDate = new Date(`${formData.dob_year}-${formData.dob_month}-${formData.dob_day}`);
+        const age = currentDate.getFullYear() - birthDate.getFullYear();
+
+        // Create a new FormData object
+        const formDataToSend = new FormData();
+        formDataToSend.append('age', age.toString());
+        formDataToSend.append('gender', formData.gender_identity);
+        formDataToSend.append('career', formData.salary);
+        formDataToSend.append('education', formData.degree);
+        console.log(formDataToSend);
+
+        // Make the POST request
+        // TODO get user id
+        try {
+            const response = await fetch('http://127.0.0.1:5000/onboarding/40', {
+                method: 'PUT',
+                body: formDataToSend,
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+
+            if (response.ok) {
+                // Redirect to a success page or another route
+                history.push('/dashboard');
+            } else {
+                // Handle error
+                console.error('Error submitting form data');
+            }
+        } catch (error) {
+            console.error('Error submitting form data', error);
+        }
     }
 
     const handleChange = (e) => {
-        const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value
-        const name = e.target.name
+        const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+        const name = e.target.name;
 
         setFormData((prevState) => ({
             ...prevState,
             [name]: value
-        }))
+        }));
     }
-
-    console.log(formData)
 
     return (<>
         <Nav
@@ -115,14 +152,6 @@ const OnBoarding = () => {
                         <label htmlFor="more-gender-identity">More</label>
                     </div>
 
-                    <label htmlFor="show_gender">Show gender on my profile</label>
-                    <input
-                        id="show_gender"
-                        type="checkbox"
-                        name="show_gender"
-                        onChange={handleChange}
-                        checked={formData.show_gender}/>
-
                     <label>Show Me</label>
                     <div className="multiple-input-container">
                         <input
@@ -152,6 +181,37 @@ const OnBoarding = () => {
                             checked={formData.gender_interest === 'everyone'}/>
                         <label htmlFor="everyone-gender-interest">Everyone</label>
                     </div>
+                    <label htmlFor="degree">Degree</label>
+                    <select
+                        id="degree"
+                        name="degree"
+                        required={true}
+                        value={formData.degree}
+                        onChange={handleChange}
+                    >
+                        <option value="">Select Degree</option>
+                        {degreeOptions.map((option, index) => (
+                            <option key={index} value={option}>
+                                {option}
+                            </option>
+                        ))}
+                    </select>
+
+                    <label htmlFor="salary">Salary</label>
+                    <select
+                        id="salary"
+                        name="salary"
+                        required={true}
+                        value={formData.salary}
+                        onChange={handleChange}
+                    >
+                        <option value="">Select Salary Range</option>
+                        {salaryOptions.map((option, index) => (
+                            <option key={index} value={option}>
+                                {option}
+                            </option>
+                        ))}
+                    </select>
                     <label htmlFor="about">About me</label>
                     <input
                         id="about"
@@ -165,9 +225,8 @@ const OnBoarding = () => {
                     <input type="submit"/>
                 </section>
 
-
                 <section>
-                    <label htmlFor="about">Profile Picture</label>
+                    <label htmlFor="profile_picture">Profile Picture</label>
                     <input
                         type="url"
                         name="url"
@@ -179,9 +238,7 @@ const OnBoarding = () => {
                         <img src={formData.url} alt="profile pic preview"/>
                     </div>
                 </section>
-
             </form>
-
         </div>
     </>)
 }
