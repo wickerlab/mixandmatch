@@ -16,8 +16,36 @@ const AuthModal = ({setShowModal, isSignUp}) =>{
 
     let navigate = useNavigate()
 
+
     const handleClick =()=>{
         setShowModal(false)
+    }
+
+    const handleTest =()=>{
+        fetchMatches();
+    }
+
+    async function fetchMatches() {
+        try {
+
+            // const authToken = ''; // Replace with your actual authentication token
+            const axiosWithCookies = axios.create({
+                withCredentials: true
+            });
+
+            const response = await axiosWithCookies.get("http://127.0.0.1:5000/matches", {
+                headers:{
+                }
+
+            });
+
+            console.log(response);
+
+            console.log(response.data.recommended_users);
+
+        } catch (error) {
+            console.error("Error fetching matches:", error);
+        }
     }
 
     const handleSubmit = async (e) => {
@@ -38,12 +66,15 @@ const AuthModal = ({setShowModal, isSignUp}) =>{
                 const response = await axios.post('http://127.0.0.1:5000/signup', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
-                    }
+                    },
+                    withCredentials: true
                 });
 
-                setCookie('Email', response.data.email);
-                setCookie('userId', response.data.userId);
-                setCookie('AuthToken', response.data.token);
+                console.log(response.headers.get("Set-Cookie"));
+
+                // setCookie('Email', response.data.email);
+                // setCookie('userId', response.data.userId);
+                // setCookie('AuthToken', response.data.token);
 
                 const success = response.status === 201;
                 if (success) {
@@ -57,17 +88,15 @@ const AuthModal = ({setShowModal, isSignUp}) =>{
                 const response = await axios.post('http://127.0.0.1:5000/login', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
-                    }
+                    },
+                    withCredentials: true
                 });
 
 
-                setCookie('Email', response.data.email);
-                setCookie('userId', response.data.userId);
-                setCookie('AuthToken', response.data.token);
-
                 const success = response.status === 200;
                 if (success) {
-                    navigate('/dashboard');
+                    console.log(response.headers.get("Set-Cookie"));
+                    // navigate('/dashboard');
                 }
             }
 
@@ -123,6 +152,9 @@ const AuthModal = ({setShowModal, isSignUp}) =>{
                 <input className="secondary-button" type="submit"/>
                 <button className="secondary-button" type="button" onClick={handleModeToggle}>
                     {isSignUpMode ? 'Log In' : 'Sign Up'}
+                </button>
+                <button className="secondary-button" type="button" onClick={handleTest}>
+                    Test
                 </button>
                 <p>{error}</p>
             </form>

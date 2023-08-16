@@ -2,14 +2,18 @@ from flask import Flask, jsonify
 from flasgger import Swagger
 from user import UserAPI
 from match import MatchAPI
+from flask import session
+from flask.sessions import SecureCookieSessionInterface
+
 import os
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
 swagger = Swagger(app, template_file='openapi.yml')
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
 app.secret_key = os.urandom(24)  # temp authentication key
+session_cookie_serializer = SecureCookieSessionInterface().get_signing_serializer(app)
 
 
 @app.route('/')
@@ -17,6 +21,7 @@ def index():
     return jsonify(message='Welcome to the Dating App API!')
 
 
+@cross_origin(supports_credentials=True)
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -50,8 +55,12 @@ def apply_headers(response):
 
 
 def add_headers(response):
-    response.headers.add('Access-Control-Allow-Origin', '*')  # TODO: change this to only allow your frontend
-    response.headers['Access-Control-Allow-Origin'] = '*'
+    cookie = session_cookie_serializer.dumps(dict(session))
+    response.headers['Access-Control-Allow-Origin'] = 'http://localhost:5173'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type,Authorization'
+    response.headers['Access-Control-Allow-Credentials'] = 'true'
+    response.headers['Access-Control-Allow-Methods'] = 'GET,PUT,POST,DELETE,OPTIONS'
+    response.headers.add('Set-Cookie', f'session={cookie}; SameSite=None; Secure')
     return response
 
 
