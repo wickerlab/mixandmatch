@@ -3,17 +3,20 @@ import os
 from types import MethodType
 from functools import wraps
 from flasgger import Swagger, swag_from
-from flask import Flask, request, session, jsonify
+from flask import Flask, request, session, jsonify, send_file
 from flask.views import MethodView
 from flask_session import Session
 import mysql.connector
+
 from flask_cors import CORS, cross_origin
 from config import ApplicationConfig
 from flask.sessions import SecureCookieSessionInterface
 
-# import recommender
-# import match
-# import os
+from io import BytesIO
+import recommender
+import match
+import os
+
 
 app = Flask(__name__)
 app.config.from_object(ApplicationConfig)
@@ -220,6 +223,81 @@ class UserAPI(MethodView):
             user['username'] = chat_user['username']
 
         return jsonify({'chat_users': chat_users})
+
+    # @app.route('/photo/<int:user_id>', methods=['PUT'])
+    def upload_photo(user_id):
+
+        # if request.method == 'PUT':
+        photo_file = request.files['photo_data']
+
+        if not user_id:
+            return jsonify({'message': 'User ID is required'}), 400
+
+        if not photo_file:
+            return jsonify({'message': 'No photo file uploaded'}), 400
+
+        try:
+            # Read the photo data from the uploaded file as binary
+            photo_data = photo_file.read()
+
+            # Create a cursor object to execute SQL queries
+            cursor = cnx.cursor()
+
+            # Insert the photo data into the database as a BLOB
+            insert_query = "INSERT INTO photo (user_id, photo_data) VALUES (%s, %s)"
+            cursor.execute(insert_query, (user_id, photo_data))
+            cnx.commit()
+            cursor.close()
+
+            return jsonify({'message': 'Photo uploaded and stored successfully'}), 200
+
+        except mysql.connector.Error as err:
+            return jsonify({'message': f"Failed to upload photo: {err}"}), 500
+        # if request.method == 'GET':
+        #     try:
+        #         # Create a cursor object to execute SQL queries
+        #         cursor = cnx.cursor()
+
+        #         # Retrieve the photo data from the database
+        #         select_query = "SELECT photo_data FROM photo WHERE user_id = %s"
+        #         cursor.execute(select_query, (user_id,))
+        #         photo_data = cursor.fetchone()
+
+        #         if not photo_data:
+        #             return jsonify({'message': 'No photo found for the user'}), 404
+
+        #         # Convert the photo data to a file-like object
+        #         photo_file = BytesIO(photo_data[0])
+
+        #         # Return the photo file as the response
+        #         return send_file(photo_file, attachment_filename=f'user_{user_id}_photo.jpg', mimetype='image/jpeg')
+
+        #     except mysql.connector.Error as err:
+        #         return jsonify({'message': f"Failed to retrieve photo: {err}"}), 500
+
+    
+    # @app.route('/get-photo/<int:user_id>', methods=['GET'])
+    def get_photo(user_id):
+        try:
+            # Create a cursor object to execute SQL queries
+            cursor = cnx.cursor()
+
+            # Retrieve the photo data from the database
+            select_query = "SELECT photo_data FROM photo WHERE user_id = %s"
+            cursor.execute(select_query, (user_id,))
+            photo_data = cursor.fetchone()
+
+            if not photo_data:
+                return jsonify({'message': 'No photo found for the user'}), 404
+
+            # Convert the photo data to a file-like object
+            photo_file = BytesIO(photo_data[0])
+
+            # Return the photo file as the response
+            return send_file(photo_file, download_name=f'user_{user_id}_photo.jpg', mimetype='image/jpeg')
+
+        except mysql.connector.Error as err:
+            return jsonify({'message': f"Failed to retrieve photo: {err}"}), 500
 
     def delete(self, user_id):
         # delete a single user
