@@ -21,33 +21,6 @@ const AuthModal = ({setShowModal, isSignUp}) =>{
         setShowModal(false)
     }
 
-    const handleTest =()=>{
-        fetchMatches();
-    }
-
-    async function fetchMatches() {
-        try {
-
-            // const authToken = ''; // Replace with your actual authentication token
-            const axiosWithCookies = axios.create({
-                withCredentials: true
-            });
-
-            const response = await axiosWithCookies.get("http://127.0.0.1:5000/matches", {
-                headers:{
-                }
-
-            });
-
-            console.log(response);
-
-            console.log(response.data.recommended_users);
-
-        } catch (error) {
-            console.error("Error fetching matches:", error);
-        }
-    }
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -70,11 +43,6 @@ const AuthModal = ({setShowModal, isSignUp}) =>{
                     withCredentials: true
                 });
 
-                console.log(response.headers.get("Set-Cookie"));
-
-                // setCookie('Email', response.data.email);
-                // setCookie('userId', response.data.userId);
-                // setCookie('AuthToken', response.data.token);
 
                 const success = response.status === 201;
                 if (success) {
@@ -95,8 +63,7 @@ const AuthModal = ({setShowModal, isSignUp}) =>{
 
                 const success = response.status === 200;
                 if (success) {
-                    console.log(response.headers.get("Set-Cookie"));
-                    // navigate('/dashboard');
+                    navigate('/dashboard');
                 }
             }
 
@@ -127,7 +94,6 @@ const AuthModal = ({setShowModal, isSignUp}) =>{
                 { isSignUpMode && <input
                     type="username"
                     id="username"
-                    id="username"
                     name="username"
                     placeholder="username"
                     required={true}
@@ -152,9 +118,6 @@ const AuthModal = ({setShowModal, isSignUp}) =>{
                 <input className="secondary-button" type="submit"/>
                 <button className="secondary-button" type="button" onClick={handleModeToggle}>
                     {isSignUpMode ? 'Log In' : 'Sign Up'}
-                </button>
-                <button className="secondary-button" type="button" onClick={handleTest}>
-                    Test
                 </button>
                 <p>{error}</p>
             </form>

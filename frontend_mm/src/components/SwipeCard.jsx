@@ -8,9 +8,9 @@ const SwipingCard = React.forwardRef(({ character, handleSwipe, handleCardLeftSc
         <TinderCard
             ref={ref}
             className='swipe'
-            key={character.name}
+            key={character.id}
             preventSwipe={['up', 'down']}
-            onSwipe={(dir) => handleSwipe(dir, character.name)}
+            onSwipe={(dir) => handleSwipe(dir, character.name, character.id)}
             onCardLeftScreen={() => handleCardLeftScreen(character.name)}
         >
             <div className='card'>
