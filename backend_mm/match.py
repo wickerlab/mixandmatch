@@ -135,7 +135,12 @@ class MatchAPI(MethodView):
     @login_required
     def recommend_users():
         # Query the database to get 15 random users excluding session user
-        query = "SELECT * FROM user WHERE (id != " + str(session['user_id']['id']) + ") ORDER BY RAND() LIMIT 20"
+        query = "SELECT * FROM user WHERE (id != " + str(session['user_id']['id']) + ") " \
+              + "AND attr_age IS NOT NULL " \
+              + "AND attr_gender IS NOT NULL " \
+              + "AND attr_career IS NOT NULL " \
+              + "AND attr_education IS NOT NULL " \
+              + "ORDER BY RAND() LIMIT 20"
         cursor.execute(query)
         users = cursor.fetchall()
 
