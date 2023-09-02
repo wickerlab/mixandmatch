@@ -14,7 +14,8 @@ const AuthModal = ({setShowModal, isSignUp}) =>{
     const [isSignUpMode, setIsSignUpMode] = useState(isSignUp); // Track the mode
 
 
-    let navigate = useNavigate()
+    let navigate = useNavigate();
+
 
 
     const handleClick =()=>{
@@ -31,7 +32,7 @@ const AuthModal = ({setShowModal, isSignUp}) =>{
 
             const formData = new FormData();
 
-            if (isSignUpMode && (password.length < 8)) {
+            if (isSignUpMode) {
                 formData.append('email', email);
                 formData.append('username', username);
                 formData.append('password', password);
@@ -43,10 +44,13 @@ const AuthModal = ({setShowModal, isSignUp}) =>{
                     withCredentials: true
                 });
 
-
                 const success = response.status === 201;
                 if (success) {
-                    navigate('/onboarding');
+                    const responseBody = response.data; // Assuming the response is JSON
+                    const userIdMatch = responseBody.message.match(/user_id: (\d+)/);
+                    const userId = userIdMatch ? userIdMatch[1] : null;
+                    // Use React Router to navigate with state
+                    navigate('/onboarding', { state: { userId } });
                 }
             }
             else if(!isSignUpMode){
@@ -65,6 +69,8 @@ const AuthModal = ({setShowModal, isSignUp}) =>{
                 if (success) {
                     navigate('/dashboard');
                 }
+            }else{
+                console.log("unknown error");
             }
 
         } catch (error) {

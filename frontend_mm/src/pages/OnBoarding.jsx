@@ -1,11 +1,16 @@
-import {useState} from "react";
+import React, { useState, useEffect } from "react";
 import Nav from "../components/Nav.jsx";
 import "../css/pages/OnBoarding.css";
+import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const OnBoarding = () => {
-
     const degreeOptions = ["BACHELORS", "MASTERS", "DOCTORAL", "DIPLOMA"];
     const salaryOptions = ["Under $15,000", "$15,000 - $30,000", "$30,000 - $50,000", "Above $50,000"];
+
+    const navigate = useNavigate();
+    const location = useLocation();
+    const userId = location.state ? location.state.userId : null;
 
     const [formData, setFormData] = useState({
         user_id: '',
@@ -16,14 +21,37 @@ const OnBoarding = () => {
         gender_identity: "woman",
         gender_interest: 'man',
         degree: '',
-        salary:'',
+        salary: '',
         url: '',
         about: '',
         matches: []
-    })
+    });
+
+    const [dateValidation, setDateValidation] = useState({
+        dobValid: true,
+        dobErrorMessage: ""
+    });
+
+    const validateDate = (year, month, day) => {
+        const currentDate = new Date();
+        const inputDate = new Date(`${day}-${month}-${year}`);
+
+        if (year < 1900 || inputDate > currentDate) {
+            setDateValidation({
+                dobValid: false,
+                dobErrorMessage: "Invalid date of birth"
+            });
+        } else {
+            setDateValidation({
+                dobValid: true,
+                dobErrorMessage: ""
+            });
+        }
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
 
         // Calculate age from date of birth
         const currentDate = new Date();
@@ -41,7 +69,15 @@ const OnBoarding = () => {
         // Make the POST request
         // TODO get user id
         try {
-            const response = await fetch('http://127.0.0.1:5000/onboarding/40', {
+
+            console.log(userId);
+
+            if (!userId) {
+                console.error('User ID not found');
+                return;
+            }
+
+            const response = await fetch(`http://127.0.0.1:5000/onboarding/${userId}`, {
                 method: 'PUT',
                 body: formDataToSend,
                 headers: {
@@ -51,7 +87,7 @@ const OnBoarding = () => {
 
             if (response.ok) {
                 // Redirect to a success page or another route
-                history.push('/dashboard');
+                navigate('/dashboard');
             } else {
                 // Handle error
                 console.error('Error submitting form data');
@@ -101,7 +137,9 @@ const OnBoarding = () => {
                             placeholder="DD"
                             required={true}
                             value={formData.dob_day}
-                            onChange={handleChange}/>
+                            onChange={handleChange}
+                            onBlur={() => validateDate(formData.dob_year, formData.dob_month, formData.dob_day)}
+                        />
 
                         <input
                             id="dob_month"
@@ -110,7 +148,9 @@ const OnBoarding = () => {
                             placeholder="MM"
                             required={true}
                             value={formData.dob_month}
-                            onChange={handleChange}/>
+                            onChange={handleChange}
+                            onBlur={() => validateDate(formData.dob_year, formData.dob_month, formData.dob_day)}
+                        />
 
                         <input
                             id="dob_year"
@@ -119,8 +159,12 @@ const OnBoarding = () => {
                             placeholder="YY"
                             required={true}
                             value={formData.dob_year}
-                            onChange={handleChange}/>
+                            onChange={handleChange}
+                            onBlur={() => validateDate(formData.dob_year, formData.dob_month, formData.dob_day)}
+                        />
                     </div>
+                    {!dateValidation.dobValid && <p className="error-message">{dateValidation.dobErrorMessage}</p>}
+
 
                     <label>Gender</label>
                     <div className="multiple-input-container">
