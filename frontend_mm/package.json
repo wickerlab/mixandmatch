@@ -6,7 +6,8 @@
   "scripts": {
     "start:frontend": "vite",
     "build": "node_modules/.bin/vite build",
-    "preview": "node_modules/.bin/vite preview"
+    "preview": "node_modules/.bin/vite preview",
+    "postbuild": "mv dist /var/www/mixandmatch.wickerlab.org/html"
   },
   "dependencies": {
     "@minchat/react-chat-ui": "^0.4.3",
