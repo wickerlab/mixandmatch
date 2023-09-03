@@ -2,7 +2,7 @@ module.exports = {
     apps: [
         {
             name: 'mixandmatch',
-            script: 'pm2.js', // Use the new script
+            script: 'start-vite.js', // Use the custom script
             autorestart: true,
             watch: false,
             env: {

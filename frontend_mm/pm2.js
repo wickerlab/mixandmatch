@@ -1,9 +1,10 @@
-const { spawn } = require('child_process');
+import { createServer } from 'vite';
 
-const startVite = spawn('node_modules/.bin/vite', ['start:frontend'], {
-    stdio: 'inherit',
-});
+async function start() {
+    const server = await createServer();
+    await server.listen();
+}
 
-startVite.on('close', (code) => {
-    console.log(`Vite process exited with code ${code}`);
+start().catch((error) => {
+    console.error('Error starting Vite:', error);
 });
