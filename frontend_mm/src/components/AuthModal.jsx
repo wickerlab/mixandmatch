@@ -50,7 +50,7 @@ const AuthModal = ({setShowModal, isSignUp}) =>{
                     const userIdMatch = responseBody.message.match(/user_id: (\d+)/);
                     const userId = userIdMatch ? userIdMatch[1] : null;
                     // Use React Router to navigate with state
-                    navigate('/onboarding', { state: { userId } });
+                    navigate('onboarding', { state: { userId } });
                 }
             }
             else if(!isSignUpMode){
@@ -67,7 +67,7 @@ const AuthModal = ({setShowModal, isSignUp}) =>{
 
                 const success = response.status === 200;
                 if (success) {
-                    navigate('/dashboard');
+                    navigate('dashboard');
                 }
             }else{
                 console.log("unknown error");

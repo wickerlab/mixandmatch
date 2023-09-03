@@ -70,7 +70,7 @@ const OnBoarding = () => {
 
             if (response.ok) {
                 // Redirect to a success page or another route
-                navigate('/dashboard');
+                navigate('dashboard');
             } else {
                 // Handle error
                 console.error('Error submitting form data');
