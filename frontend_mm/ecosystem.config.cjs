@@ -1,9 +1,8 @@
-export default {
+module.exports = {
     apps: [
         {
             name: 'mixandmatch',
-            script: 'node_modules/.bin/vite',
-            args: 'start:frontend',
+            script: 'pm2.js', // Use the new script
             autorestart: true,
             watch: false,
             env: {
