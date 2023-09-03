@@ -109,11 +109,12 @@ class UserAPI(MethodView):
         # update a user's attributes
         age = request.form.get('age')
         gender = request.form.get('gender')
-        career = request.form.get('career')  # we're gonna have 4 main types prob lmao
+        career = request.form.get('career')
         education = request.form.get('education')
+        photo = request.form.get('photo')
 
-        update_query = "UPDATE user SET attr_age = %s, attr_gender = %s, attr_career = %s, attr_education = %s WHERE id = %s"
-        user_data = (age, gender, career, education, user_id)
+        update_query = "UPDATE user SET attr_age = %s, attr_gender = %s, attr_career = %s, attr_education = %s, photo = %s WHERE id = %s"
+        user_data = (age, gender, career, education, photo, user_id)
         cursor.execute(update_query, user_data)
         cnx.commit()
 
