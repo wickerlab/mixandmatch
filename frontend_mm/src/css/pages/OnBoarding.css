@@ -90,3 +90,9 @@
 .onboarding form .photo-container img {
     width: 100%;
 }
+
+.onboarding .error-message {
+    color: red;
+    font-size: 14px; /* You can adjust the font size as needed */
+    margin-top: 5px; /* Optional margin to separate the error message from the input field */
+}

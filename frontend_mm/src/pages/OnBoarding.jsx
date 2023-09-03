@@ -15,11 +15,8 @@ const OnBoarding = () => {
     const [formData, setFormData] = useState({
         user_id: '',
         first_name: '',
-        dob_day: '',
-        dob_month: '',
-        dob_year: '',
+        age: '',
         gender_identity: "woman",
-        gender_interest: 'man',
         degree: '',
         salary: '',
         url: '',
@@ -27,24 +24,21 @@ const OnBoarding = () => {
         matches: []
     });
 
-    const [dateValidation, setDateValidation] = useState({
-        dobValid: true,
-        dobErrorMessage: ""
+    const [ageValidation, setAgeValidation] = useState({
+        ageValid: true,
+        ageErrorMessage: ""
     });
 
-    const validateDate = (year, month, day) => {
-        const currentDate = new Date();
-        const inputDate = new Date(`${day}-${month}-${year}`);
-
-        if (year < 1900 || inputDate > currentDate) {
-            setDateValidation({
-                dobValid: false,
-                dobErrorMessage: "Invalid date of birth"
+    const validateAge = (age) => {
+        if (age < 18 || age > 100) {
+            setAgeValidation({
+                ageValid: false,
+                ageErrorMessage: "Age must be between 18 and 100"
             });
         } else {
-            setDateValidation({
-                dobValid: true,
-                dobErrorMessage: ""
+            setAgeValidation({
+                ageValid: true,
+                ageErrorMessage: ""
             });
         }
     }
@@ -52,26 +46,15 @@ const OnBoarding = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-
-        // Calculate age from date of birth
-        const currentDate = new Date();
-        const birthDate = new Date(`${formData.dob_year}-${formData.dob_month}-${formData.dob_day}`);
-        const age = currentDate.getFullYear() - birthDate.getFullYear();
-
-        // Create a new FormData object
         const formDataToSend = new FormData();
-        formDataToSend.append('age', age.toString());
+        formDataToSend.append('age', formData.age.toString());
         formDataToSend.append('gender', formData.gender_identity);
         formDataToSend.append('career', formData.salary);
         formDataToSend.append('education', formData.degree);
-        console.log(formDataToSend);
+        formDataToSend.append('profile', formData.url);
 
         // Make the POST request
-        // TODO get user id
         try {
-
-            console.log(userId);
-
             if (!userId) {
                 console.error('User ID not found');
                 return;
@@ -101,11 +84,17 @@ const OnBoarding = () => {
         const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
         const name = e.target.name;
 
+        if (name === 'age') {
+            const age = parseInt(value, 10);
+            validateAge(age);
+        }
+
         setFormData((prevState) => ({
             ...prevState,
             [name]: value
         }));
     }
+
 
     return (<>
         <Nav
@@ -128,43 +117,17 @@ const OnBoarding = () => {
                         value={formData.first_name}
                         onChange={handleChange}/>
 
-                    <label>Birthday</label>
-                    <div className="multiple-input-container">
-                        <input
-                            id="dob_day"
-                            type="number"
-                            name="dob_day"
-                            placeholder="DD"
-                            required={true}
-                            value={formData.dob_day}
-                            onChange={handleChange}
-                            onBlur={() => validateDate(formData.dob_year, formData.dob_month, formData.dob_day)}
-                        />
-
-                        <input
-                            id="dob_month"
-                            type="number"
-                            name="dob_month"
-                            placeholder="MM"
-                            required={true}
-                            value={formData.dob_month}
-                            onChange={handleChange}
-                            onBlur={() => validateDate(formData.dob_year, formData.dob_month, formData.dob_day)}
-                        />
-
-                        <input
-                            id="dob_year"
-                            type="number"
-                            name="dob_year"
-                            placeholder="YY"
-                            required={true}
-                            value={formData.dob_year}
-                            onChange={handleChange}
-                            onBlur={() => validateDate(formData.dob_year, formData.dob_month, formData.dob_day)}
-                        />
-                    </div>
-                    {!dateValidation.dobValid && <p className="error-message">{dateValidation.dobErrorMessage}</p>}
-
+                    <label htmlFor="Age">Age</label>
+                    {!ageValidation.ageValid && <p className="error-message">{ageValidation.ageErrorMessage}</p>}
+                    <input
+                        id="age"
+                        type="number"
+                        name="age"
+                        placeholder="Age"
+                        required={true}
+                        value={formData.age}
+                        onChange={handleChange}
+                    />
 
                     <label>Gender</label>
                     <div className="multiple-input-container">
@@ -196,35 +159,6 @@ const OnBoarding = () => {
                         <label htmlFor="more-gender-identity">More</label>
                     </div>
 
-                    <label>Show Me</label>
-                    <div className="multiple-input-container">
-                        <input
-                            id="man-gender-interest"
-                            type="radio"
-                            name="gender_interest"
-                            value={"man"}
-                            onChange={handleChange}
-                            checked={formData.gender_interest === 'man'}/>
-                        <label htmlFor="man-gender-interest">Man</label>
-
-                        <input
-                            id="woman-gender-interest"
-                            type="radio"
-                            name="gender_interest"
-                            value={"woman"}
-                            onChange={handleChange}
-                            checked={formData.gender_interest === 'woman'}/>
-                        <label htmlFor="woman-gender-interest">Woman</label>
-
-                        <input
-                            id="everyone-gender-interest"
-                            type="radio"
-                            name="gender_interest"
-                            value={"everyone"}
-                            onChange={handleChange}
-                            checked={formData.gender_interest === 'everyone'}/>
-                        <label htmlFor="everyone-gender-interest">Everyone</label>
-                    </div>
                     <label htmlFor="degree">Degree</label>
                     <select
                         id="degree"
