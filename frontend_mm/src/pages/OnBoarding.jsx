@@ -3,10 +3,18 @@ import Nav from "../components/Nav.jsx";
 import "../css/pages/OnBoarding.css";
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 
 const OnBoarding = () => {
     const degreeOptions = ["BACHELORS", "MASTERS", "DOCTORAL", "DIPLOMA"];
     const salaryOptions = ["Under $15,000", "$15,000 - $30,000", "$30,000 - $50,000", "Above $50,000"];
+
+    const salaryMapping = {
+        "Under $15,000": "UNDER15",
+        "$15,000 - $30,000": "15TO30",
+        "$30,000 - $50,000": "30TO50",
+        "Above $50,000": "OVER50"
+    };
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -20,8 +28,7 @@ const OnBoarding = () => {
         degree: '',
         salary: '',
         url: '',
-        about: '',
-        matches: []
+        about: ''
     });
 
     const [ageValidation, setAgeValidation] = useState({
@@ -47,7 +54,7 @@ const OnBoarding = () => {
         e.preventDefault();
 
         const formDataToSend = new FormData();
-        formDataToSend.append('age', formData.age.toString());
+        formDataToSend.append('age', formData.age);
         formDataToSend.append('gender', formData.gender_identity);
         formDataToSend.append('career', formData.salary);
         formDataToSend.append('education', formData.degree);
@@ -60,17 +67,16 @@ const OnBoarding = () => {
                 return;
             }
 
-            const response = await fetch(`http://127.0.0.1:5000/onboarding/${userId}`, {
-                method: 'PUT',
-                body: formDataToSend,
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
+             const response = await axios.post(`http://127.0.0.1:5000/onboarding/${userId}`, formDataToSend,{
+                 headers: {
+                     'Content-Type': 'multipart/form-data'
+                 },
+                 withCredentials: true
             });
 
-            if (response.ok) {
-                // Redirect to a success page or another route
-                navigate('dashboard');
+            const success = response.status === 200;
+            if (success) {
+                navigate('/dashboard');
             } else {
                 // Handle error
                 console.error('Error submitting form data');
@@ -89,10 +95,20 @@ const OnBoarding = () => {
             validateAge(age);
         }
 
-        setFormData((prevState) => ({
-            ...prevState,
-            [name]: value
-        }));
+        if (name === 'salary') {
+            // Map the selected salary option to the desired format
+            const mappedSalary = salaryMapping[value] || '';
+            setFormData((prevState) => ({
+                ...prevState,
+                [name]: mappedSalary
+            }));
+        } else {
+            setFormData((prevState) => ({
+                ...prevState,
+                [name]: value
+            }));
+        }
+        console.log(formData)
     }
 
 
@@ -112,7 +128,7 @@ const OnBoarding = () => {
                         id="first_name"
                         type="text"
                         name="first_name"
-                        placeholder="first_name"
+                        placeholder="First Name"
                         required={true}
                         value={formData.first_name}
                         onChange={handleChange}/>
@@ -149,14 +165,6 @@ const OnBoarding = () => {
                             checked={formData.gender_identity === 'woman'}/>
                         <label htmlFor="woman-gender-identity">Woman</label>
 
-                        <input
-                            id="more-gender-identity"
-                            type="radio"
-                            name="gender_identity"
-                            value={"more"}
-                            onChange={handleChange}
-                            checked={formData.gender_identity === 'more'}/>
-                        <label htmlFor="more-gender-identity">More</label>
                     </div>
 
                     <label htmlFor="degree">Degree</label>
@@ -180,7 +188,7 @@ const OnBoarding = () => {
                         id="salary"
                         name="salary"
                         required={true}
-                        value={formData.salary}
+                        value={formData.salary in salaryMapping ? formData.salary : Object.keys(salaryMapping).find(key => salaryMapping[key] === formData.salary)}
                         onChange={handleChange}
                     >
                         <option value="">Select Salary Range</option>
@@ -213,7 +221,7 @@ const OnBoarding = () => {
                         required={true}
                     />
                     <div className="photo-container">
-                        <img src={formData.url} alt="profile pic preview"/>
+                        <img src={formData.url}/>
                     </div>
                 </section>
             </form>

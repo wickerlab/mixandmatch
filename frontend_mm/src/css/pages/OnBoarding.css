@@ -1,5 +1,5 @@
 .onboarding {
-    border-top: solid 1px rgb(154, 154, 154);
+    border-top: solid 1px rgb(213, 213, 213);
 }
 
 .onboarding form {
@@ -23,12 +23,6 @@
     border-radius: 10px;
 }
 
-.onboarding form input::-webkit-inner-spin-button,
-.onboarding form input::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
 .onboarding form label {
     margin: 10px 0;
 }
@@ -38,9 +32,12 @@
     flex-direction: row;
 }
 
-.onboarding form .multiple-input-container :hover {
-    border: solid 2px rgb(159, 36, 27);
+.onboarding form input::-webkit-outer-spin-button,
+.onboarding form input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
+
 .onboarding form .multiple-input-container input {
     margin-right: 10px;
 }
@@ -66,29 +63,29 @@
     /*TODO add arrow*/
 }
 
-.onboarding form input[type="radio"] {
+
+.onboarding form input[type=radio] {
     display: none;
 }
 
-.onboarding form input[type="number"] {
+.onboarding form input[type=number] {
     width: 10%;
-    -moz-appearance: textfield;
 }
 
-.onboarding form input[type="radio"]:checked + label {
-    border: solid 2px rgb(221, 39, 22);
+.onboarding form input[type=radio]:checked + label {
+    border: solid 2px rgb(173, 26, 10);
 }
 
-.onboarding form input[type="submit"]:hover {
+.onboarding form input[type=submit]:hover {
     background-color: rgb(235, 235, 235);
 }
 
-.onboarding form input[type="submit"]:active {
-    background-color: rgb(226, 115, 155);
+.onboarding form input[type=submit]:active {
+    background-color: rgb(226, 115, 115);
 }
 
 .onboarding form .photo-container img {
-    width: 100%;
+    width: 100%
 }
 
 .onboarding .error-message {

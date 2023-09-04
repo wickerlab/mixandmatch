@@ -64,7 +64,6 @@ const AuthModal = ({setShowModal, isSignUp}) =>{
                     withCredentials: true
                 });
 
-
                 const success = response.status === 200;
                 if (success) {
                     navigate('dashboard');
@@ -121,7 +120,7 @@ const AuthModal = ({setShowModal, isSignUp}) =>{
                     required={true}
                     onChange={e => setConfirmPassword(e.target.value)}
                 />}
-                <input className="secondary-button" type="submit"/>
+                <input className="primary-button" type="submit"/>
                 <button className="secondary-button" type="button" onClick={handleModeToggle}>
                     {isSignUpMode ? 'Log In' : 'Sign Up'}
                 </button>
