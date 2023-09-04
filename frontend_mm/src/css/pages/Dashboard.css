@@ -73,6 +73,7 @@
     user-select: none;
 }
 
+
 .info-half h3 {
     background: linear-gradient(45deg, #ffffff, #e8ccff);
     -webkit-background-clip: text;
@@ -88,7 +89,26 @@
     -webkit-text-fill-color: transparent;
     margin-top: 0;
     margin-bottom: 10px;
+}
+
+.info-about{
     font-size: x-large;
+}
+
+.info-attr-age{
+    font-size: large;
+}
+
+.info-attr-gender{
+    font-size: large;
+}
+
+.info-attr-career{
+    font-size: large;
+}
+
+.info-attr-education{
+    font-size: large;
 }
 
 .dashboard .swipe-info {

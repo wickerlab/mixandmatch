@@ -58,9 +58,15 @@ const Dashboard = () => {
     };
 
     const getCharacterData = () => {
+        console.log(matches);
         return matches.map((user) => ({
             id: user.id,
             name: user.username,
+            age: user.attr_age,
+            gender: user.attr_gender,
+            career: user.attr_career,
+            education: user.attr_education,
+            //TODO change this to the actual url
             url: `https://cataas.com/cat/says/${user.username}`
         }));
     };

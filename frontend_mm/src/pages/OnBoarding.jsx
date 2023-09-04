@@ -51,7 +51,7 @@ const OnBoarding = () => {
         formDataToSend.append('gender', formData.gender_identity);
         formDataToSend.append('career', formData.salary);
         formDataToSend.append('education', formData.degree);
-        formDataToSend.append('profile', formData.url);
+        formDataToSend.append('photo', formData.url);
 
         // Make the POST request
         try {

@@ -20,9 +20,11 @@ const SwipingCard = React.forwardRef(({ character, handleSwipe, handleCardLeftSc
                 <div className='info-half'>
                     <div className='info-content'>
                         <h3 className='info-title'>{character.name}</h3>
-                        <p>Hey, I'm a cat! I enjoy hiking and photography.</p>
-                        {/*<p>Age: {character.age}</p>*/}
-                        {/*<p>Location: {character.location}</p>*/}
+                        <p className='info-about'>Hey, I'm a cat! I enjoy hiking and photography.</p>
+                        <p className='info-attr-age'>Age: {character.age}</p>
+                        <p className='info-attr-gender'>Gender : {character.gender}</p>
+                        <p className='info-attr-career'>Career: {character.career}</p>
+                        <p className='info-attr-education'>Education: {character.education}</p>
                     </div>
                     <div className="button-container">
                         <button className="dislike-button" onClick={() => swipe('left')}>
