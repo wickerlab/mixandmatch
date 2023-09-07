@@ -6,6 +6,7 @@ import axios from "axios";
 const Dashboard = () => {
     const [matches, setMatches] = useState([]);
     const [hasFetchedMatches, setHasFetchedMatches] = useState(false);
+    const [allMatchesSwiped, setAllMatchesSwiped] = useState(false);
 
     useEffect(() => {
         if (!hasFetchedMatches) {
@@ -18,11 +19,14 @@ const Dashboard = () => {
     }, [hasFetchedMatches]);
 
     useEffect(() => {
-        if (matches.length === 0 && hasFetchedMatches) {
+        if (matches.length === 1 && hasFetchedMatches) {
             // Fetch more users when all users have been swiped
-            fetchMatches().then(() => console.log("Fetched more matches"));
+            fetchMatches().then(() => {
+                console.log("Fetched more matches");
+                setAllMatchesSwiped(false);
+            });
         }
-    }, [matches]);
+    }, [matches, hasFetchedMatches]);
 
     const fetchMatches = async () => {
         try {
@@ -33,7 +37,9 @@ const Dashboard = () => {
             const response = await axiosWithCookies.get("http://127.0.0.1:5000/matches");
             const newMatches = response.data.recommended_users;
 
-            setMatches((prevMatches) => [...prevMatches, ...newMatches]);
+            setMatches(newMatches);
+
+            // setMatches((prevMatches) => [...prevMatches, ...newMatches]);
 
             // Reset the flag after fetching matches
             setHasFetchedMatches(false);
@@ -63,35 +69,38 @@ const Dashboard = () => {
             formData.append('match_time', fakeTimeStamp);
 
             //TODO change this to the actual url
-            const response = await axios.post(`http://127.0.0.1:5000/`, formData, {
+            const response = await axios.post(`http://127.0.0.1:5000/matches/${userId}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 },
                 withCredentials: true
             });
 
-            console.log(response.data);
 
-            if (matches.length === 0) {
-                fetchMatches().then(() => console.log("Fetched more matches"));
+
+            console.log(response.data);
+            console.log("Current Matches: " + matches.length);
+            console.log(matches);
+            console.log("userId: " + userId);
+
+            // Check if all matches have been swiped
+            if (matches.length === 1) {
+                // Fetch more matches if necessary
+                await fetchMatches();
+                console.log("Fetched more matches");
             }
         } catch (error) {
             console.error("Error handling swipe:", error);
         }
     };
 
-    const handleCardLeftScreen = (name) => {
-        console.log(name + ' left the screen!');
+    const handleCardLeftScreen = (userId) => {
+        console.log(`User ${name} left the screen!`);
+        const updatedMatches = matches.filter(match => match.id !== userId);
+        setMatches(updatedMatches);
     };
 
     const swipe = async (dir, index) => {
-        console.log("reached swipe function", matches[index].id);
-        try {
-            await handleSwipe(dir, matches[index].username, matches[index].id);
-        }
-        catch(error) {
-            console.error("Error in swipe:", error);
-        };
         childRefs[index].current.swipe(dir);
     };
 
@@ -159,9 +168,6 @@ const Dashboard = () => {
                         swipe={(dir) => swipe(dir, index)}
                     />
                 ))}
-                <div className="swipe-info">
-                    {/*{lastDirection ? <p>You swiped {lastDirection}</p> : null}*/}
-                </div>
             </div>
         </div>
     );

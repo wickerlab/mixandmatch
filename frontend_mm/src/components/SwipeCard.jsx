@@ -20,7 +20,7 @@ const SwipingCard = React.forwardRef(({ character, handleSwipe, handleCardLeftSc
             key={character.id}
             preventSwipe={['up', 'down']}
             onSwipe={(dir) => handleSwipe(dir, character.name, character.id)}
-            onCardLeftScreen={() => handleCardLeftScreen(character.name)}
+            onCardLeftScreen={() => handleCardLeftScreen(character.id)}
         >
             <div className='card'>
                 <div className='image-half'>
