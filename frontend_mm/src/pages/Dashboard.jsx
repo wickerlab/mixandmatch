@@ -2,11 +2,14 @@ import React, { useEffect, useState } from "react";
 import SwipingCard from "../components/SwipeCard.jsx";
 import MatchesDisplay from "../components/MatchesDisplay.jsx";
 import axios from "axios";
+import {Loading} from "@minchat/react-chat-ui";
 
 const Dashboard = () => {
     const [matches, setMatches] = useState([]);
     const [hasFetchedMatches, setHasFetchedMatches] = useState(false);
     const [allMatchesSwiped, setAllMatchesSwiped] = useState(false);
+    const [isLoading, setIsLoading] = useState(true); // Initialize as true to show loading initially
+
 
     useEffect(() => {
         if (!hasFetchedMatches) {
@@ -14,6 +17,7 @@ const Dashboard = () => {
             fetchMatches().then(() => {
                 console.log("Fetched matches user effect triggered");
                 setHasFetchedMatches(true);
+                setIsLoading(false);
             });
         }
     }, [hasFetchedMatches]);
@@ -24,6 +28,7 @@ const Dashboard = () => {
             fetchMatches().then(() => {
                 console.log("Fetched more matches");
                 setAllMatchesSwiped(false);
+                setIsLoading(false);
             });
         }
     }, [matches, hasFetchedMatches]);
@@ -38,8 +43,6 @@ const Dashboard = () => {
             const newMatches = response.data.recommended_users;
 
             setMatches(newMatches);
-
-            // setMatches((prevMatches) => [...prevMatches, ...newMatches]);
 
             // Reset the flag after fetching matches
             setHasFetchedMatches(false);
@@ -122,7 +125,7 @@ const Dashboard = () => {
                 career: user.attr_career,
                 education: user.attr_education,
                 // TODO: Change this to the actual URL
-                url: `https://cataas.com/cat/says/${user.username}`
+                url: user.photo,
             }));
     };
 
@@ -158,16 +161,20 @@ const Dashboard = () => {
         <div className="dashboard">
             <MatchesDisplay matches={mockUser.matches} setClickedUser={mockUser} />
             <div className="swipe-container">
-                {getCharacterData().map((character, index) => (
-                    <SwipingCard
-                        key={character.id}
-                        character={character}
-                        handleSwipe={handleSwipe}
-                        handleCardLeftScreen={handleCardLeftScreen}
-                        ref={childRefs[index]}
-                        swipe={(dir) => swipe(dir, index)}
-                    />
-                ))}
+                {isLoading ? ( // Conditional rendering for loading SwipingCard section
+                    <Loading />
+                ) : (
+                    getCharacterData().map((character, index) => (
+                        <SwipingCard
+                            key={character.id}
+                            character={character}
+                            handleSwipe={handleSwipe}
+                            handleCardLeftScreen={handleCardLeftScreen}
+                            ref={childRefs[index]}
+                            swipe={(dir) => swipe(dir, index)}
+                        />
+                    ))
+                )}
             </div>
         </div>
     );
