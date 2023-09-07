@@ -57,7 +57,7 @@ const AuthModal = ({setShowModal, isSignUp}) =>{
                 formData.append('email', email);
                 formData.append('password', password);
 
-                const response = await axios.post('https://mixandmatch.wickerlab.org/api/login', formData, {
+                const response = await axios.post('http://127.0.0.1:5000/login', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     },

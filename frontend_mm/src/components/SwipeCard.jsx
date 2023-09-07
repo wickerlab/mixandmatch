@@ -4,6 +4,15 @@ import TinderCard from "react-tinder-card";
 import React from "react";
 
 const SwipingCard = React.forwardRef(({ character, handleSwipe, handleCardLeftScreen, swipe }, ref) => {
+
+    const handleDislikeButtonClick = () => {
+        swipe('left');
+    };
+
+    const handleLikeButtonClick = () => {
+        swipe('right');
+    };
+
     return (
         <TinderCard
             ref={ref}
@@ -27,10 +36,10 @@ const SwipingCard = React.forwardRef(({ character, handleSwipe, handleCardLeftSc
                         <p className='info-attr-education'>Education: {character.education}</p>
                     </div>
                     <div className="button-container">
-                        <button className="dislike-button" onClick={() => swipe('left')}>
+                        <button className="dislike-button" onClick={handleDislikeButtonClick}>
                             <img src="src/images/broken-heart.png" alt="Disike Button Image" className="dislike-button-image" />
                         </button>
-                        <button className="like-button" onClick={() => swipe('right')}>
+                        <button className="like-button" onClick={handleLikeButtonClick}>
                             <img src="src/images/heart.png" alt="Like Button Image" className="like-button-image" />
                         </button>
                     </div>

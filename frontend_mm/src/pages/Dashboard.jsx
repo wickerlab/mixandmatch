@@ -5,7 +5,24 @@ import axios from "axios";
 
 const Dashboard = () => {
     const [matches, setMatches] = useState([]);
-    const [lastDirection, setLastDirection] = useState();
+    const [hasFetchedMatches, setHasFetchedMatches] = useState(false);
+
+    useEffect(() => {
+        if (!hasFetchedMatches) {
+            // Fetch matches only once when the component mounts
+            fetchMatches().then(() => {
+                console.log("Fetched matches user effect triggered");
+                setHasFetchedMatches(true);
+            });
+        }
+    }, [hasFetchedMatches]);
+
+    useEffect(() => {
+        if (matches.length === 0 && hasFetchedMatches) {
+            // Fetch more users when all users have been swiped
+            fetchMatches().then(() => console.log("Fetched more matches"));
+        }
+    }, [matches]);
 
     const fetchMatches = async () => {
         try {
@@ -14,38 +31,53 @@ const Dashboard = () => {
             });
 
             const response = await axiosWithCookies.get("http://127.0.0.1:5000/matches");
-            setMatches(response.data.recommended_users);
+            const newMatches = response.data.recommended_users;
+
+            setMatches((prevMatches) => [...prevMatches, ...newMatches]);
+
+            // Reset the flag after fetching matches
+            setHasFetchedMatches(false);
         } catch (error) {
             console.error("Error fetching matches:", error);
         }
     };
 
-    useEffect(() => {
-        fetchMatches().then(r => console.log("Fetched matches"));
-    }, []);
-
     const handleSwipe = async (direction, nameToDelete, userId) => {
+        try {
+            if (!hasFetchedMatches) {
+                await fetchMatches();
+                setHasFetchedMatches(true);
+            }
 
-        const formData = new FormData();
-        const decision = direction === 'left' ? 'reject' : 'accept';
-        let fakeTimeStamp = 0.1;
+            const formData = new FormData();
+            const decision = direction === 'left' ? 'reject' : 'accept';
+            let fakeTimeStamp = 0.1;
 
-        formData.append('match_decision', decision);
-        //TODO delete this
-        formData.append('match_time', fakeTimeStamp);
+            console.log(userId);
+            if (userId === undefined) {
+                console.error("userId is undefined");
+            }
 
-        const response = await axios.post(`http://127.0.0.1:5000/matches/${userId}`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            },
-            withCredentials: true
-        });
+            formData.append('match_decision', decision);
+            // TODO delete this
+            formData.append('match_time', fakeTimeStamp);
 
-        console.log(response.headers.get("Set-Cookie"));
+            //TODO change this to the actual url
+            const response = await axios.post(`http://127.0.0.1:5000/`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+                withCredentials: true
+            });
 
+            console.log(response.data);
 
-        console.log('Removing: ' + nameToDelete);
-        setLastDirection(direction);
+            if (matches.length === 0) {
+                fetchMatches().then(() => console.log("Fetched more matches"));
+            }
+        } catch (error) {
+            console.error("Error handling swipe:", error);
+        }
     };
 
     const handleCardLeftScreen = (name) => {
@@ -53,23 +85,38 @@ const Dashboard = () => {
     };
 
     const swipe = async (dir, index) => {
-        console.log(matches);
-        await childRefs[index].current.swipe(dir);
+        console.log("reached swipe function", matches[index].id);
+        try {
+            await handleSwipe(dir, matches[index].username, matches[index].id);
+        }
+        catch(error) {
+            console.error("Error in swipe:", error);
+        };
+        childRefs[index].current.swipe(dir);
     };
 
     const getCharacterData = () => {
-        console.log(matches);
-        return matches.map((user) => ({
-            id: user.id,
-            name: user.username,
-            age: user.attr_age,
-            gender: user.attr_gender,
-            career: user.attr_career,
-            education: user.attr_education,
-            //TODO change this to the actual url
-            url: `https://cataas.com/cat/says/${user.username}`
-        }));
+        const uniqueIds = new Set();
+        return matches
+            .filter(user => {
+                if (uniqueIds.has(user.id)) {
+                    return false; // Skip users with duplicate IDs
+                }
+                uniqueIds.add(user.id); // Add the ID to the set to mark it as seen
+                return true; // Include users with unique IDs
+            })
+            .map((user) => ({
+                id: user.id,
+                name: user.username,
+                age: user.attr_age,
+                gender: user.attr_gender,
+                career: user.attr_career,
+                education: user.attr_education,
+                // TODO: Change this to the actual URL
+                url: `https://cataas.com/cat/says/${user.username}`
+            }));
     };
+
 
     const childRefs = matches.map(() => React.createRef());
 
