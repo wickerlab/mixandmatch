@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import "../css/components/MatchesDisplay.css";
+import {useNavigate} from "react-router-dom";
+import axios from "axios";
 
 const MatchesDisplay = ({ matches, setClickedUser }) => {
     const [sidebarVisible, setSidebarVisible] = useState(true);
+    let navigate = useNavigate();
 
     const handleIconClick = (userId) => {
         const currentPath = window.location.pathname;
@@ -20,8 +23,17 @@ const MatchesDisplay = ({ matches, setClickedUser }) => {
         }
     };
 
-    const handleHideSidebar = () => {
-        setSidebarVisible(false);
+    const handleLogout = async () => {
+        const axiosWithCookies = axios.create({
+            withCredentials: true
+        });
+
+        const response = await axiosWithCookies.get("http://127.0.0.1:5000/logout");
+        const success = response.status === 200;
+        if (success) {
+            navigate('/');
+        }
+
     };
 
     const handleShowSidebar = () => {
@@ -30,14 +42,8 @@ const MatchesDisplay = ({ matches, setClickedUser }) => {
 
     return (
         <div className="matches-display">
-            {!sidebarVisible && (
-                <button className="matches-button" onClick={handleShowSidebar}>
-                    SHOW
-                </button>
-            )}
-            <div className={`matches-list ${sidebarVisible ? "" : "hidden"}`}>
-                <button className="matches-button" onClick={handleHideSidebar}>
-                    HIDE
+                <button className="matches-button" onClick={handleLogout}>
+                    Logout
                 </button>
                 <div className="match-icons-container">
                     {matches.map((match) => (
@@ -54,7 +60,6 @@ const MatchesDisplay = ({ matches, setClickedUser }) => {
                         </div>
                     ))}
                 </div>
-            </div>
         </div>
     );
 };
