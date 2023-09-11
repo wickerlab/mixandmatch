@@ -1,8 +1,17 @@
-import MatchesDisplay from "../components/MatchesDisplay.jsx";
+import ChattingUserDisplay from "../components/ChattingUserDisplay.jsx";
 import React, {useState} from "react";
 import ChatContainer from "../components/chat/ChatContainer.jsx";
+import axios from "axios";
+import {useLocation} from "react-router-dom";
 
 const Chatting = ({ descendingOrderMessages }) => {
+
+    const location = useLocation();
+    const userId = location.state ? location.state.userId : null;
+    const chattingUser = location.state ? location.state.chattingUser : null;
+
+    console.log(userId);
+    console.log(chattingUser);
 
     //Mock user data delete later
     const user = {
@@ -53,9 +62,8 @@ const Chatting = ({ descendingOrderMessages }) => {
 
     return (
         <div className="dashboard">
-            <MatchesDisplay
-                matches={user.matches}
-                setClickedUser={setClickedUser}
+            <ChattingUserDisplay
+                chattingUser={chattingUser}
             />
             <ChatContainer user={user} clickedUser={clickedUser} setClickedUser={setClickedUser}/>
         </div>

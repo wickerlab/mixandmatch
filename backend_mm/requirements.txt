@@ -4,3 +4,4 @@ flask_session
 flask_cors
 redis
 mysql-connector-python
+websockets

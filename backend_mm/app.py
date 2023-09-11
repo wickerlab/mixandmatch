@@ -50,6 +50,10 @@ app.add_url_rule('/photo/<int:user_id>', view_func=UserAPI.get_photo, methods=['
 app.add_url_rule('/matches/<int:other_user_id>', view_func=MatchAPI.match_user, methods=['POST'])
 app.add_url_rule('/matches', view_func=MatchAPI.recommend_users, methods=['GET'])
 
+# ChatAPI
+app.add_url_rule('/chat/sent', view_func=UserAPI.get_chat, methods=['POST'])
+app.add_url_rule('/chat/history', view_func=UserAPI.get_chat, methods=['GET'])
+
 
 @app.after_request
 def apply_headers(response):

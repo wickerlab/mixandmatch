@@ -3,24 +3,13 @@ import "../css/components/MatchesDisplay.css";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 
-const MatchesDisplay = ({ matches, setClickedUser }) => {
+const ChattingUserDisplay = ({ chattingUser }) => {
     const [sidebarVisible, setSidebarVisible] = useState(true);
     let navigate = useNavigate();
 
     const handleIconClick = (userId) => {
-        const currentPath = window.location.pathname;
-        if (currentPath === "/dashboard") {
-            // Redirect to /chatting page
-            window.location.href = `/chatting`;
-            // Set clicked user when already on /chatting page
-            const clickedUser = matches.find((match) => match.id === userId);
-            setClickedUser(clickedUser);
-
-        } else if (currentPath === "/chatting") {
-            // Set clicked user when already on /chatting page
-            const clickedUser = matches.find((match) => match.id === userId);
-            setClickedUser(clickedUser);
-        }
+        console.log(chattingUser);
+        navigate('/chatting', { state: { userId, chattingUser } });
     };
 
     const handleLogout = async () => {
@@ -36,24 +25,20 @@ const MatchesDisplay = ({ matches, setClickedUser }) => {
 
     };
 
-    const handleShowSidebar = () => {
-        setSidebarVisible(true);
-    };
-
     return (
         <div className="matches-display">
                 <button className="matches-button" onClick={handleLogout}>
                     Logout
                 </button>
                 <div className="match-icons-container">
-                    {matches.map((match) => (
+                    {chattingUser?.map((match) => (
                         <div
-                            key={match.id}
+                            key={match.user_id}
                             className="match-icon"
-                            onClick={() => handleIconClick(match.id)}
+                            onClick={() => handleIconClick(match.user_id)}
                         >
                             <img
-                                src={match.profileImageUrl}
+                                src={match.photo}
                                 alt={match.name}
                                 className="match-icon-image"
                             />
@@ -64,4 +49,4 @@ const MatchesDisplay = ({ matches, setClickedUser }) => {
     );
 };
 
-export default MatchesDisplay;
+export default ChattingUserDisplay;

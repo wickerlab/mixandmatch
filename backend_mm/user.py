@@ -17,15 +17,11 @@ import recommender
 import match
 import os
 
-
 app = Flask(__name__)
 app.config.from_object(ApplicationConfig)
 server_session = Session(app)
 swagger = Swagger(app, template_file='openapi.yml')
 CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
-
-
-
 
 ## change when deploy use admin1
 cnx = mysql.connector.connect(
@@ -202,6 +198,7 @@ class UserAPI(MethodView):
 
         # get id and username of all users that session user can chat with
 
+    @login_required
     def get_chat():
         # Get the currently authenticated user's ID from the session
         user_id = session['user_id']['id']
@@ -217,11 +214,18 @@ class UserAPI(MethodView):
         # retrieve usernames
         for user in chat_users:
             current_id = user['user_id']
-            select_query = "SELECT username FROM mixnmatch.user WHERE id = %s"
+            # Fetch username
+            select_username_query = "SELECT username FROM mixnmatch.user WHERE id = %s"
             query_data = (current_id,)
-            cursor.execute(select_query, query_data)
+            cursor.execute(select_username_query, query_data)
             chat_user = cursor.fetchone()
             user['username'] = chat_user['username']
+
+            # Fetch photo
+            select_photo_query = "SELECT photo FROM mixnmatch.user WHERE id = %s"
+            cursor.execute(select_photo_query, query_data)
+            chat_user_photo = cursor.fetchone()
+            user['photo'] = chat_user_photo['photo']
 
         return jsonify({'chat_users': chat_users})
 
@@ -276,7 +280,6 @@ class UserAPI(MethodView):
         #     except mysql.connector.Error as err:
         #         return jsonify({'message': f"Failed to retrieve photo: {err}"}), 500
 
-    
     # @app.route('/get-photo/<int:user_id>', methods=['GET'])
     def get_photo(user_id):
         try:

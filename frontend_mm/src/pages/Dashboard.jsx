@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import SwipingCard from "../components/SwipeCard.jsx";
-import MatchesDisplay from "../components/MatchesDisplay.jsx";
+import ChattingUserDisplay from "../components/ChattingUserDisplay.jsx";
 import axios from "axios";
 import {Loading} from "@minchat/react-chat-ui";
 
 const Dashboard = () => {
+    const [chattingUser, setChattingUser] = useState([]);
     const [matches, setMatches] = useState([]);
     const [hasFetchedMatches, setHasFetchedMatches] = useState(false);
     const [allMatchesSwiped, setAllMatchesSwiped] = useState(false);
     const [isLoading, setIsLoading] = useState(true); // Initialize as true to show loading initially
-
 
     useEffect(() => {
         if (!hasFetchedMatches) {
@@ -21,6 +21,13 @@ const Dashboard = () => {
             });
         }
     }, [hasFetchedMatches]);
+
+    useEffect(() => {
+        // Fetch chatting user data when the component mounts
+        fetchChatUsers().then(() => {
+            console.log("Fetched chatting user data");
+        });
+    }, []);
 
     useEffect(() => {
         if (matches.length === 1 && hasFetchedMatches) {
@@ -46,6 +53,23 @@ const Dashboard = () => {
 
             // Reset the flag after fetching matches
             setHasFetchedMatches(false);
+        } catch (error) {
+            console.error("Error fetching matches:", error);
+        }
+    };
+
+    const fetchChatUsers = async () => {
+        try {
+            const axiosWithCookies = axios.create({
+                withCredentials: true
+            });
+
+            // Fetch matches from the /chat endpoint
+            const response = await axiosWithCookies.get("http://127.0.0.1:5000/chat");
+            const chatUsers = response.data.chat_users;
+
+            // Update the matches state with the fetched data
+            setChattingUser(chatUsers);
         } catch (error) {
             console.error("Error fetching matches:", error);
         }
@@ -78,13 +102,6 @@ const Dashboard = () => {
                 },
                 withCredentials: true
             });
-
-
-
-            console.log(response.data);
-            console.log("Current Matches: " + matches.length);
-            console.log(matches);
-            console.log("userId: " + userId);
 
             // Check if all matches have been swiped
             if (matches.length === 1) {
@@ -129,37 +146,11 @@ const Dashboard = () => {
             }));
     };
 
-
     const childRefs = matches.map(() => React.createRef());
-
-    const mockUser = {
-        id: "1",
-        name: "John Doe",
-        age: 28,
-        gender: "male",
-        location: "New York",
-        bio: "Hello, I'm John! I enjoy long walks on the beach and exploring new places. Looking for someone who shares similar interests.",
-        profileImageUrl: "https://cataas.com/cat/says/John%20Doe!",
-        swipes: {
-            liked: [],
-            disliked: []
-        },
-        matches: [
-            {
-                id: "2",
-                name: "Jane Smith",
-                age: 26,
-                gender: "female",
-                location: "Los Angeles",
-                bio: "Hi, I'm Jane! I love hiking and trying out new recipes. Let's connect!",
-                profileImageUrl: "https://cataas.com/cat/says/Jane%20Smith!"
-            }
-        ]
-    };
 
     return (
         <div className="dashboard">
-            <MatchesDisplay matches={mockUser.matches} setClickedUser={mockUser} />
+            <ChattingUserDisplay chattingUser={chattingUser} />
             <div className="swipe-container">
                 {isLoading ? ( // Conditional rendering for loading SwipingCard section
                     <Loading />
