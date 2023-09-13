@@ -5,11 +5,12 @@ import axios from "axios";
 import {Loading} from "@minchat/react-chat-ui";
 
 const Dashboard = () => {
-    const [chattingUser, setChattingUser] = useState([]);
     const [matches, setMatches] = useState([]);
     const [hasFetchedMatches, setHasFetchedMatches] = useState(false);
     const [allMatchesSwiped, setAllMatchesSwiped] = useState(false);
     const [isLoading, setIsLoading] = useState(true); // Initialize as true to show loading initially
+
+    const userId = location.state ? location.state.userId : null;
 
     useEffect(() => {
         if (!hasFetchedMatches) {
@@ -21,13 +22,6 @@ const Dashboard = () => {
             });
         }
     }, [hasFetchedMatches]);
-
-    useEffect(() => {
-        // Fetch chatting user data when the component mounts
-        fetchChatUsers().then(() => {
-            console.log("Fetched chatting user data");
-        });
-    }, []);
 
     useEffect(() => {
         if (matches.length === 1 && hasFetchedMatches) {
@@ -58,23 +52,6 @@ const Dashboard = () => {
         }
     };
 
-    const fetchChatUsers = async () => {
-        try {
-            const axiosWithCookies = axios.create({
-                withCredentials: true
-            });
-
-            // Fetch matches from the /chat endpoint
-            const response = await axiosWithCookies.get("http://127.0.0.1:5000/chat");
-            const chatUsers = response.data.chat_users;
-
-            // Update the matches state with the fetched data
-            setChattingUser(chatUsers);
-        } catch (error) {
-            console.error("Error fetching matches:", error);
-        }
-    };
-
     const handleSwipe = async (direction, nameToDelete, userId) => {
         try {
             if (!hasFetchedMatches) {
@@ -86,7 +63,6 @@ const Dashboard = () => {
             const decision = direction === 'left' ? 'reject' : 'accept';
             let fakeTimeStamp = 0.1;
 
-            console.log(userId);
             if (userId === undefined) {
                 console.error("userId is undefined");
             }
@@ -150,7 +126,7 @@ const Dashboard = () => {
 
     return (
         <div className="dashboard">
-            <ChattingUserDisplay chattingUser={chattingUser} />
+            <ChattingUserDisplay/>
             <div className="swipe-container">
                 {isLoading ? ( // Conditional rendering for loading SwipingCard section
                     <Loading />

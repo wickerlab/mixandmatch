@@ -10,7 +10,7 @@ const ChatHeader = ({ clickedUser }) => {
     return (
         <div className="chat-container-header">
             <div className="profile">
-                <h3 className="info-title">name</h3>
+                <h3 className="info-title">{clickedUser.username}</h3>
             </div>
         </div>
     )

@@ -10,35 +10,19 @@ db_config = {
     'host': 'localhost',
     'database': 'mixnmatch'
 }
-
-
-# Function to retrieve all chat history between two users
-def get_chat_history(sender_id, receiver_id):
-    cnx = mysql.connector.connect(**db_config)
-    try:
-        with cnx.cursor() as cursor:
-            query = "SELECT sender_id, receiver_id, message, update_time FROM message WHERE (sender_id = %s AND receiver_id = %s) OR (sender_id = %s AND receiver_id = %s) ORDER BY update_time ASC"
-            cursor.execute(query, (sender_id, receiver_id, receiver_id, sender_id))
-            history = []
-            for row in cursor.fetchall():
-                history.append({
-                    'sender_id': row[0],
-                    'receiver_id': row[1],
-                    'message': row[2],
-                    'update_time': row[3].isoformat()  # Convert timestamp to ISO format
-                })
-            return history
-    finally:
-        cnx.close()
+# Maintain a dictionary to store WebSocket connections for each user
+connected_clients = {}
 
 
 async def chat_server(websocket, path):
+    print(f"WebSocket client connected: {websocket.remote_address}")
+
     # Establish a connection to the MySQL database
     cnx = mysql.connector.connect(**db_config)
 
     try:
+        # Receive a message from the WebSocket client
         async for message in websocket:
-            # Assuming the message is received in JSON format
             data = json.loads(message)
             sender_id = data.get('sender_id')
             receiver_id = data.get('receiver_id')
@@ -53,11 +37,28 @@ async def chat_server(websocket, path):
                 cursor.execute(query, (sender_id, receiver_id, chat_message))
                 cnx.commit()
 
-            # Send the message to the other user
-            # You'll need to implement logic to determine the recipient and send the message
+            # Add the WebSocket connection to connected_clients if not already added
+            if sender_id not in connected_clients:
+                connected_clients[sender_id] = websocket
+
+            # Print connected_clients
+            print(connected_clients)
+
+            # Send the message to the other user (recipient)
+            recipient_ws = connected_clients.get(receiver_id)
+            if recipient_ws:
+                await recipient_ws.send(message)
+
+    except websockets.exceptions.ConnectionClosedError:
+        pass  # Handle disconnection
 
     finally:
+        # Remove the WebSocket connection from connected_clients when disconnected
+        if sender_id in connected_clients:
+            del connected_clients[sender_id]
+
         cnx.close()
+        print(f"WebSocket client disconnected: {websocket.remote_address}")
 
 
 # Start the WebSocket server on a specific port (e.g., 8765)

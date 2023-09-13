@@ -1,15 +1,45 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import "../css/components/MatchesDisplay.css";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 
-const ChattingUserDisplay = ({ chattingUser }) => {
+const ChattingUserDisplay = () => {
     const [sidebarVisible, setSidebarVisible] = useState(true);
+    const [chattingUser, setChattingUser] = useState([]);
+    const [currentUserId, setCurrentUserId] = useState(0);
     let navigate = useNavigate();
 
-    const handleIconClick = (userId) => {
-        console.log(chattingUser);
-        navigate('/chatting', { state: { userId, chattingUser } });
+    const handleIconClick = (selectedUser) => {
+        console.log(selectedUser);
+        navigate('/chatting', { state: { currentUserId, selectedUser, chattingUser } });
+    };
+
+    useEffect(() => {
+        // Fetch chatting user data when the component mounts
+        fetchChatUsers().then(() => {
+            console.log("Fetched chatting user data");
+        });
+    }, []);
+
+    const fetchChatUsers = async () => {
+        try {
+            const axiosWithCookies = axios.create({
+                withCredentials: true
+            });
+
+            // Fetch matches from the /chat endpoint
+            const response = await axiosWithCookies.get("http://127.0.0.1:5000/chat");
+            const chatUsers = response.data.chat_users;
+            const currentUserId = response.data.user_id;
+
+            console.log("currentUserId", currentUserId);
+
+            // Update the matches state with the fetched data
+            setChattingUser(chatUsers);
+            setCurrentUserId(currentUserId);
+        } catch (error) {
+            console.error("Error fetching matches:", error);
+        }
     };
 
     const handleLogout = async () => {
@@ -35,7 +65,7 @@ const ChattingUserDisplay = ({ chattingUser }) => {
                         <div
                             key={match.user_id}
                             className="match-icon"
-                            onClick={() => handleIconClick(match.user_id)}
+                            onClick={() => handleIconClick(match)}
                         >
                             <img
                                 src={match.photo}

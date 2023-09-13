@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../../css/components/chat/ChatInput.css";
 import { w3cwebsocket as W3CWebSocket } from "websocket"; // Import the WebSocket library
 
-const ChatInput = ({ user, clickedUser, setMessages }) => {
+const ChatInput = ({ currentUserId, clickedUser, setMessages }) => {
     const [textArea, setTextArea] = useState("");
     const [textAreaRows, setTextAreaRows] = useState(1);
 
@@ -15,9 +15,21 @@ const ChatInput = ({ user, clickedUser, setMessages }) => {
     };
 
     const addMessage = () => {
+
+        // Check if the message is empty
+        if (textArea.trim() === "") {
+            return;
+        }
+        // Check if the currentUserId and clickedUser are defined
+        if (!currentUserId || !clickedUser) {
+            console.log("currentUserId or clickedUser is undefined")
+            return;
+        }
+
+        // Send the message to the WebSocket server
         const message = {
-            sender_id: "5",
-            receiver_id: "6",
+            sender_id: currentUserId,
+            receiver_id: clickedUser.user_id,
             message: textArea,
         };
 
@@ -27,6 +39,9 @@ const ChatInput = ({ user, clickedUser, setMessages }) => {
         client.onopen = () => {
             // Send the message as a JSON string when the WebSocket connection is open
             client.send(JSON.stringify(message));
+
+            // Clear the text area after sending the message
+            setTextArea("");
         };
 
         client.onclose = () => {
@@ -39,11 +54,10 @@ const ChatInput = ({ user, clickedUser, setMessages }) => {
 
         client.onmessage = (message) => {
             // Handle incoming WebSocket messages, if needed
+            const dataFromServer = JSON.parse(message.data);
+            console.log("Message from server: ", dataFromServer);
+            setMessages(prevMessages => [...prevMessages, dataFromServer]);
         };
-
-        setMessages((prevMessages) => [...prevMessages, message]);
-        setTextArea("");
-        setTextAreaRows(1); // Reset the rows to 1 after submitting the message
     };
 
     return (
