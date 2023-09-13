@@ -39,6 +39,7 @@ const ChatInput = ({ currentUserId, clickedUser, setMessages }) => {
         client.onopen = () => {
             // Send the message as a JSON string when the WebSocket connection is open
             client.send(JSON.stringify(message));
+            setMessages(prevMessages => [...prevMessages, message]);
 
             // Clear the text area after sending the message
             setTextArea("");
