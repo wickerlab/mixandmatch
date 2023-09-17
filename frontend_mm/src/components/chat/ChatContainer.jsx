@@ -1,22 +1,22 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ChatHeader from "./ChatHeader.jsx";
 import ChatDisplay from "./ChatDisplay.jsx";
-
-import "../../css/components/chat/ChatContainer.css";
 import ChatInput from "./ChatInput.jsx";
 import axios from "axios";
+import { w3cwebsocket as W3CWebSocket } from "websocket"; // Import the WebSocket library
+import "../../css/components/chat/ChatContainer.css";
 
-const ChatContainer = ({ currentUserId, clickedUser}) => {
+const ChatContainer = ({ currentUserId, clickedUser }) => {
     const [messages, setMessages] = useState([]);
     const ws = useRef(null);
 
     useEffect(() => {
         getChatHistory().then(r => console.log("chat history", r)).catch(e => console.log("error", e));
         setupWebSocket();
-
         return () => {
             // Clean up WebSocket connection on component unmount
             if (ws.current) {
+                console.log("closing websocket")
                 ws.current.close();
             }
         };
@@ -25,7 +25,7 @@ const ChatContainer = ({ currentUserId, clickedUser}) => {
     const getChatHistory = async () => {
         // Create form data
         const formData = new FormData();
-        console.log("currentUserId and reciver id", currentUserId, clickedUser.user_id);
+        console.log("currentUserId and receiver id", currentUserId, clickedUser.user_id);
         formData.append("sender_id", currentUserId);
         formData.append("receiver_id", clickedUser.user_id);
 
@@ -45,21 +45,32 @@ const ChatContainer = ({ currentUserId, clickedUser}) => {
         } catch (error) {
             console.error("Error fetching chat history:", error);
         }
+
     };
 
     const setupWebSocket = () => {
-        ws.current = new WebSocket(`ws://localhost:8765`);
+        // Create a WebSocket client and connect to your WebSocket server
+        ws.current = new W3CWebSocket(`ws://localhost:8765?sender_id=${currentUserId}`); // Include sender_id in the URL
 
         ws.current.onopen = () => {
-            console.log("WebSocket connection opened");
+            console.log("WebSocket Client Connected");
+            // WebSocket connection is open, you can handle any initialization here
         };
 
-        ws.current.onmessage = (event) => {
-            // Handle incoming WebSocket messages
-            const data = JSON.parse(event.data);
-            console.log("prevMessages", messages);
-            console.log("Message from server: ", data);
-            setMessages((prevMessages) => [...prevMessages, data]);
+        ws.current.onclose = () => {
+            // Handle the WebSocket connection closing, if needed
+        };
+
+        ws.current.onerror = (error) => {
+            console.error("WebSocket Error: ", error);
+        };
+
+        ws.current.onmessage = (message) => {
+            // Handle incoming WebSocket messages, if needed
+            const dataFromServer = JSON.parse(message.data);
+            console.log("Message from server in chat container: ", dataFromServer);
+
+            setMessages(prevMessages => [...prevMessages, dataFromServer]);
         };
     };
 
@@ -71,7 +82,7 @@ const ChatContainer = ({ currentUserId, clickedUser}) => {
             ) : (
                 <p>Please select a user</p>
             )}
-            <ChatInput currentUserId={currentUserId} clickedUser={clickedUser} setMessages={setMessages}/>
+            <ChatInput currentUserId={currentUserId} clickedUser={clickedUser} setMessages={setMessages} ws={ws}/>
         </div>
     );
 };

@@ -2,6 +2,7 @@ import asyncio
 import websockets
 import json
 import mysql.connector
+from urllib.parse import urlparse, parse_qs
 
 # MySQL database configuration
 db_config = {
@@ -17,10 +18,21 @@ connected_clients = {}
 async def chat_server(websocket, path):
     print(f"WebSocket client connected: {websocket.remote_address}")
 
+    # Extract query parameters from the URL
+    query_params = parse_qs(urlparse(path).query)
+    sender_id = query_params.get('sender_id', [None])[0]
+
     # Establish a connection to the MySQL database
     cnx = mysql.connector.connect(**db_config)
 
     try:
+        # Receive a message from the WebSocket client
+        if sender_id:
+            sender_id_str = str(sender_id)  # Convert sender_id to a string
+            connected_clients[sender_id_str] = websocket
+            print(f"Added WebSocket connection for sender_id {sender_id_str}")
+            print(connected_clients)
+
         # Receive a message from the WebSocket client
         async for message in websocket:
             data = json.loads(message)
@@ -38,14 +50,14 @@ async def chat_server(websocket, path):
                 cnx.commit()
 
             # Add the WebSocket connection to connected_clients if not already added
-            if sender_id not in connected_clients:
-                connected_clients[sender_id] = websocket
+            if str(sender_id) not in connected_clients:
+                connected_clients[str(sender_id)] = websocket
 
             # Print connected_clients
             print(connected_clients)
 
             # Send the message to the other user (recipient)
-            recipient_ws = connected_clients.get(receiver_id)
+            recipient_ws = connected_clients.get(str(receiver_id))
             if recipient_ws:
                 await recipient_ws.send(message)
 

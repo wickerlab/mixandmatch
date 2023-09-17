@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../../css/components/chat/ChatInput.css";
 import { w3cwebsocket as W3CWebSocket } from "websocket"; // Import the WebSocket library
 
-const ChatInput = ({ currentUserId, clickedUser, setMessages }) => {
+const ChatInput = ({ currentUserId, clickedUser, setMessages, ws}) => {
     const [textArea, setTextArea] = useState("");
     const [textAreaRows, setTextAreaRows] = useState(1);
 
@@ -33,32 +33,13 @@ const ChatInput = ({ currentUserId, clickedUser, setMessages }) => {
             message: textArea,
         };
 
-        // Create a WebSocket client and connect to your WebSocket server
-        const client = new W3CWebSocket("ws://localhost:8765"); // Replace with your WebSocket server URL
+        ws.current.send(JSON.stringify(message));
+        setMessages(prevMessages => [...prevMessages, message]);
 
-        client.onopen = () => {
-            // Send the message as a JSON string when the WebSocket connection is open
-            client.send(JSON.stringify(message));
-            setMessages(prevMessages => [...prevMessages, message]);
 
-            // Clear the text area after sending the message
-            setTextArea("");
-        };
-
-        client.onclose = () => {
-            // Handle the WebSocket connection closing, if needed
-        };
-
-        client.onerror = (error) => {
-            console.error("WebSocket Error: ", error);
-        };
-
-        client.onmessage = (message) => {
-            // Handle incoming WebSocket messages, if needed
-            const dataFromServer = JSON.parse(message.data);
-            console.log("Message from server: ", dataFromServer);
-            setMessages(prevMessages => [...prevMessages, dataFromServer]);
-        };
+        // Clear the text area after sending the message
+        setTextArea("");
+        setTextAreaRows(1);
     };
 
     return (

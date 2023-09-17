@@ -10,14 +10,12 @@ const ChattingUserDisplay = () => {
     let navigate = useNavigate();
 
     const handleIconClick = (selectedUser) => {
-        console.log(selectedUser);
         navigate('/chatting', { state: { currentUserId, selectedUser, chattingUser } });
     };
 
     useEffect(() => {
         // Fetch chatting user data when the component mounts
         fetchChatUsers().then(() => {
-            console.log("Fetched chatting user data");
         });
     }, []);
 
@@ -31,8 +29,6 @@ const ChattingUserDisplay = () => {
             const response = await axiosWithCookies.get("http://127.0.0.1:5000/chat");
             const chatUsers = response.data.chat_users;
             const currentUserId = response.data.user_id;
-
-            console.log("currentUserId", currentUserId);
 
             // Update the matches state with the fetched data
             setChattingUser(chatUsers);
