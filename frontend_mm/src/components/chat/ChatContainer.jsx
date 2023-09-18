@@ -66,11 +66,19 @@ const ChatContainer = ({ currentUserId, clickedUser }) => {
         };
 
         ws.current.onmessage = (message) => {
-            // Handle incoming WebSocket messages, if needed
+            // Handle incoming WebSocket messages
             const dataFromServer = JSON.parse(message.data);
             console.log("Message from server in chat container: ", dataFromServer);
 
-            setMessages(prevMessages => [...prevMessages, dataFromServer]);
+            if (dataFromServer.sender_id === clickedUser.user_id) {
+                // If the sender_id matches the currentUserId, update the chat
+                setMessages(prevMessages => [...prevMessages, dataFromServer]);
+            } else {
+                // If sender_id doesn't match, trigger an alert
+                console.log("dataFromServer.sender_id", dataFromServer.sender_id);
+                console.log("clickedUser.id", clickedUser.user_id);
+                alert("You have an unread message.");
+            }
         };
     };
 

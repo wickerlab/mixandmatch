@@ -1,4 +1,4 @@
-import ChattingUserDisplay from "../components/ChattingUserDisplay.jsx";
+import ChattingUserDisplay from "../components/sidebar/ChattingUserDisplay.jsx";
 import React, {useState} from "react";
 import ChatContainer from "../components/chat/ChatContainer.jsx";
 import axios from "axios";

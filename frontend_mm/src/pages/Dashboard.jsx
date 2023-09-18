@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import SwipingCard from "../components/SwipeCard.jsx";
-import ChattingUserDisplay from "../components/ChattingUserDisplay.jsx";
+import ChattingUserDisplay from "../components/sidebar/ChattingUserDisplay.jsx";
 import axios from "axios";
 import {Loading} from "@minchat/react-chat-ui";
 

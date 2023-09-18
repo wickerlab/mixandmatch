@@ -1,7 +1,7 @@
 // SwipingCard.jsx
 
 import TinderCard from "react-tinder-card";
-import React from "react";
+import React, {useState} from "react";
 
 const SwipingCard = React.forwardRef(({ character, handleSwipe, handleCardLeftScreen, swipe }, ref) => {
 
@@ -12,6 +12,26 @@ const SwipingCard = React.forwardRef(({ character, handleSwipe, handleCardLeftSc
     const handleLikeButtonClick = () => {
         swipe('right');
     };
+
+    const [imageLoaded, setImageLoaded] = useState(false);
+
+    // Function to preload the image and set imageLoaded to true if successful
+    const preloadImage = (url) => {
+        const img = new Image();
+        img.src = url;
+        img.onload = () => {
+            setImageLoaded(true);
+        };
+        img.onerror = () => {
+            setImageLoaded(false);
+        };
+    };
+
+    // Check if character.url is valid, if not, use a placeholder image
+    const imageUrl = character.url || "https://placehold.co/600x400";
+
+    // Preload the image
+    preloadImage(imageUrl);
 
     return (
         <TinderCard
@@ -24,7 +44,11 @@ const SwipingCard = React.forwardRef(({ character, handleSwipe, handleCardLeftSc
         >
             <div className='card'>
                 <div className='image-half'>
-                    <img src={character.url} alt={character.name} />
+                    {imageLoaded ? (
+                        <img src={imageUrl} alt={character.name} />
+                    ) : (
+                        <img src="https://placehold.co/600x400" alt="Placeholder" />
+                    )}
                 </div>
                 <div className='info-half'>
                     <div className='info-content'>

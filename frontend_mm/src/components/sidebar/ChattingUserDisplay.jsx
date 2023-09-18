@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from "react";
-import "../css/components/MatchesDisplay.css";
+import "../../css/components/MatchesDisplay.css";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
+import ChattingUser from "./ChattingUser.jsx";
 
 const ChattingUserDisplay = () => {
     const [sidebarVisible, setSidebarVisible] = useState(true);
@@ -58,17 +59,11 @@ const ChattingUserDisplay = () => {
                 </button>
                 <div className="match-icons-container">
                     {chattingUser?.map((match) => (
-                        <div
+                        <ChattingUser
                             key={match.user_id}
-                            className="match-icon"
-                            onClick={() => handleIconClick(match)}
-                        >
-                            <img
-                                src={match.photo}
-                                alt={match.name}
-                                className="match-icon-image"
-                            />
-                        </div>
+                            match={match}
+                            handleIconClick={handleIconClick}
+                        />
                     ))}
                 </div>
         </div>
