@@ -8,9 +8,6 @@ const ChatDisplay = ({ currentUserId, clickedUser, messages }) => {
 
     const chatDisplayRef = useRef(null);
 
-
-
-
     return (
         <div className="chat-display" ref={chatDisplayRef}>
             <Chat

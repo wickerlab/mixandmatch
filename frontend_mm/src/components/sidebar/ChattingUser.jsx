@@ -20,13 +20,15 @@ const ChattingUser = ({ match, handleIconClick }) => {
     // Check if character.url is valid, if not, use a placeholder image
     const imageUrl = match.photo || "https://placehold.co/600x400";
 
+    const iconClassName = match.unread_count > 0 ? "match-icon-message" : "match-icon-no-message";
+
     // Preload the image
     preloadImage(imageUrl);
 
     return (
         <div
             key={match.user_id}
-            className="match-icon"
+            className={iconClassName}
             onClick={() => handleIconClick(match)}
         >
             {imageLoaded ? (

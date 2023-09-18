@@ -26,8 +26,8 @@ const ChatContainer = ({ currentUserId, clickedUser }) => {
         // Create form data
         const formData = new FormData();
         console.log("currentUserId and receiver id", currentUserId, clickedUser.user_id);
-        formData.append("sender_id", currentUserId);
-        formData.append("receiver_id", clickedUser.user_id);
+        formData.append("current_user_id", currentUserId);
+        formData.append("clicked_user_id", clickedUser.user_id);
 
         try {
             const response = await axios.post('http://127.0.0.1:5000/chat-history', formData, {
@@ -45,7 +45,6 @@ const ChatContainer = ({ currentUserId, clickedUser }) => {
         } catch (error) {
             console.error("Error fetching chat history:", error);
         }
-
     };
 
     const setupWebSocket = () => {
@@ -73,6 +72,8 @@ const ChatContainer = ({ currentUserId, clickedUser }) => {
             if (dataFromServer.sender_id === clickedUser.user_id) {
                 // If the sender_id matches the currentUserId, update the chat
                 setMessages(prevMessages => [...prevMessages, dataFromServer]);
+                // change the message status to read
+
             } else {
                 // If sender_id doesn't match, trigger an alert
                 console.log("dataFromServer.sender_id", dataFromServer.sender_id);

@@ -39,14 +39,15 @@ async def chat_server(websocket, path):
             sender_id = data.get('sender_id')
             receiver_id = data.get('receiver_id')
             chat_message = data.get('message')
+            read_status = data.get('status')
 
             # Log incoming message
-            print(f"Received message from {sender_id} to {receiver_id}: {chat_message}")
+            print(f"Received message from {sender_id} to {receiver_id}: {chat_message}, {read_status}")
 
             # Save the message to the database
             with cnx.cursor() as cursor:
-                query = "INSERT INTO message (sender_id, receiver_id, message, update_time) VALUES (%s, %s, %s, NOW())"
-                cursor.execute(query, (sender_id, receiver_id, chat_message))
+                query = "INSERT INTO message (sender_id, receiver_id, message, update_time, status) VALUES (%s, %s, %s, NOW(), %s)"
+                cursor.execute(query, (sender_id, receiver_id, chat_message, read_status))
                 cnx.commit()
 
             # Add the WebSocket connection to connected_clients if not already added

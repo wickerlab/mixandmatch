@@ -252,7 +252,7 @@ class UserAPI(MethodView):
         # Get the currently authenticated user's ID from the session
         user_id = session['user_id']['id']
 
-        # Define the SQL query to retrieve chat users, usernames, and photos
+        # Define the SQL query to retrieve chat users, usernames, photos, and unread message count
         select_query = """
             SELECT DISTINCT
                 CASE
@@ -260,7 +260,8 @@ class UserAPI(MethodView):
                     ELSE m.user1_id
                 END AS user_id,
                 u.username,
-                u.photo
+                u.photo,
+                COUNT(CASE WHEN msg.status = 'unread' THEN 1 ELSE NULL END) AS unread_count
             FROM
                 mixnmatch.match AS m
             INNER JOIN
@@ -270,9 +271,16 @@ class UserAPI(MethodView):
                     WHEN m.user1_id = %s THEN m.user2_id
                     ELSE m.user1_id
                 END = u.id
+            LEFT JOIN
+                mixnmatch.message AS msg
+            ON
+                (m.user1_id = msg.sender_id AND m.user2_id = msg.receiver_id)
+                OR (m.user1_id = msg.receiver_id AND m.user2_id = msg.sender_id)
             WHERE
                 (%s IN (m.user1_id, m.user2_id))
                 AND (m.user1_match = 1 OR m.user2_match = 1)
+            GROUP BY
+                user_id, u.username, u.photo
         """
         query_data = (user_id, user_id, user_id)
 
@@ -291,21 +299,37 @@ class UserAPI(MethodView):
             # Handle database errors
             return jsonify({'error': str(err)}), 500
 
+
     @login_required
     def get_chat_history(self):
-        sender_id = request.form.get('sender_id')
-        receiver_id = request.form.get('receiver_id')
+        current_user_id = request.form.get('current_user_id')
+        clicked_user_id = request.form.get('clicked_user_id')
 
         try:
             with self.get_connection() as cnx:
                 cursor = cnx.cursor(dictionary=True)
-                query = """
+
+                # Update messages to "read" status
+                update_query = """
+                    UPDATE message
+                    SET status = 'read'
+                    WHERE receiver_id = %s AND sender_id = %s AND status = 'unread'
+                """
+
+                cursor.execute(update_query, (current_user_id, clicked_user_id))
+                cnx.commit()
+
+                # Print the row count affected by the UPDATE query
+                print(f"Rows affected by UPDATE: {cursor.rowcount}")
+
+                # Select chat history
+                select_query = """
                     SELECT sender_id, receiver_id, message, update_time
                     FROM message
                     WHERE (sender_id = %s AND receiver_id = %s) OR (sender_id = %s AND receiver_id = %s)
                     ORDER BY update_time ASC
                 """
-                cursor.execute(query, (sender_id, receiver_id, receiver_id, sender_id))
+                cursor.execute(select_query, (current_user_id, clicked_user_id, clicked_user_id, current_user_id))
                 history = []
 
                 # Process the data into a list of dictionaries
@@ -323,7 +347,6 @@ class UserAPI(MethodView):
             # Handle exceptions appropriately (e.g., log errors)
             print("ErrorMessage", e)
             return jsonify({'message': str(e)}), 500
-
 
 if __name__ == '__main__':
     app.run()

@@ -31,6 +31,7 @@ const ChatInput = ({ currentUserId, clickedUser, setMessages, ws}) => {
             sender_id: currentUserId,
             receiver_id: clickedUser.user_id,
             message: textArea,
+            status: "unread",
         };
 
         ws.current.send(JSON.stringify(message));
