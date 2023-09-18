@@ -20,7 +20,7 @@ const Chatting = ({ descendingOrderMessages }) => {
 
     return (
         <div className="dashboard">
-            <ChattingUserDisplay/>
+
             <ChatContainer currentUserId={currentUserId} clickedUser={selectedUser} setClickedUser={setClickedUser}/>
         </div>
     );

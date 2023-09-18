@@ -4,7 +4,7 @@ import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import ChattingUser from "./ChattingUser.jsx";
 
-const ChattingUserDisplay = () => {
+const ChattingUserDisplay = ({newMessagesId}) => {
     const [sidebarVisible, setSidebarVisible] = useState(true);
     const [chattingUser, setChattingUser] = useState([]);
     const [currentUserId, setCurrentUserId] = useState(0);
@@ -63,6 +63,7 @@ const ChattingUserDisplay = () => {
                             key={match.user_id}
                             match={match}
                             handleIconClick={handleIconClick}
+                            newMessagesId={newMessagesId}
                         />
                     ))}
                 </div>

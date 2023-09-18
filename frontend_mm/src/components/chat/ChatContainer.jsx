@@ -5,10 +5,12 @@ import ChatInput from "./ChatInput.jsx";
 import axios from "axios";
 import { w3cwebsocket as W3CWebSocket } from "websocket"; // Import the WebSocket library
 import "../../css/components/chat/ChatContainer.css";
+import ChattingUserDisplay from "../sidebar/ChattingUserDisplay.jsx";
 
 const ChatContainer = ({ currentUserId, clickedUser }) => {
     const [messages, setMessages] = useState([]);
     const ws = useRef(null);
+    const [newMessagesId, setNewMessagesId] = useState(null);
 
     useEffect(() => {
         getChatHistory().then(r => console.log("chat history", r)).catch(e => console.log("error", e));
@@ -79,12 +81,14 @@ const ChatContainer = ({ currentUserId, clickedUser }) => {
                 console.log("dataFromServer.sender_id", dataFromServer.sender_id);
                 console.log("clickedUser.id", clickedUser.user_id);
                 alert("You have an unread message.");
+                setNewMessagesId(dataFromServer.sender_id);
             }
         };
     };
 
     return (
         <div className="chat-container">
+            <ChattingUserDisplay newMessagesId={newMessagesId}/>
             <ChatHeader clickedUser={clickedUser} />
             {clickedUser ? (
                 <ChatDisplay currentUserId={currentUserId} clickedUser={clickedUser} messages={messages} />
