@@ -60,7 +60,7 @@ def apply_headers(response):
 
 def add_headers(response):
     cookie = session_cookie_serializer.dumps(dict(session))
-    response.headers['Access-Control-Allow-Origin'] = 'http://localhost:5173'
+    response.headers['Access-Control-Allow-Origin'] = 'https://mixandmatch.wickerlab.org/'
     response.headers['Access-Control-Allow-Headers'] = 'Content-Type,Authorization'
     response.headers['Access-Control-Allow-Credentials'] = 'true'
     response.headers['Access-Control-Allow-Methods'] = 'GET,PUT,POST,DELETE,OPTIONS'

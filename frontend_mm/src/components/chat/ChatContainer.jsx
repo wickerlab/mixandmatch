@@ -32,7 +32,7 @@ const ChatContainer = ({ currentUserId, clickedUser }) => {
         formData.append("clicked_user_id", clickedUser.user_id);
 
         try {
-            const response = await axios.post('http://127.0.0.1:5000/chat-history', formData, {
+            const response = await axios.post('https://mixandmatch.wickerlab.org/api/chat-history', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 },
