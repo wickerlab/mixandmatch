@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flasgger import Swagger
 from user import UserAPI
 from match import MatchAPI
@@ -60,7 +60,10 @@ def apply_headers(response):
 
 def add_headers(response):
     cookie = session_cookie_serializer.dumps(dict(session))
-    response.headers['Access-Control-Allow-Origin'] = 'https://mixandmatch.wickerlab.org/'
+    # Allow requests from the specified origins
+    allowed_origins = ['https://mixandmatch.wickerlab.org', 'http://localhost:5173']
+    if request.headers['Origin'] in allowed_origins:
+        response.headers['Access-Control-Allow-Origin'] = request.headers['Origin']
     response.headers['Access-Control-Allow-Headers'] = 'Content-Type,Authorization'
     response.headers['Access-Control-Allow-Credentials'] = 'true'
     response.headers['Access-Control-Allow-Methods'] = 'GET,PUT,POST,DELETE,OPTIONS'
