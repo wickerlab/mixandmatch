@@ -67,7 +67,7 @@ const OnBoarding = () => {
                 return;
             }
 
-             const response = await axios.post(`http://127.0.0.1:5000/onboarding/${userId}`, formDataToSend,{
+             const response = await axios.post(`https://mixandmatch.wickerlab.org/api/onboarding/${userId}`, formDataToSend,{
                  headers: {
                      'Content-Type': 'multipart/form-data'
                  },
