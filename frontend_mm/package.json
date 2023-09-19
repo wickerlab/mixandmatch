@@ -7,7 +7,7 @@
     "start:frontend": "vite",
     "build": "vite build",
     "postbuild": "npm run copy-build",
-    "copy-build": "cp -r dist/* /var/www/html"
+    "copy-build": "cp -r dist/* /var/www/mixandmatch.wickerlab.org/html"
   },
   "dependencies": {
     "@minchat/react-chat-ui": "^0.4.3",
