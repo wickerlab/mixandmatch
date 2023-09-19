@@ -7,4 +7,11 @@ export default defineConfig({
   optimizeDeps: {
     include: ['vue'],
   },
+  server: {
+    port: 5173,
+    strictPort: true,
+    hmr: {
+      port: 5173,
+    },
+  },
 })

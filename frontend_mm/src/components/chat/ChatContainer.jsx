@@ -51,7 +51,7 @@ const ChatContainer = ({ currentUserId, clickedUser }) => {
 
     const setupWebSocket = () => {
         // Create a WebSocket client and connect to your WebSocket server
-        ws.current = new W3CWebSocket(`ws://localhost:8765`); // Include sender_id in the URL
+        ws.current = new W3CWebSocket(`ws://localhost:8765?sender_id=${currentUserId}`); // Include sender_id in the URL
 
         ws.current.onopen = () => {
             console.log("WebSocket Client Connected");
