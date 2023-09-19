@@ -59,16 +59,22 @@ def apply_headers(response):
 
 
 def add_headers(response):
-    cookie = session_cookie_serializer.dumps(dict(session))
-    # Allow requests from the specified origins
-    allowed_origins = ['https://mixandmatch.wickerlab.org', 'http://localhost:5173']
-    if request.headers['Origin'] in allowed_origins:
-        response.headers['Access-Control-Allow-Origin'] = request.headers['Origin']
+    # Check if the 'Origin' header is present in the request
+    if 'Origin' in request.headers:
+        # Allow requests from the specified origins
+        allowed_origins = ['https://mixandmatch.wickerlab.org', 'http://localhost:5173']
+        if request.headers['Origin'] in allowed_origins:
+            response.headers['Access-Control-Allow-Origin'] = request.headers['Origin']
+
     response.headers['Access-Control-Allow-Headers'] = 'Content-Type,Authorization'
     response.headers['Access-Control-Allow-Credentials'] = 'true'
     response.headers['Access-Control-Allow-Methods'] = 'GET,PUT,POST,DELETE,OPTIONS'
+
+    cookie = session_cookie_serializer.dumps(dict(session))
     response.headers.add('Set-Cookie', f'session={cookie}; SameSite=None; Secure')
+
     return response
+
 
 
 # user_view = UserAPI.as_view('user_api')
