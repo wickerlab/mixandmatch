@@ -204,18 +204,18 @@ def update_user_preference(u1: User):
     """update user profile"""
     """u1 is the current user and u2 is the target user"""
     for key in u1.preference.age_prefs :
-        if ((u1.preference.age_prefs[key][1] != 0) or (u1.preference.age_prefs[key][2] != 0)) :
+        if ((u1.preference.age_prefs[key][1] != 0) and (u1.preference.age_prefs[key][2] != 0)) :
             u1.preference.age_prefs[key][0] = u1.preference.age_prefs[key][1] / (u1.preference.age_prefs[key][2] + u1.preference.age_prefs[key][1])
     for key in u1.preference.salary_prefs :
-        if ((u1.preference.salary_prefs[key][1] != 0) or (u1.preference.salary_prefs[key][2] != 0)) :
+        if ((u1.preference.salary_prefs[key][1] != 0) and (u1.preference.salary_prefs[key][2] != 0)) :
             u1.preference.salary_prefs[key][0] = u1.preference.salary_prefs[key][1] / (u1.preference.salary_prefs[key][2] + u1.preference.salary_prefs[key][1])       
     for key in u1.preference.education_prefs :
-        if ((u1.preference.education_prefs[key][1] != 0) or (u1.preference.education_prefs[key][2] != 0)) :
+        if ((u1.preference.education_prefs[key][1] != 0) and (u1.preference.education_prefs[key][2] != 0)) :
             u1.preference.education_prefs[key][0] = u1.preference.education_prefs[key][1] / (u1.preference.education_prefs[key][2] + u1.preference.education_prefs[key][1]) 
     for key in u1.preference.gender_prefs :
-        if ((u1.preference.gender_prefs[key][1] != 0) or (u1.preference.gender_prefs[key][2] != 0)) :
+        if ((u1.preference.gender_prefs[key][1] != 0) and (u1.preference.gender_prefs[key][2] != 0)) :
             u1.preference.gender_prefs[key][0] = u1.preference.gender_prefs[key][1] / (u1.preference.gender_prefs[key][2] + u1.preference.gender_prefs[key][1])
-    if ((u1.preference.attractiveness[1] != 0) or (u1.preference.attractiveness[2] != 0)) :
+    if ((u1.preference.attractiveness[1] != 0) and (u1.preference.attractiveness[2] != 0)) :
             u1.preference.attractiveness[0] = u1.preference.attractiveness[1] / (u1.preference.attractiveness[2] + u1.preference.attractiveness[1])     
 
 def order_by_preference(u1: User, user_arr) :

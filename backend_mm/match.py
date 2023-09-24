@@ -135,12 +135,35 @@ class MatchAPI(MethodView):
     @login_required
     def recommend_users():
         # Query the database to get 15 random users excluding session user
-        query = "SELECT * FROM user WHERE (id != " + str(session['user_id']['id']) + ") " \
-              + "AND attr_age IS NOT NULL " \
-              + "AND attr_gender IS NOT NULL " \
-              + "AND attr_career IS NOT NULL " \
-              + "AND attr_education IS NOT NULL " \
-              + "ORDER BY RAND() LIMIT 20"
+        user_id = session['user_id']['id']
+        query_category = 'SELECT category FROM user_category WHERE user_id = %s'
+        cursor.execute(query_category, (user_id,))
+        category = cursor.fetchone()['category']
+        print(category)
+
+        if category == 'BOT':
+            query = "SELECT * FROM user JOIN user_category ON (user.id = user_category.user_id) WHERE (user.id != " + str(session['user_id']['id']) + ") " \
+                    + "AND user.attr_age IS NOT NULL " \
+                    + "AND user.attr_gender IS NOT NULL " \
+                    + "AND user.attr_career IS NOT NULL " \
+                    + "AND user.attr_education IS NOT NULL " \
+                    + "AND user_category.category = 'HUMAN'" \
+                # + "ORDER BY RAND() LIMIT 20"
+        elif category == 'HUMAN':
+            query = "SELECT * FROM user JOIN user_category ON (user.id = user_category.user_id) WHERE (user.id != " + str(session['user_id']['id']) + ") " \
+                    + "AND user.attr_age IS NOT NULL " \
+                    + "AND user.attr_gender IS NOT NULL " \
+                    + "AND user.attr_career IS NOT NULL " \
+                    + "AND user.attr_education IS NOT NULL " \
+                    + "AND user_category.category = 'BOT'" \
+                    + "ORDER BY RAND() LIMIT 20"
+        else :
+            query = "SELECT * FROM user WHERE (id != " + str(session['user_id']['id']) + ") " \
+                    + "AND attr_age IS NOT NULL " \
+                    + "AND attr_gender IS NOT NULL " \
+                    + "AND attr_career IS NOT NULL " \
+                    + "AND attr_education IS NOT NULL " \
+                    + "ORDER BY RAND() LIMIT 20"
         cursor.execute(query)
         users = cursor.fetchall()
 

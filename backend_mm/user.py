@@ -154,12 +154,14 @@ class UserAPI(MethodView):
                 query_gender = 'INSERT INTO user_history_gender (user_id) VALUES (%s)'
                 query_salary = 'INSERT INTO user_history_salary (user_id) VALUES (%s)'
                 query_profile = 'INSERT INTO user_profile (user_id) VALUES (%s)'
+                query_category = 'INSERT INTO user_category (user_id) VALUES (%s)'
                 cursor.execute(query_age, (user_data_2,))
                 cursor.execute(query_attractiveness, (user_data_2,))
                 cursor.execute(query_education, (user_data_2,))
                 cursor.execute(query_gender, (user_data_2,))
                 cursor.execute(query_salary, (user_data_2,))
                 cursor.execute(query_profile, (user_data_2,))
+                cursor.execute(query_category, (user_data_2,))
                 cnx.commit()
 
                 return jsonify({'message': 'User attributes updated successfully!'}), 200
