@@ -3,6 +3,13 @@ import websockets
 import json
 import mysql.connector
 from urllib.parse import urlparse, parse_qs
+import openai
+
+# Your OpenAI API key
+OPENAI_API_KEY = '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'
+
+# Initialize the OpenAI API client
+openai.api_key = OPENAI_API_KEY
 
 # MySQL database configuration
 db_config = {
@@ -13,6 +20,14 @@ db_config = {
 }
 # Maintain a dictionary to store WebSocket connections for each user
 connected_clients = {}
+
+
+def insert_message(sender_id, receiver_id, message, status, cnx):
+    with cnx.cursor() as cursor:
+        query = ("INSERT INTO message (sender_id, receiver_id, message, update_time, status)"
+                 " VALUES (%s, %s, %s, NOW(), %s)")
+        cursor.execute(query, (sender_id, receiver_id, message, status))
+        cnx.commit()
 
 
 async def chat_server(websocket, path):
@@ -46,9 +61,11 @@ async def chat_server(websocket, path):
 
             # Save the message to the database
             with cnx.cursor() as cursor:
-                query = "INSERT INTO message (sender_id, receiver_id, message, update_time, status) VALUES (%s, %s, %s, NOW(), %s)"
+                query = ("INSERT INTO message (sender_id, receiver_id, message, update_time, status) "
+                         "VALUES (%s, %s, %s, NOW(), %s)")
                 cursor.execute(query, (sender_id, receiver_id, chat_message, read_status))
                 cnx.commit()
+                print("message saved")
 
             # Add the WebSocket connection to connected_clients if not already added
             if str(sender_id) not in connected_clients:
@@ -57,10 +74,73 @@ async def chat_server(websocket, path):
             # Print connected_clients
             print(connected_clients)
 
-            # Send the message to the other user (recipient)
-            recipient_ws = connected_clients.get(str(receiver_id))
-            if recipient_ws:
-                await recipient_ws.send(message)
+            # Check if the recipient is a bot
+            with cnx.cursor() as cursor:
+                query = "SELECT * FROM user_category WHERE user_id = %s"
+                cursor.execute(query, (receiver_id,))
+                result = cursor.fetchone()
+                print(result)
+                if result and result[1] == 'BOT':
+                    user_id = str(sender_id)  # Convert sender_id to a string
+
+                    query = "SELECT * FROM user WHERE id = %s"
+                    cursor.execute(query, (user_id,))
+                    user_attributes = cursor.fetchone()
+
+                    chat_history_query = ("SELECT * FROM message WHERE (sender_id = %s AND receiver_id = %s) OR ("
+                                          "receiver_id = %s AND sender_id = %s)")
+                    cursor.execute(chat_history_query, (sender_id, receiver_id, sender_id, receiver_id))
+                    chat_history = cursor.fetchall()
+                    print(chat_history)
+
+                    if user_attributes:
+                        user_name = user_attributes[2]
+                        user_age = user_attributes[4]
+                        user_gender = user_attributes[5]
+                        user_education = user_attributes[7]
+
+                        # Generate a response using OpenAI GPT-3.5-turbo
+                        response = openai.ChatCompletion.create(
+                            model="gpt-3.5-turbo",
+                            messages=[
+                                {"role": "system", "content": f"IMPORTANT MESSAGE: Pretend to have normal "
+                                                              f"conversation to me like others dating app user,"
+                                                              f"Here are some roles that you need to follow:,"
+                                                              f"You are a user in an dating app called mix and match,"
+                                                              f"provide continuous conversation to the user base on the,"
+                                                              f"chat history you and the user had {chat_history},"
+                                                              
+                                                              f"Here is your basic information as a dating app user:,"
+                                                              f"Your name is {user_name} and your age is {user_age},"
+                                                              f"your gender is {user_gender} and "
+                                                              f"your education is {user_education}."},
+
+                                {"role": "user", "content": chat_message}
+                            ]
+                        )
+
+                        # Extract the generated message from the response
+                        bot_response = response.choices[0].message["content"].strip()
+                        print(bot_response)
+
+                        # Create a message to send
+                        bot_message = {
+                            "sender_id": receiver_id,
+                            "receiver_id": sender_id,
+                            "message": bot_response,
+                            "status": "unread"
+                        }
+
+                        insert_message(bot_message["sender_id"], bot_message["receiver_id"], bot_message["message"],
+                                       bot_message["status"], cnx)
+
+                        # Send the message as JSON
+                        await websocket.send(json.dumps(bot_message))
+                else:
+                    # Send the message to the other user (recipient)
+                    recipient_ws = connected_clients.get(str(receiver_id))
+                    if recipient_ws:
+                        await recipient_ws.send(message)
 
     except websockets.exceptions.ConnectionClosedError:
         pass  # Handle disconnection
