@@ -68,7 +68,6 @@ class UserAPI(MethodView):
 
         return decorated_function
 
-    # @app.route('/user/<int:user_id>', methods=['GET'])
     @swag_from('openapi.yml')
     @login_required
     def get_user(self, user_id):
@@ -93,7 +92,6 @@ class UserAPI(MethodView):
             # Handle database errors
             return jsonify({'error': str(err)}), 500
 
-    # @app.route('/signup', methods=['POST'])
     @swag_from('openapi.yml')
     def create_user(self):
         # create a new user
@@ -127,7 +125,6 @@ class UserAPI(MethodView):
             # Handle database errors
             return jsonify({'error': str(err)}), 500
 
-    # @app.route('/onboarding/<int:user_id>', methods=['PUT'])
     @swag_from('openapi.yml')
     def onboard(self,user_id):
         # update a user's attributes
@@ -169,7 +166,6 @@ class UserAPI(MethodView):
             # Handle database errors
             return jsonify({'error': str(err)}), 500
 
-    # @app.route('/login', methods=['POST'])
     def login(self):
         email = request.form.get('email')
         password = request.form.get('password')
@@ -202,14 +198,12 @@ class UserAPI(MethodView):
             # Handle database errors
             return jsonify({'error': str(err)}), 500
 
-    # @app.route('/logout', methods=['GET'])
     def logout():
         # Clear the session to log out the user
         session.clear()
         return jsonify({'message': 'Logged out successfully'}), 200
 
     # update a single user
-    # @app.route('/update-user/<int:user_id>', methods=['PUT'])
     @swag_from('openapi.yml')
     def update_user(self, user_id):
         # update a single user
@@ -280,7 +274,7 @@ class UserAPI(MethodView):
                 OR (m.user1_id = msg.receiver_id AND m.user2_id = msg.sender_id)
             WHERE
                 (%s IN (m.user1_id, m.user2_id))
-                AND (m.user1_match = 1 OR m.user2_match = 1)
+                AND (m.user1_match = 1 AND m.user2_match = 1)
             GROUP BY
                 user_id, u.username, u.photo
         """
