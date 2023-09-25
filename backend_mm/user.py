@@ -258,7 +258,7 @@ class UserAPI(MethodView):
                 END AS user_id,
                 u.username,
                 u.photo,
-                COUNT(CASE WHEN msg.status = 'unread' THEN 1 ELSE NULL END) AS unread_count
+                COUNT(CASE WHEN msg.status = 'unread' AND msg.receiver_id = %s THEN 1 ELSE NULL END) AS unread_count
             FROM
                 mixnmatch.match AS m
             INNER JOIN
