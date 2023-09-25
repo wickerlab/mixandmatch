@@ -240,6 +240,8 @@ def order_by_preference(u1: User, user_arr) :
 
 
 if __name__ == '__main__' :
+    ## DEMO
+
     generic_user = u1 = User(Salary.BRACKET_2, 35, Gender.MALE, Education.DOCTORAL)
 
     # dummy data 
