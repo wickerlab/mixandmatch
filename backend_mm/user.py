@@ -249,6 +249,7 @@ class UserAPI(MethodView):
         user_id = session['user_id']['id']
 
         # Define the SQL query to retrieve chat users, usernames, photos, and unread message count
+        #
         select_query = """
             SELECT DISTINCT
                 CASE

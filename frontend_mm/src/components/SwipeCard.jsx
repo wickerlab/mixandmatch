@@ -6,10 +6,22 @@ import React, {useState} from "react";
 const SwipingCard = React.forwardRef(({ character, handleSwipe, handleCardLeftScreen, swipe }, ref) => {
 
     const salaryMapping = {
-        "UNDER15": "Under $15,000",
-        "15TO30": "$15,000 - $30,000",
-        "30TO50": "$30,000 - $50,000",
-        "OVER50":"Above $50,000"
+        "UNDER15": "Under $15k",
+        "15TO30": "$15k - $30k",
+        "30TO50": "$30k - $50k",
+        "OVER50": "Above $50k"
+    };
+
+    const genderMapping = {
+        "MALE": "Man",
+        "FEMALE": "Woman",
+    };
+
+    const educationMapping = {
+        "BACHELORS": "Bachelors",
+        "MASTERS": "Masters",
+        "DOCTORAL": "Doctoral",
+        "DIPLOMA": "Diploma"
     };
 
     const handleDislikeButtonClick = () => {
@@ -60,11 +72,10 @@ const SwipingCard = React.forwardRef(({ character, handleSwipe, handleCardLeftSc
                 <div className='info-half'>
                     <div className='info-content'>
                         <h3 className='info-title'>{character.name}</h3>
-                        <p className='info-category'>{character.category}</p>
                         <p className='info-attr-age'>Age: {character.age}</p>
-                        <p className='info-attr-gender'>Gender : {character.gender}</p>
-                        <p className='info-attr-career'>Career: {salaryMapping[character.career] || "cant find"}</p>
-                        <p className='info-attr-education'>Education: {character.education}</p>
+                        <p className='info-attr-gender'>Gender: {genderMapping[character.gender] || "[Error: invalid gender]"}</p>
+                        <p className='info-attr-career'>Career: {salaryMapping[character.career] || "[Error: invalid salary]"}</p>
+                        <p className='info-attr-education'>Education: {educationMapping[character.education] || "[Error: invalid education]"}</p>
                     </div>
                     <div className="button-container">
                         <button className="dislike-button" onClick={handleDislikeButtonClick}>
