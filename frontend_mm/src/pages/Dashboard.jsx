@@ -117,7 +117,7 @@ const Dashboard = () => {
                 gender: user.attr_gender,
                 career: user.attr_career,
                 education: user.attr_education,
-                // TODO: Change this to the actual URL
+                category: user.category,
                 url: user.photo,
             }));
     };

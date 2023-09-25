@@ -89,11 +89,212 @@
     -webkit-text-fill-color: transparent;
     margin-top: 0;
     margin-bottom: 10px;
+    margin-left: 5px;
 }
 
-.info-about{
+.info-category{
+    background: linear-gradient(45deg, #ffffff, #e8ccff);
     font-size: x-large;
+}.dashboard {
+     display: flex;
+     height: 100vh;
+     flex-direction: row;
+     justify-content: center;
+     overflow: hidden;
+     background: linear-gradient(45deg, rgba(112, 26, 55), rgb(243, 93, 46));
+ }
+
+.dashboard .swipe-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: calc(100vw - 20vw);
 }
+
+.swipe {
+    position: fixed;
+    top: 5vh;
+    bottom: 10vh;
+    left: 12vw;
+    right: 8vw;
+    transform: translate(-50%, -50%);
+}
+
+.card {
+    background-color: #791414;
+    width: 100%;
+    scroll-behavior: smooth;
+    border-radius: 30px;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+}
+
+.card:hover {
+    overflow: auto;
+}
+
+.image-half {
+    width: 50%;
+}
+
+.image-half img {
+    width: 100%;
+    height: 90vh;
+    object-fit: cover;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    user-drag: none;
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+.info-half {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+}
+
+.info-content {
+    text-align: left;
+    margin-left: 2vh;
+    user-select: none;
+}
+
+
+.info-half h3 {
+    background: linear-gradient(45deg, #ffffff, #e8ccff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: xxx-large;
+}
+
+.info-half p {
+    background: linear-gradient(45deg, #ffffff, #e8ccff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-top: 0;
+    margin-bottom: 10px;
+    margin-left: 5px;
+}
+
+.info-category {
+    background: linear-gradient(45deg, #ffffff, #e8ccff);
+    font-size: x-large;
+    display: inline-block; /* Make it an inline block element */
+}
+
+
+.info-attr-age{
+    font-size: large;
+}
+
+.info-attr-gender{
+    font-size: large;
+}
+
+.info-attr-career{
+    font-size: large;
+}
+
+.info-attr-education{
+    font-size: large;
+}
+
+.dashboard .swipe-info {
+    position: absolute;
+    bottom: 0;
+    padding: 20px;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: flex-end;
+    position: absolute;
+    bottom: 2vh;
+    right: 2vw;
+}
+
+.like-button {
+    background: linear-gradient(20deg, #1F90E2, #900DF8);
+    border: none;
+    border-radius: 50%;
+    width: 7vw;
+    min-width: 15vh;
+    height: 7vw;
+    min-height: 15vh;
+    margin: 10px;
+    cursor: pointer;
+    position: relative;
+}
+
+.like-button:hover{
+    background: linear-gradient(45deg, #2481c7, #7d14d2);
+}
+
+.like-button-image{
+    position: absolute;
+    padding-top: 1vh;
+    width: 75%;
+    user-drag: none;
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+.dislike-button{
+    background: linear-gradient(20deg , #91139C, #900DF8);
+    border: none;
+    border-radius: 50%;
+    width: 5vw;
+    min-width: 10vh;
+    height: 5vw;
+    min-height: 10vh;
+    margin: 10px;
+    cursor: pointer;
+    position: relative;
+}
+
+.dislike-button:hover{
+    background: linear-gradient(20deg , #75157e, #7f12d7);
+}
+
+.dislike-button-image {
+    position: absolute;
+    padding-top: 1vh;
+    width: 60%;
+    user-drag: none;
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+
 
 .info-attr-age{
     font-size: large;

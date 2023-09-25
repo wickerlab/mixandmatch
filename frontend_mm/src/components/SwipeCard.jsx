@@ -5,6 +5,13 @@ import React, {useState} from "react";
 
 const SwipingCard = React.forwardRef(({ character, handleSwipe, handleCardLeftScreen, swipe }, ref) => {
 
+    const salaryMapping = {
+        "UNDER15": "Under $15,000",
+        "15TO30": "$15,000 - $30,000",
+        "30TO50": "$30,000 - $50,000",
+        "OVER50":"Above $50,000"
+    };
+
     const handleDislikeButtonClick = () => {
         swipe('left');
     };
@@ -53,10 +60,10 @@ const SwipingCard = React.forwardRef(({ character, handleSwipe, handleCardLeftSc
                 <div className='info-half'>
                     <div className='info-content'>
                         <h3 className='info-title'>{character.name}</h3>
-                        <p className='info-about'>Hey, I'm a cat! I enjoy hiking and photography.</p>
+                        <p className='info-category'>{character.category}</p>
                         <p className='info-attr-age'>Age: {character.age}</p>
                         <p className='info-attr-gender'>Gender : {character.gender}</p>
-                        <p className='info-attr-career'>Career: {character.career}</p>
+                        <p className='info-attr-career'>Career: {salaryMapping[character.career] || "cant find"}</p>
                         <p className='info-attr-education'>Education: {character.education}</p>
                     </div>
                     <div className="button-container">
