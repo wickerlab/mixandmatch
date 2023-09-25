@@ -6,7 +6,7 @@ from urllib.parse import urlparse, parse_qs
 import openai
 
 # Your OpenAI API key
-OPENAI_API_KEY = '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'
+OPENAI_API_KEY = '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'
 
 # Initialize the OpenAI API client
 openai.api_key = OPENAI_API_KEY
