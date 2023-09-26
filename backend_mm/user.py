@@ -279,7 +279,7 @@ class UserAPI(MethodView):
             GROUP BY
                 user_id, u.username, u.photo
         """
-        query_data = (user_id, user_id, user_id)
+        query_data = (user_id, user_id, user_id, user_id)
 
         try:
             with self.get_connection() as cnx:
