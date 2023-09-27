@@ -136,7 +136,7 @@ class MatchAPI(MethodView):
     def recommend_users():
         # Query the database to get 15 random users excluding session user
         user_id = session['user_id']['id']
-        query_category = 'SELECT category FROM user_category WHERE user_id = %s'
+        query_category = 'SELECT category FROM mixnmatch.user_category WHERE user_id = %s'
         cursor.execute(query_category, (user_id,))
         category = cursor.fetchone()['category']
         print(category)
@@ -150,7 +150,7 @@ class MatchAPI(MethodView):
                     + "AND user_category.category = 'HUMAN'" \
                 # + "ORDER BY RAND() LIMIT 20"
         elif category == 'HUMAN':
-            query = "SELECT * FROM user JOIN user_category ON (user.id = user_category.user_id) WHERE (user.id != " + str(session['user_id']['id']) + ") " \
+            query = "SELECT * FROM user JOIN mixnmatch.user_category ON (user.id = user_category.user_id) WHERE (user.id != " + str(session['user_id']['id']) + ") " \
                     + "AND user.attr_age IS NOT NULL " \
                     + "AND user.attr_gender IS NOT NULL " \
                     + "AND user.attr_career IS NOT NULL " \
