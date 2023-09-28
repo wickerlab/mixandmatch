@@ -46,8 +46,6 @@ dbconfig = {
 
 cnxpool = mysql.connector.pooling.MySQLConnectionPool(**dbconfig)
 
-
-
 class UserAPI(MethodView):
 
     @staticmethod
@@ -71,6 +69,7 @@ class UserAPI(MethodView):
     @swag_from('openapi.yml')
     @login_required
     def get_user(self, user_id):
+
         if user_id is None:
             query = "SELECT * FROM user"
         else:
