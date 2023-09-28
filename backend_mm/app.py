@@ -38,20 +38,21 @@ def login_required(f):
 # UserAPI
 
 user_api = UserAPI()  # Create an instance of the UserAPI class
+match_api = MatchAPI() # Create an instance of the ChatAPI
 
 
 app.add_url_rule('/users/<int:user_id>', view_func=user_api.get_user, methods=['GET'])
 app.add_url_rule('/users/<int:user_id>', view_func=user_api.update_user, methods=['PUT'])
 app.add_url_rule('/login', view_func=user_api.login, methods=['POST'])
-app.add_url_rule('/logout', view_func=UserAPI.logout, methods=['GET'])
+app.add_url_rule('/logout', view_func=user_api.logout, methods=['GET'])
 app.add_url_rule('/signup', view_func=user_api.create_user, methods=['POST'])
 app.add_url_rule('/onboarding/<int:user_id>', view_func=user_api.onboard, methods=['POST'])
 app.add_url_rule('/chat', view_func=user_api.get_chat, methods=['GET'])
 app.add_url_rule('/chat-history', view_func=user_api.get_chat_history, methods=['POST'])
 
 # MatchAPI
-app.add_url_rule('/matches/<int:other_user_id>', view_func=MatchAPI.match_user, methods=['POST'])
-app.add_url_rule('/matches', view_func=MatchAPI.recommend_users, methods=['GET'])
+app.add_url_rule('/matches/<int:other_user_id>', view_func=match_api.match_user, methods=['POST'])
+app.add_url_rule('/matches', view_func=match_api.recommend_users, methods=['GET'])
 
 @app.after_request
 def apply_headers(response):

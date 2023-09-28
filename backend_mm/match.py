@@ -5,13 +5,18 @@ from flasgger import Swagger, swag_from
 from flask import Flask, request, session, jsonify
 from flask.views import MethodView
 import mysql.connector
+from flask_session import Session
 from flask_cors import CORS, cross_origin
+
+from config import ApplicationConfig
 
 import recommender
 import match
 import os
 
 app = Flask(__name__)
+app.config.from_object(ApplicationConfig)
+server_session = Session(app)
 swagger = Swagger(app, template_file='openapi.yml')
 CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
 
@@ -170,7 +175,7 @@ class MatchAPI(MethodView):
 
     # ORDER THE LIST USING RECOMMENDER
     @login_required
-    def recommend_users():
+    def recommend_users(self):
         # Open Connection to database
         try:
             with self.get_connection() as cnx:

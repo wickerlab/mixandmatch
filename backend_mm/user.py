@@ -197,7 +197,7 @@ class UserAPI(MethodView):
             # Handle database errors
             return jsonify({'error': str(err)}), 500
 
-    def logout():
+    def logout(self):
         # Clear the session to log out the user
         session.clear()
         return jsonify({'message': 'Logged out successfully'}), 200
