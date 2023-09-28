@@ -138,8 +138,11 @@ class MatchAPI(MethodView):
                     insert_query = "UPDATE mixnmatch.match SET user2_update_time = NOW(), user2_match = %s, user2_decision_time = %s WHERE (user2_id = %s AND user1_id = %s ) AND (user1_match IS NULL OR user2_match IS NULL)"
                     match_data = (match_bool, match_time, user_id, other_user_id)
 
-                # 
-                other_user = recommender.get_user_attributes_by_id(other_user_id)
+                # Get other user's attributes
+                try: 
+                    other_user = recommender.get_user_attributes_by_id(other_user_id)
+                except:
+                    return jsonify({'error matching'}), 500
 
                 # update user preference profile
                 attribute_category_insert = sort_profile_update_query(other_user.age_category.value, match_decision)
