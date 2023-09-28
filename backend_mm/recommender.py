@@ -236,7 +236,7 @@ def order_by_preference(u1: User, user_arr) :
 
                 user_arr[j], user_arr[j + 1] = user_arr[j + 1], user_arr[j]
                 
-    user_arr.reverse()
+    # user_arr.reverse()
 
 
 if __name__ == '__main__' :
