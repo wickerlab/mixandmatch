@@ -4,16 +4,6 @@ import re
 from enum import *
 import mysql.connector
 
-cnx = mysql.connector.connect(
-    user='root',  # MySQL username CHANEG TO 'admin1' FOR DEPLOYMENT 
-    password='mixnmatchmysql',  # MySQL password
-    host='localhost',  # IP address or hostname
-    database='mixnmatch'  # MySQL database
-)
-
-# Create a cursor object to execute SQL queries
-cursor = cnx.cursor()
-
 class Salary(Enum):
     BRACKET_1 = 'UNDER15'
     BRACKET_2 = '15TO30'
@@ -115,6 +105,16 @@ class UserPreference:
         self.attractiveness = [0.1, 0, 0]
 
 def get_user_attributes_by_id(user_id):
+    cnx = mysql.connector.connect(
+    user='root',  # MySQL username CHANEG TO 'admin1' FOR DEPLOYMENT 
+    password='mixnmatchmysql',  # MySQL password
+    host='localhost',  # IP address or hostname
+    database='mixnmatch'  # MySQL database
+    )
+
+    # Create a cursor object to execute SQL queries
+    cursor = cnx.cursor()
+
     # Query the database to get the user attributes by user_id
     query = "SELECT attr_age, attr_gender, attr_career, attr_education FROM user WHERE id = %s"
     cursor.execute(query, (user_id,))
@@ -157,6 +157,9 @@ def get_user_attributes_by_id(user_id):
     user.preference.attractiveness[2] = result[i+1]
 
     update_user_preference(user)
+
+    cursor.close()
+    cnx.close()
     return user
 
 def fill_user_preference(attribute_prefs, query) :
