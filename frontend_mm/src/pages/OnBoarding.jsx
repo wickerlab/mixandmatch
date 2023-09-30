@@ -55,7 +55,11 @@ const OnBoarding = () => {
 
         const formDataToSend = new FormData();
         formDataToSend.append('age', formData.age);
-        formDataToSend.append('gender', formData.gender_identity);
+        if (formData.gender_identity === 'man') {
+            formDataToSend.append('gender', 'MALE');
+        }  else {
+            formDataToSend.append('gender', "FEMALE");
+        }
         formDataToSend.append('career', formData.salary);
         formDataToSend.append('education', formData.degree);
         formDataToSend.append('photo', formData.url);
