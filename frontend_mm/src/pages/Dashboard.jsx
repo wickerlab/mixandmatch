@@ -24,7 +24,7 @@ const Dashboard = () => {
     }, [hasFetchedMatches]);
 
     useEffect(() => {
-        if (matches.length === 1 && hasFetchedMatches) {
+        if (matches.length > 1 && hasFetchedMatches) {
             // Fetch more users when all users have been swiped
             fetchMatches().then(() => {
                 console.log("Fetched more matches");
