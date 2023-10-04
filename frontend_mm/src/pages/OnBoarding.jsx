@@ -80,7 +80,8 @@ const OnBoarding = () => {
 
             const success = response.status === 200;
             if (success) {
-                navigate('/dashboard');
+                alert("Successfully created account! Please log in")
+                navigate('/');
             } else {
                 // Handle error
                 console.error('Error submitting form data');
@@ -224,6 +225,7 @@ const OnBoarding = () => {
                         onChange={handleChange}
                         required={true}
                     />
+                    <p className="message">Upload a photo of yourself with a url link</p>
                     <div className="photo-container">
                         <img src={formData.url}/>
                     </div>

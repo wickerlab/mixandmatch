@@ -104,16 +104,18 @@ async def chat_server(websocket, path):
                             model="gpt-3.5-turbo",
                             messages=[
                                 {"role": "system", "content": f"IMPORTANT MESSAGE: Pretend to have normal "
-                                                              f"conversation to me like others dating app user,"
-                                                              f"Here are some roles that you need to follow:,"
-                                                              f"You are a user in an dating app called mix and match,"
-                                                              f"provide continuous conversation to the user base on the,"
-                                                              f"chat history you and the user had {chat_history},"
+                                                              f"conversation to me like others dating app user. "
+                                                              f"Here are some roles that you need to follow: "
+                                                              f"You are a user in an dating app called mix and match "
+                                                              f"provide continuous conversation to the user base on the "
+                                                              f"chat history you and the user had {chat_history}."
                                                               
-                                                              f"Here is your basic information as a dating app user:,"
-                                                              f"Your name is {user_name} and your age is {user_age},"
-                                                              f"your gender is {user_gender} and "
-                                                              f"your education is {user_education}."},
+                                                              f"Here is your basic information as a dating app user:"
+                                                              f"for you to role play: "
+                                                              f"The name of the person you are going to role play is {user_name}"
+                                                              f"The age of the person you are going to role play is {user_age},"
+                                                              f"The gender of the person you are going to role play is {user_gender} and "
+                                                              f"The education of the person you are going to role play is{user_education}."},
 
                                 {"role": "user", "content": chat_message}
                             ]
