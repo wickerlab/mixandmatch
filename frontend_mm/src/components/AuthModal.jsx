@@ -14,38 +14,12 @@ const AuthModal = ({setShowModal, isSignUp}) =>{
     const [isSignUpMode, setIsSignUpMode] = useState(isSignUp); // Track the mode
 
 
-    let navigate = useNavigate()
+    let navigate = useNavigate();
+
 
 
     const handleClick =()=>{
         setShowModal(false)
-    }
-
-    const handleTest =()=>{
-        fetchMatches();
-    }
-
-    async function fetchMatches() {
-        try {
-
-            // const authToken = ''; // Replace with your actual authentication token
-            const axiosWithCookies = axios.create({
-                withCredentials: true
-            });
-
-            const response = await axiosWithCookies.get("http://127.0.0.1:5000/matches", {
-                headers:{
-                }
-
-            });
-
-            console.log(response);
-
-            console.log(response.data.recommended_users);
-
-        } catch (error) {
-            console.error("Error fetching matches:", error);
-        }
     }
 
     const handleSubmit = async (e) => {
@@ -58,46 +32,44 @@ const AuthModal = ({setShowModal, isSignUp}) =>{
 
             const formData = new FormData();
 
-            if (isSignUpMode && (password.length < 8)) {
+            if (isSignUpMode) {
                 formData.append('email', email);
                 formData.append('username', username);
                 formData.append('password', password);
 
-                const response = await axios.post('http://127.0.0.1:5000/signup', formData, {
+                const response = await axios.post('https://mixandmatch.wickerlab.org/api/signup', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     },
                     withCredentials: true
                 });
 
-                console.log(response.headers.get("Set-Cookie"));
-
-                // setCookie('Email', response.data.email);
-                // setCookie('userId', response.data.userId);
-                // setCookie('AuthToken', response.data.token);
-
                 const success = response.status === 201;
                 if (success) {
-                    navigate('/onboarding');
+                    const responseBody = response.data; // Assuming the response is JSON
+                    const userIdMatch = responseBody.message.match(/user_id: (\d+)/);
+                    const userId = userIdMatch ? userIdMatch[1] : null;
+                    // Use React Router to navigate with state
+                    navigate('onboarding', { state: { userId } });
                 }
             }
             else if(!isSignUpMode){
                 formData.append('email', email);
                 formData.append('password', password);
 
-                const response = await axios.post('http://127.0.0.1:5000/login', formData, {
+                const response = await axios.post('https://mixandmatch.wickerlab.org/api/login', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     },
                     withCredentials: true
                 });
 
-
                 const success = response.status === 200;
                 if (success) {
-                    console.log(response.headers.get("Set-Cookie"));
-                    // navigate('/dashboard');
+                    navigate('dashboard');
                 }
+            }else{
+                console.log("unknown error");
             }
 
         } catch (error) {
@@ -127,7 +99,6 @@ const AuthModal = ({setShowModal, isSignUp}) =>{
                 { isSignUpMode && <input
                     type="username"
                     id="username"
-                    id="username"
                     name="username"
                     placeholder="username"
                     required={true}
@@ -149,12 +120,9 @@ const AuthModal = ({setShowModal, isSignUp}) =>{
                     required={true}
                     onChange={e => setConfirmPassword(e.target.value)}
                 />}
-                <input className="secondary-button" type="submit"/>
+                <input className="primary-button" type="submit"/>
                 <button className="secondary-button" type="button" onClick={handleModeToggle}>
                     {isSignUpMode ? 'Log In' : 'Sign Up'}
-                </button>
-                <button className="secondary-button" type="button" onClick={handleTest}>
-                    Test
                 </button>
                 <p>{error}</p>
             </form>

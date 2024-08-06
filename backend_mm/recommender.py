@@ -4,16 +4,6 @@ import re
 from enum import *
 import mysql.connector
 
-cnx = mysql.connector.connect(
-    user='root',  # MySQL username CHANEG TO 'admin1' FOR DEPLOYMENT 
-    password='mixnmatchmysql',  # MySQL password
-    host='localhost',  # IP address or hostname
-    database='mixnmatch'  # MySQL database
-)
-
-# Create a cursor object to execute SQL queries
-cursor = cnx.cursor()
-
 class Salary(Enum):
     BRACKET_1 = 'UNDER15'
     BRACKET_2 = '15TO30'
@@ -115,6 +105,16 @@ class UserPreference:
         self.attractiveness = [0.1, 0, 0]
 
 def get_user_attributes_by_id(user_id):
+    cnx = mysql.connector.connect(
+    user='root',  # MySQL username CHANEG TO 'admin1' FOR DEPLOYMENT 
+    password='mixnmatchmysql',  # MySQL password
+    host='localhost',  # IP address or hostname
+    database='mixnmatch'  # MySQL database
+    )
+
+    # Create a cursor object to execute SQL queries
+    cursor = cnx.cursor()
+
     # Query the database to get the user attributes by user_id
     query = "SELECT attr_age, attr_gender, attr_career, attr_education FROM user WHERE id = %s"
     cursor.execute(query, (user_id,))
@@ -157,6 +157,9 @@ def get_user_attributes_by_id(user_id):
     user.preference.attractiveness[2] = result[i+1]
 
     update_user_preference(user)
+
+    cursor.close()
+    cnx.close()
     return user
 
 def fill_user_preference(attribute_prefs, query) :
@@ -204,18 +207,18 @@ def update_user_preference(u1: User):
     """update user profile"""
     """u1 is the current user and u2 is the target user"""
     for key in u1.preference.age_prefs :
-        if ((u1.preference.age_prefs[key][1] != 0) or (u1.preference.age_prefs[key][2] != 0)) :
+        if ((u1.preference.age_prefs[key][1] != 0) and (u1.preference.age_prefs[key][2] != 0)) :
             u1.preference.age_prefs[key][0] = u1.preference.age_prefs[key][1] / (u1.preference.age_prefs[key][2] + u1.preference.age_prefs[key][1])
     for key in u1.preference.salary_prefs :
-        if ((u1.preference.salary_prefs[key][1] != 0) or (u1.preference.salary_prefs[key][2] != 0)) :
+        if ((u1.preference.salary_prefs[key][1] != 0) and (u1.preference.salary_prefs[key][2] != 0)) :
             u1.preference.salary_prefs[key][0] = u1.preference.salary_prefs[key][1] / (u1.preference.salary_prefs[key][2] + u1.preference.salary_prefs[key][1])       
     for key in u1.preference.education_prefs :
-        if ((u1.preference.education_prefs[key][1] != 0) or (u1.preference.education_prefs[key][2] != 0)) :
+        if ((u1.preference.education_prefs[key][1] != 0) and (u1.preference.education_prefs[key][2] != 0)) :
             u1.preference.education_prefs[key][0] = u1.preference.education_prefs[key][1] / (u1.preference.education_prefs[key][2] + u1.preference.education_prefs[key][1]) 
     for key in u1.preference.gender_prefs :
-        if ((u1.preference.gender_prefs[key][1] != 0) or (u1.preference.gender_prefs[key][2] != 0)) :
+        if ((u1.preference.gender_prefs[key][1] != 0) and (u1.preference.gender_prefs[key][2] != 0)) :
             u1.preference.gender_prefs[key][0] = u1.preference.gender_prefs[key][1] / (u1.preference.gender_prefs[key][2] + u1.preference.gender_prefs[key][1])
-    if ((u1.preference.attractiveness[1] != 0) or (u1.preference.attractiveness[2] != 0)) :
+    if ((u1.preference.attractiveness[1] != 0) and (u1.preference.attractiveness[2] != 0)) :
             u1.preference.attractiveness[0] = u1.preference.attractiveness[1] / (u1.preference.attractiveness[2] + u1.preference.attractiveness[1])     
 
 def order_by_preference(u1: User, user_arr) :
@@ -236,10 +239,12 @@ def order_by_preference(u1: User, user_arr) :
 
                 user_arr[j], user_arr[j + 1] = user_arr[j + 1], user_arr[j]
                 
-    user_arr.reverse()
+    # user_arr.reverse()
 
 
 if __name__ == '__main__' :
+    ## DEMO
+
     generic_user = u1 = User(Salary.BRACKET_2, 35, Gender.MALE, Education.DOCTORAL)
 
     # dummy data 

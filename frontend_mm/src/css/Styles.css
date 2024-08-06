@@ -23,16 +23,29 @@ h2 {
     color: aliceblue;
     text-transform: uppercase;
     font-size: 15px;
-    background: linear-gradient(20deg, #1F90E2, #900DF8);
     padding: 12px 30px;
     border-radius: 30px;
     border: none;
 }
 
-.primary-button:hover,
-.secondary-button:hover {
+.primary-button {
+    background: linear-gradient(20deg, #1F90E2, #900DF8);
+}
+
+.primary-button:hover {
     background: linear-gradient(45deg, #2481c7, #7d14d2);
 }
+
+.secondary-button {
+    background: linear-gradient(20deg, #80271b, #c53e13); /* Change the colors here */
+}
+
+.secondary-button:hover {
+    background: linear-gradient(45deg, #67271d, #a43c1a); /* Change the colors here */
+}
+
+
+
 
 body {
     text-align: center;
