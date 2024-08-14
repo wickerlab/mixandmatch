@@ -41,7 +41,7 @@ const Dashboard = () => {
                 withCredentials: true
             });
 
-            const response = await axiosWithCookies.get("https://mixandmatch.wickerlab.org/api/matches");
+            const response = await axiosWithCookies.get("http://127.0.0.1:5000/matches");
             const newMatches = response.data.recommended_users;
 
             setMatches(newMatches);
@@ -73,7 +73,7 @@ const Dashboard = () => {
             formData.append('match_time', fakeTimeStamp);
 
             //TODO change this to the actual url
-            const response = await axios.post(`https://mixandmatch.wickerlab.org/api/matches/${userId}`, formData, {
+            const response = await axios.post(`http://127.0.0.1:5000/matches/${userId}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 },

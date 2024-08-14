@@ -36,8 +36,8 @@ CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
 
 # Create a MySQL connection pool
 dbconfig = {
-    "user": 'root',  # MySQL username (CHANGE TO 'admin1' FOR DEPLOYMENT)
-    "password": 'mixnmatchmysql',  # MySQL password
+    "user": 'mixnmatch',  # MySQL username (CHANGE TO 'admin1' FOR DEPLOYMENT)
+    "password": 'mixnmatch',  # MySQL password
     "host": 'localhost',  # IP address or hostname
     "database": 'mixnmatch',  # MySQL database
     "pool_name": "mypool",
@@ -255,9 +255,7 @@ class UserAPI(MethodView):
                     WHEN m.user1_id = %s THEN m.user2_id
                     ELSE m.user1_id
                 END AS user_id,
-                u.username,
-                u.photo,
-                COUNT(CASE WHEN msg.status = 'unread' AND msg.receiver_id = %s THEN 1 ELSE NULL END) AS unread_count
+                u.username
             FROM
                 mixnmatch.match AS m
             INNER JOIN
@@ -267,24 +265,35 @@ class UserAPI(MethodView):
                     WHEN m.user1_id = %s THEN m.user2_id
                     ELSE m.user1_id
                 END = u.id
-            LEFT JOIN
-                mixnmatch.message AS msg
-            ON
-                (m.user1_id = msg.sender_id AND m.user2_id = msg.receiver_id)
-                OR (m.user1_id = msg.receiver_id AND m.user2_id = msg.sender_id)
+            # LEFT JOIN
+            #     mixnmatch.message AS msg
+            # ON
+            #     (m.user1_id = msg.sender_id AND m.user2_id = msg.receiver_id)
+            #     OR (m.user1_id = msg.receiver_id AND m.user2_id = msg.sender_id)
             WHERE
-                (%s IN (m.user1_id, m.user2_id))
-                AND (m.user1_match = 1 AND m.user2_match = 1)
-            GROUP BY
-                user_id, u.username, u.photo
+                %s IN (m.user1_id, m.user2_id)
+                AND m.user1_match = 1
+                AND m.user2_match = 1
+
         """
-        query_data = (user_id, user_id, user_id, user_id)
+        query_data = (user_id, user_id, user_id)
+
+        # print(query_data)
 
         try:
             with self.get_connection() as cnx:
+
+                print("connected")
+
                 cursor = cnx.cursor(dictionary=True)
+                # print(select_query)
                 cursor.execute(select_query, query_data)
+
+                print("executed")
+
                 chat_users = cursor.fetchall()
+
+                print(chat_users)
 
                 # Check if there are any results
                 if not chat_users:
@@ -448,11 +457,13 @@ class UserAPI(MethodView):
             with self.get_connection() as cnx:
                 cursor = cnx.cursor(dictionary=True)
                 # Query the database to get 15 random users excluding session user
-                user_id = session['user_id']['id']
-                query_category = 'SELECT category FROM mixnmatch.user_category WHERE user_id = %s'
-                cursor.execute(query_category, (user_id,))
-                category = cursor.fetchone()['category']
-                print(category)
+                # user_id = session['user_id']['id']
+                # query_category = 'SELECT category FROM mixnmatch.user_category WHERE user_id = %s'
+                # cursor.execute(query_category, (user_id,))
+                # category = cursor.fetchone()['category']
+                # print(category)
+
+                category = "None"
 
                 if category == 'BOT':
                     query = "SELECT * FROM user JOIN user_category ON (user.id = user_category.user_id) WHERE (user.id != " + str(session['user_id']['id']) + ") " \

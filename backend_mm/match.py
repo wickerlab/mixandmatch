@@ -45,8 +45,8 @@ app.secret_key = os.urandom(24)  # temp authentication key
 
 # Create a MySQL connection pool
 dbconfig = {
-    "user": 'root',  # MySQL username (CHANGE TO 'admin1' FOR DEPLOYMENT)
-    "password": 'mixnmatchmysql',  # MySQL password
+    "user": 'mixnmatch',  # MySQL username (CHANGE TO 'admin1' FOR DEPLOYMENT)
+    "password": 'mixnmatch',  # MySQL password
     "host": 'localhost',  # IP address or hostname
     "database": 'mixnmatch',  # MySQL database
     "pool_name": "mypool",

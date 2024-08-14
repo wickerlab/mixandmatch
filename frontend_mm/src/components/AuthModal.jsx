@@ -37,7 +37,14 @@ const AuthModal = ({setShowModal, isSignUp}) =>{
                 formData.append('username', username);
                 formData.append('password', password);
 
-                const response = await axios.post('https://mixandmatch.wickerlab.org/api/signup', formData, {
+                // const response = await axios.post('https://mixandmatch.wickerlab.org/api/signup', formData, {
+                //     headers: {
+                //         'Content-Type': 'multipart/form-data'
+                //     },
+                //     withCredentials: true
+                // });
+
+                const response = await axios.post('http://127.0.0.1:5000/signup', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     },
@@ -57,7 +64,14 @@ const AuthModal = ({setShowModal, isSignUp}) =>{
                 formData.append('email', email);
                 formData.append('password', password);
 
-                const response = await axios.post('https://mixandmatch.wickerlab.org/api/login', formData, {
+                // const response = await axios.post('https://mixandmatch.wickerlab.org/api/login', formData, {
+                //     headers: {
+                //         'Content-Type': 'multipart/form-data'
+                //     },
+                //     withCredentials: true
+                // });
+
+                const response = await axios.post('http://127.0.0.1:5000/login', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     },

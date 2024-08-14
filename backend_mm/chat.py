@@ -6,15 +6,15 @@ from urllib.parse import urlparse, parse_qs
 import openai
 
 # Your OpenAI API key
-OPENAI_API_KEY = 'KEy'
+OPENAI_API_KEY = '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'
 
 # Initialize the OpenAI API client
 openai.api_key = OPENAI_API_KEY
 
 # MySQL database configuration
 db_config = {
-    'user': 'root',  # Change to 'admin1' for deployment
-    'password': 'mixnmatchmysql',
+    'user': 'mixnmatch',  # Change to 'admin1' for deployment
+    'password': 'mixnmatch',
     'host': 'localhost',
     'database': 'mixnmatch'
 }

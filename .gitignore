@@ -29,3 +29,5 @@ backend_mm/__pycache__/
 *.xml
 *.iml
 
+.venv/**
+frontend_mm/package-lock.json
