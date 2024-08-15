@@ -132,15 +132,16 @@ class UserAPI(MethodView):
         career = request.form.get('career')
         education = request.form.get('education')
         photo = request.form.get('photo')
-
-        update_query = "UPDATE user SET attr_age = %s, attr_gender = %s, attr_career = %s, attr_education = %s, photo = %s WHERE id = %s"
-        user_data = (age, gender, career, education, photo, user_id)
+        update_query = "UPDATE user SET attr_age = %s, attr_gender = %s, attr_career = %s, attr_education = %s WHERE id = %s"
+        user_data = (age, gender, career, education, user_id)
 
         try:
             with self.get_connection() as cnx:
                 cursor = cnx.cursor(dictionary=True)
                 cursor.execute(update_query, user_data)
                 cnx.commit()
+
+                print('user added')
 
                 # initialize empty user profile and history
                 user_data_2 = (user_id)
@@ -150,14 +151,14 @@ class UserAPI(MethodView):
                 query_gender = 'INSERT INTO user_history_gender (user_id) VALUES (%s)'
                 query_salary = 'INSERT INTO user_history_salary (user_id) VALUES (%s)'
                 query_profile = 'INSERT INTO user_profile (user_id) VALUES (%s)'
-                query_category = 'INSERT INTO user_category (user_id) VALUES (%s)'
+                # query_category = 'INSERT INTO user_category (user_id) VALUES (%s)'
                 cursor.execute(query_age, (user_data_2,))
                 cursor.execute(query_attractiveness, (user_data_2,))
                 cursor.execute(query_education, (user_data_2,))
                 cursor.execute(query_gender, (user_data_2,))
                 cursor.execute(query_salary, (user_data_2,))
                 cursor.execute(query_profile, (user_data_2,))
-                cursor.execute(query_category, (user_data_2,))
+                # cursor.execute(query_category, (user_data_2,))
                 cnx.commit()
 
                 return jsonify({'message': 'User attributes updated successfully!'}), 200
@@ -402,7 +403,7 @@ class UserAPI(MethodView):
                     match_data = (user_id, other_user_id, match_bool, match_time)
 
                 elif match_class == 1:
-                    # If an incomplete match does not exist, create a new match entry
+                    # If an incomplete match does exist, update match entry
                     insert_query = "UPDATE mixnmatch.match SET user1_update_time = NOW(), user1_match = %s, user1_decision_time = %s WHERE (user1_id = %s AND user2_id = %s ) AND (user1_match IS NULL OR user2_match IS NULL)"
                     match_data = (match_bool, match_time, user_id, other_user_id)
 

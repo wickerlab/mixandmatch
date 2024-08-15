@@ -79,9 +79,11 @@ ADD COLUMN status VARCHAR(255);`
 9. in `ChatContainer.jsx` on frontend, change wickerlab web socket call to prefix with `http://localhost:8765` instead
 10. try it out
 11. if persistent 401 errors, go to application tab in developer tools (under same tab as console), go to cookies, and delete all cookies, then try again. There appears to be a problem with duplicate cookies
+12. ensure when running, run in the venv
 
 # Note
-For chat to connect, both sides need to match first
+For chat to connect, both sides need to match first and chat.py needs to be running
+
 
 
 ## Key Endpoints
