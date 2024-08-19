@@ -68,7 +68,7 @@ def add_headers(response):
             response.headers['Access-Control-Allow-Origin'] = request.headers['Origin']
 
     response.headers['Access-Control-Allow-Headers'] = 'Content-Type,Authorization'
-    # response.headers['Access-Control-Allow-Credentials'] = 'true'
+    response.headers['Access-Control-Allow-Credentials'] = 'true'
     response.headers['Access-Control-Allow-Methods'] = 'GET,PUT,POST,DELETE,OPTIONS'
 
     cookie = session_cookie_serializer.dumps(dict(session))
