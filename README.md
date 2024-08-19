@@ -63,27 +63,28 @@ To run the Mix and Match platform and explore the research code, follow these st
 The Mix and Match platform will be accessible at `http://localhost:5173`, and the API endpoints can be accessed locally at `http://localhost:5000` and WebSocket at `http://localhost:8765`.
 
 
-## Setting up local dev
+
+-----------------------------------------
+
+# Setting up local dev
 1. ensure venv is set up before installing requirements.txt, so no conflicts occur
-2. set up local SQL mixnmatch database and user access to that database (recommend naming it "mixnmatch")
-3. copy and paste all SQL files into your local mixnmatch database 
-4. (add a categories table?)
-5. alter messages table to include a status column: 
-
-`ALTER TABLE mixnmatch.message
-ADD COLUMN status VARCHAR(255);`
-
-6. go through SQL connectors (`match.py`, `mysql_connector.py`, `recommender.py`, `user.py`) and rename the user, password and database according to what you just set up
-7. comment out `response.headers['Access-Control-Allow-Credentials'] = 'true'` in `app.py` in the `setHeader` function
-8. go through frontend API calls and replace URLs with `http://127.0.0.1:5000` prefix or `http://localhost` prefix instead of calls to wickerlab
-9. in `ChatContainer.jsx` on frontend, change wickerlab web socket call to prefix with `http://localhost:8765` instead
-10. try it out
-11. if persistent 401 errors, go to application tab in developer tools (under same tab as console), go to cookies, and delete all cookies, then try again. There appears to be a problem with duplicate cookies
-12. ensure when running, run in the venv
+2. ensure SQL is running (go to services and start it)
+3. set up local SQL mixnmatch database and user access to that database (make user, password and database all called "mixnmatch")
+4. copy and paste all SQL files into your local mixnmatch database
+5. go through SQL connectors (`match.py`, `mysql_connector.py`, `recommender.py`, `user.py`) and rename the user, password and database according to what you just set up (if you didn't make user, password and database called 'mixnmatch')
 
 # Note
-For chat to connect, both sides need to match first and chat.py needs to be running
+For chat to work, both sides need to match first and chat.py needs to be running
 
+# Running local dev
+1. start venv
+2. run `npm run start:frontend` in frontend directory in a console
+3. run `python app.py` in backend in a new console
+4. run `python chat.py` in backend in a new console
+5.  if persistent 401 errors, go to application tab in developer tools (under same tab as console), go to cookies, and delete all cookies, then try again. There appears to be a problem with duplicate cookies
+
+
+-----------------------------------------
 
 
 ## Key Endpoints
