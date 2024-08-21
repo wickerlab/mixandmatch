@@ -1,4 +1,5 @@
-Flask==2.0.2
+Flask==2.2.2
+Wekzeug==3.0.3
 flasgger==0.9.5
 flask_session
 flask_cors

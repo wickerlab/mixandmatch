@@ -57,6 +57,9 @@ class UserAPI(MethodView):
     def login_required(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
+
+            print(session)
+            
             if 'email' not in session:
                 return jsonify({'message': 'Login required'}), 401
 
@@ -93,10 +96,18 @@ class UserAPI(MethodView):
 
     @swag_from('openapi.yml')
     def create_user(self):
+
+        print('signing up user')
+        print(request.form)
+
         # create a new user
         email = request.form.get('email')
         username = request.form.get('username')
         password = request.form.get('password')
+
+        print(email)
+        print(username)
+        print(password)
 
         # check if email has been registered
         email_query = "SELECT COUNT(*) FROM user WHERE email = '" + email + "'"
