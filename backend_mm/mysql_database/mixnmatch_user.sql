@@ -31,6 +31,7 @@ CREATE TABLE `user` (
   `attr_gender` varchar(16) DEFAULT NULL,
   `attr_career` varchar(32) DEFAULT NULL,
   `attr_education` varchar(32) DEFAULT NULL,
+  `imageURL` TEXT DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -41,7 +42,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (5,'viableuser1@gmail.com','viableuser1','viableuser1',24,'MALE','15TO30','MASTERS'),(6,'viableuser2@gmail.com','viableuser2','viableuser2',31,'FEMALE','30TO50','BACHELORS'),(7,'viableuser3@gmail.com','viableuser3','viableuser3',18,'MALE','OVER50','DOCTORAL'),(8,'viableuser4@gmail.com','viableuser4','viableuser4',27,'FEMALE','UNDER15','DIPLOMA'),(9,'viableuser5@gmail.com','viableuser5','viableuser5',22,'FEMALE','30TO50','MASTERS'),(40,'viableuser6@gmail.com','viableuser6','viableuser6',25,'MALE','15TO30','UNDERGRADUATE'),(41,'viableuser7@gmail.com','viableuser7','viableuser7',29,'FEMALE','UNDER15','MASTERS');
+INSERT INTO `user` VALUES (5,'viableuser1@gmail.com','viableuser1','viableuser1',24,'MALE','15TO30','MASTERS','https://blenderartists.org/uploads/default/original/4X/f/7/a/f7a0a3a97695c83f4780973eb73b8f20ecc29df9.jpg'),(6,'viableuser2@gmail.com','viableuser2','viableuser2',31,'FEMALE','30TO50','BACHELORS', 'https://blenderartists.org/uploads/default/original/4X/f/7/a/f7a0a3a97695c83f4780973eb73b8f20ecc29df9.jpg'),(7,'viableuser3@gmail.com','viableuser3','viableuser3',18,'MALE','OVER50','DOCTORAL', 'https://blenderartists.org/uploads/default/original/4X/f/7/a/f7a0a3a97695c83f4780973eb73b8f20ecc29df9.jpg'),(8,'viableuser4@gmail.com','viableuser4','viableuser4',27,'FEMALE','UNDER15','DIPLOMA','https://blenderartists.org/uploads/default/original/4X/f/7/a/f7a0a3a97695c83f4780973eb73b8f20ecc29df9.jpg'),(9,'viableuser5@gmail.com','viableuser5','viableuser5',22,'FEMALE','30TO50','MASTERS','https://blenderartists.org/uploads/default/original/4X/f/7/a/f7a0a3a97695c83f4780973eb73b8f20ecc29df9.jpg'),(40,'viableuser6@gmail.com','viableuser6','viableuser6',25,'MALE','15TO30','UNDERGRADUATE','https://blenderartists.org/uploads/default/original/4X/f/7/a/f7a0a3a97695c83f4780973eb73b8f20ecc29df9.jpg'),(41,'viableuser7@gmail.com','viableuser7','viableuser7',29,'FEMALE','UNDER15','MASTERS','https://blenderartists.org/uploads/default/original/4X/f/7/a/f7a0a3a97695c83f4780973eb73b8f20ecc29df9.jpg');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

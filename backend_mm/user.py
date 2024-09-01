@@ -143,8 +143,9 @@ class UserAPI(MethodView):
         career = request.form.get('career')
         education = request.form.get('education')
         photo = request.form.get('photo')
-        update_query = "UPDATE user SET attr_age = %s, attr_gender = %s, attr_career = %s, attr_education = %s WHERE id = %s"
-        user_data = (age, gender, career, education, user_id)
+        update_query = "UPDATE user SET attr_age = %s, attr_gender = %s, attr_career = %s, attr_education = %s, imageURL = %s WHERE id = %s"
+        user_data = (age, gender, career, education, photo, user_id)
+        
 
         try:
             with self.get_connection() as cnx:
