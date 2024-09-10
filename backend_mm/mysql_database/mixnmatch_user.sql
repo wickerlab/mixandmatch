@@ -32,6 +32,7 @@ CREATE TABLE `user` (
   `attr_career` varchar(32) DEFAULT NULL,
   `attr_education` varchar(32) DEFAULT NULL,
   `imageURL` TEXT DEFAULT NULL,
+  `bio` TEXT DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
