@@ -53,6 +53,7 @@ app.add_url_rule('/chat-history', view_func=user_api.get_chat_history, methods=[
 # MatchAPI
 app.add_url_rule('/matches/<int:other_user_id>', view_func=user_api.match_user, methods=['POST'])
 app.add_url_rule('/matches', view_func=user_api.recommend_users, methods=['GET'])
+app.add_url_rule('/reset-matches/<int:user_id>', view_func=user_api.remove_user_matches, methods=['POST'])
 
 @app.after_request
 def apply_headers(response):

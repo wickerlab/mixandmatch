@@ -366,6 +366,81 @@ class UserAPI(MethodView):
             # Handle exceptions appropriately (e.g., log errors)
             print("ErrorMessage", e)
             return jsonify({'message': str(e)}), 500
+        
+    def remove_user_matches(self, user_id):
+
+        print(user_id)
+
+        try:
+            with self.get_connection() as cnx:
+                cursor = cnx.cursor(dictionary=True)
+
+                # Remove all match entries for the current user
+                delete_query = """
+                    DELETE FROM mixnmatch.match 
+                    WHERE user1_id = %s
+                """
+                cursor.execute(delete_query, (user_id,))
+
+                # Reset user preference profiles in the following tables:
+                # - user_history_age
+                # - user_history_salary
+                # - user_history_gender
+                # - user_history_education
+                # - user_history_attractiveness
+
+                reset_query_age = """
+                    UPDATE mixnmatch.user_history_age SET 
+                    category1_accept = 0000000000, category1_reject = 0000000000,
+                    category2_accept = 0000000000, category2_reject = 0000000000,
+                    category3_accept = 0000000000, category3_reject = 0000000000,
+                    category4_accept = 0000000000, category4_reject = 0000000000
+                    WHERE user_id = %s
+                """
+                reset_query_attractiveness = """
+                    UPDATE mixnmatch.user_history_attractiveness SET 
+                    received_accept = 0000000000, received_reject = 0000000000
+                    WHERE user_id = %s
+                """
+                reset_query_education = """
+                    UPDATE mixnmatch.user_history_education SET 
+                    bachelors_accept = 0000000000, bachelors_reject = 0000000000,
+                    masters_accept = 0000000000, masters_reject = 0000000000,
+                    doctoral_accept = 0000000000, doctoral_reject = 0000000000,
+                    diploma_accept = 0000000000, diploma_reject = 0000000000
+                    WHERE user_id = %s
+                """
+
+                reset_query_gender = """
+                    UPDATE mixnmatch.user_history_gender SET 
+                    male_accept = 0000000000, male_reject = 0000000000,
+                    female_accept = 0000000000, female_reject = 0000000000
+                    WHERE user_id = %s
+                """
+                reset_query_salary = """
+                    UPDATE mixnmatch.user_history_salary SET 
+                    category1_accept = 0000000000, category1_reject = 0000000000,
+                    category2_accept = 0000000000, category2_reject = 0000000000,
+                    category3_accept = 0000000000, category3_reject = 0000000000,
+                    category4_accept = 0000000000, category4_reject = 0000000000
+                    WHERE user_id = %s
+                """
+
+                # Execute the reset queries
+                cursor.execute(reset_query_age, (user_id,))
+                cursor.execute(reset_query_salary, (user_id,))
+                cursor.execute(reset_query_gender, (user_id,))
+                cursor.execute(reset_query_education, (user_id,))
+                cursor.execute(reset_query_attractiveness, (user_id,))
+
+                # Commit the changes
+                cnx.commit()
+
+        except mysql.connector.Error as err:
+            # Handle database errors
+            return jsonify({'error': str(err)}), 500
+
+        return jsonify({'message': 'Successfully removed all matches and reset preference profiles.'})
 
     # @app.route('/match/<int:other_user_id>', methods=['POST'])
     @login_required
