@@ -378,9 +378,9 @@ class UserAPI(MethodView):
                 # Remove all match entries for the current user
                 delete_query = """
                     DELETE FROM mixnmatch.match 
-                    WHERE user1_id = %s
+                    WHERE user1_id = %s or user2_id = %s
                 """
-                cursor.execute(delete_query, (user_id,))
+                cursor.execute(delete_query, (user_id, user_id))
 
                 # Reset user preference profiles in the following tables:
                 # - user_history_age
