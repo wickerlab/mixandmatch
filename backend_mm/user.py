@@ -367,6 +367,29 @@ class UserAPI(MethodView):
             print("ErrorMessage", e)
             return jsonify({'message': str(e)}), 500
         
+    def reset_chat_history(self, user_id):
+        print(user_id)
+
+        try:
+            with self.get_connection() as cnx:
+                cursor = cnx.cursor(dictionary=True)
+
+                # Remove all message entries for the current user
+                delete_query = """
+                    DELETE FROM mixnmatch.message 
+                    WHERE sender_id = %s or receiver_id = %s
+                """
+                cursor.execute(delete_query, (user_id, user_id))
+
+                # Commit the changes
+                cnx.commit()
+
+        except mysql.connector.Error as err:
+            # Handle database errors
+            return jsonify({'error': str(err)}), 500
+
+        return jsonify({'message': 'Successfully removed all chat history with current user.'})
+
     def remove_user_matches(self, user_id):
 
         print(user_id)

@@ -48,7 +48,8 @@ app.add_url_rule('/logout', view_func=user_api.logout, methods=['GET'])
 app.add_url_rule('/signup', view_func=user_api.create_user, methods=['POST'])
 app.add_url_rule('/onboarding/<int:user_id>', view_func=user_api.onboard, methods=['POST'])
 app.add_url_rule('/chat', view_func=user_api.get_chat, methods=['GET'])
-app.add_url_rule('/chat-history', view_func=user_api.get_chat_history, methods=['POST'])
+app.add_url_rule('/chat-history', view_func=user_api.get_chat_history, methods=['GET'])
+app.add_url_rule('/reset-chat/<int:user_id>', view_func=user_api.reset_chat_history, methods=['POST'])
 
 # MatchAPI
 app.add_url_rule('/matches/<int:other_user_id>', view_func=user_api.match_user, methods=['POST'])
@@ -69,7 +70,7 @@ def add_headers(response):
             response.headers['Access-Control-Allow-Origin'] = request.headers['Origin']
 
     response.headers['Access-Control-Allow-Headers'] = 'Content-Type,Authorization'
-    # response.headers['Access-Control-Allow-Credentials'] = 'true'
+    response.headers['Access-Control-Allow-Credentials'] = 'true'
     response.headers['Access-Control-Allow-Methods'] = 'GET,PUT,POST,DELETE,OPTIONS'
 
     cookie = session_cookie_serializer.dumps(dict(session))
