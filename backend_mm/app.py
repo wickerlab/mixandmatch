@@ -48,7 +48,7 @@ app.add_url_rule('/logout', view_func=user_api.logout, methods=['GET'])
 app.add_url_rule('/signup', view_func=user_api.create_user, methods=['POST'])
 app.add_url_rule('/onboarding/<int:user_id>', view_func=user_api.onboard, methods=['POST'])
 app.add_url_rule('/chat', view_func=user_api.get_chat, methods=['GET'])
-app.add_url_rule('/chat-history', view_func=user_api.get_chat_history, methods=['GET'])
+app.add_url_rule('/chat-history', view_func=user_api.get_chat_history, methods=['GET', 'POST'])
 app.add_url_rule('/reset-chat/<int:user_id>', view_func=user_api.reset_chat_history, methods=['POST'])
 
 # MatchAPI
