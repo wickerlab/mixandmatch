@@ -28,7 +28,7 @@ const OnBoarding = () => {
         degree: '',
         salary: '',
         url: '',
-        about: ''
+        bio: '',
     });
 
     const [ageValidation, setAgeValidation] = useState({
@@ -64,6 +64,7 @@ const OnBoarding = () => {
         formDataToSend.append('career', formData.salary);
         formDataToSend.append('education', formData.degree);
         formDataToSend.append('photo', formData.url);
+        formDataToSend.append('bio', formData.bio);
 
         // Make the POST request
         try {
@@ -204,14 +205,14 @@ const OnBoarding = () => {
                             </option>
                         ))}
                     </select>
-                    <label htmlFor="about">About me</label>
+                    <label htmlFor="bio">About me</label>
                     <input
-                        id="about"
+                        id="bio"
                         type="text"
-                        name="about"
+                        name="bio"
                         required={true}
                         placeholder="I like long walks.."
-                        value={formData.about}
+                        value={formData.bio}
                         onChange={handleChange}
                     />
                     <input type="submit"/>
