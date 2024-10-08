@@ -32,4 +32,4 @@ backend_mm/__pycache__/
 backend_mm/venv/**
 frontend_mm/package-lock.json
 
-*/.venv
+**/.venv

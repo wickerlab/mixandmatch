@@ -94,6 +94,24 @@ class UserAPI(MethodView):
             # Handle database errors
             return jsonify({'error': str(err)}), 500
 
+    def delete_user(self, user_id):
+
+        if user_id is None:
+            return 400
+        else:
+            print(user_id)
+            query = "DELETE FROM user WHERE id = %s"
+        try:
+            with self.get_connection() as cnx:
+                cursor = cnx.cursor(dictionary=True)
+                cursor.execute(query, (user_id,))
+                cnx.commit()
+
+                return jsonify({'message': 'user deleted'}), 200
+        except mysql.connector.Error as err:
+            # Handle database errors
+            return jsonify({'error': str(err)}), 500
+
     @swag_from('openapi.yml')
     def create_user(self):
 
@@ -368,7 +386,6 @@ class UserAPI(MethodView):
             return jsonify({'message': str(e)}), 500
         
     def reset_chat_history(self, user_id):
-        print(user_id)
 
         try:
             with self.get_connection() as cnx:
@@ -391,9 +408,6 @@ class UserAPI(MethodView):
         return jsonify({'message': 'Successfully removed all chat history with current user.'})
 
     def remove_user_matches(self, user_id):
-
-        print(user_id)
-
         try:
             with self.get_connection() as cnx:
                 cursor = cnx.cursor(dictionary=True)
