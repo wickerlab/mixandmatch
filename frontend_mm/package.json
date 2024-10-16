@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "start:frontend": "vite",
+    "dev": "vite",
     "build": "vite build",
     "postbuild": "npm run copy-build",
     "copy-build": "cp -r dist/* /var/www/mixandmatch.wickerlab.org/html"
