@@ -21,6 +21,10 @@ The repository is organized into the following key components:
 
 ## Getting Started
 
+
+Please ensure you have MySQL set up before you run these scripts
+Read `SQL.md` before proceeding
+
 ### Scripts
 
 Use the script to set up:
