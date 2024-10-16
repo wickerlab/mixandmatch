@@ -21,56 +21,21 @@ The repository is organized into the following key components:
 
 ## Getting Started
 
-To run the Mix and Match platform and explore the research code, follow these steps:
+### Scripts
 
-1. Clone the repository to your local machine:
+Use the script to set up:
+windows:
+`& "C:\Program Files\Git\bin\bash.exe" ./setup.sh`
 
-   ```bash
-   git clone <repository_url>
-   cd path/to/mixandmatch
-   ```
+mac:
+`sh ./setup.sh`
 
-2. Install the required dependencies for the frontend:
+Use the script to run:
+windows:
+`& "C:\Program Files\Git\bin\bash.exe" ./run.sh`
 
-   ```bash
-   # from the root
-   cd frontend_mm
-   npm install
-   ``
-
-3. Start the frontend development server:
-
-   ```bash
-   # from frontend_mm directory
-   npm run start:frontend
-   ```
-
-4. Install the required dependencies for the Flask API:
-
-   ```bash
-   # from the root
-   cd backend_mm
-   pip install -r requirements.txt
-   ```
-
-5. Run the Flask API:
-
-   ```bash
-   # from backend_mm directory
-   python app.py
-   ```
-   
-5. Run the WebSocket:
-
-   ```bash
-   # from backend_mm directory
-   python chat.py
-   ```
-
-   
-
-The Mix and Match platform will be accessible at `http://localhost:5173`, and the API endpoints can be accessed locally at `http://localhost:5000` and WebSocket at `http://localhost:8765`.
-
+mac:
+`sh ./run.sh`
 
 
 -----------------------------------------
@@ -95,6 +60,10 @@ For chat to work, both sides need to match first and chat.py needs to be running
 
 
 -----------------------------------------
+   
+
+The Mix and Match platform will be accessible at `http://localhost:5173`, and the API endpoints can be accessed locally at `http://localhost:5000` and WebSocket at `http://localhost:8765`.
+
 
 
 ## Key Endpoints
