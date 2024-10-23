@@ -2,6 +2,8 @@
 
 Welcome to the Mix and Match research code repository. This repository contains the codebase for the Mix and Match platform, which explores the interplay between user behavior and recommendation algorithms in the context of online dating applications. Below, you'll find an overview of the repository structure and key components.
 
+This branch has been heavily edited by the Unsupervised Learners Capstone Team (2024 Sem 2) (Team 36)
+
 ## Repository Structure
 
 The repository is organized into the following key components:
@@ -19,48 +21,54 @@ The repository is organized into the following key components:
 
 ## Getting Started
 
-To run the Mix and Match platform and explore the research code, follow these steps:
 
-1. Clone the repository to your local machine:
+Please ensure you have MySQL set up before you run these scripts
+Read `SQL.md` before proceeding
 
-   ```bash
-   git clone <repository_url>
-   cd path/to/mixandmatch
-   ```
+### Scripts
 
-2. Install the required dependencies for the frontend:
+Use the script to set up:
+windows:
+`& "C:\Program Files\Git\bin\bash.exe" ./setup.sh`
 
-   ```bash
-   npm install
-   ``
+mac:
+`sh ./setup.sh`
 
-3. Start the frontend development server:
+Use the script to run:
+windows:
+`& "C:\Program Files\Git\bin\bash.exe" ./run.sh`
 
-   ```bash
-   npm run start:frontend
-   ```
+mac:
+`sh ./run.sh`
 
-4. Install the required dependencies for the Flask API:
 
-   ```bash
-   pip install -r requirements.txt
-   ```
+-----------------------------------------
 
-5. Run the Flask API:
+# Setting up local dev
+1. ensure venv is set up before installing requirements.txt, so no conflicts occur
+2. ensure SQL is running (go to services and start it)
+3. set up local SQL mixnmatch database and user access to that database (make user, password and database all called "mixnmatch")
+4. source the SQL dump file into your local mixnmatch database
 
-   ```bash
-   python app.py
-   ```
-   
-5. Run the WebSocket:
+# Note
+For chat to work, both sides need to match first and chat.py needs to be running
 
-   ```bash
-   python chat.py
-   ```
+# Running local dev
+1. start venv 
+   1. windows: `.venv\Scripts\activate`
+   2. mac: `source venv/bin/activate`
+2. run `npm run start:frontend` in frontend directory in a console
+3. run `python app.py` in backend in a new console
+4. run `python chat.py` in backend in a new console
+5.  if persistent 401 errors, go to application tab in developer tools (under same tab as console), go to cookies, and delete all cookies, then try again. There appears to be a problem with duplicate cookies
 
+
+-----------------------------------------
    
 
 The Mix and Match platform will be accessible at `http://localhost:5173`, and the API endpoints can be accessed locally at `http://localhost:5000` and WebSocket at `http://localhost:8765`.
+
+
 
 ## Key Endpoints
 
@@ -73,72 +81,10 @@ The Mix and Match platform will be accessible at `http://localhost:5173`, and th
   - `POST /onboarding/<int:user_id>`: Complete user onboarding.
   - `GET /chat`: Get user's chat conversations.
   - `POST /chat-history`: Get chat history.
+  - `POST /reset-chat/<int:user_id>`: Resets the users chat history
+  - `POST /delete-user/<int:user_id>`: Removes user from mixnmatch db
 
 - **Match Endpoints:**
   - `POST /matches/<int:other_user_id>`: Match with another user.
   - `GET /matches`: Get recommended users for matchmaking.
- 
-# Deployment
-
-This project is manually deployed to an Ubuntu server, and the deployment process involves several steps to ensure that the latest codebase is updated, the front end is built, and the necessary services are restarted. Follow these steps for a successful deployment:
-
-1. **Update the Codebase on the Ubuntu Machine:**
-   - SSH into your Ubuntu server using your preferred method.
-   - Navigate to the project directory on your server:
-
-     ```bash
-     cd /path/to/mixandmatch
-     ```
-
-   - Update the codebase from the remote repository:
-
-     ```bash
-     git pull
-     ```
-
-2. **Build the Frontend:**
-   - If you have changed the frontend code, you may need to rebuild it.
-   - Navigate to the frontend directory:
-
-     ```bash
-     cd /path/to/mixandmatch/frontend
-     ```
-
-   - Build the frontend:
-
-     ```bash
-     npm run build
-     ```
-
-3. **Restart Apache2:**
-   - Apache2 is used for serving the web application. Restart it to apply any changes:
-
-     ```bash
-     sudo service apache2 restart
-     ```
-
-4. **Restart the PM2 Bot:**
-   - The PM2 process manager is used to manage the backend services efficiently. Restart the bot service:
-
-     ```bash
-     pm2 restart bot
-     ```
-
-5. **Restart the PM2 Chat:**
-   - Similarly, restart the chat service managed by PM2:
-
-     ```bash
-     pm2 restart chat
-     ```
-
-Your Mix and Match platform should now be updated and running with the latest code changes. Please ensure that you perform these deployment steps whenever you make updates or changes to the project to keep it up-to-date and running smoothly.
-
-
-## Additional Information
-
-- The project uses various API communication technologies, including React, Flask, and Axios. The Flask API provides user authentication, user profile management, and matchmaking capabilities.
-- This codebase is a part of a research project focused on studying user behaviour and recommendation algorithms in online dating applications.
-
-You can explore the code, make improvements, and contribute to the ongoing research project. If you have any questions or need assistance, please don't hesitate to contact the project team.
-
-Thank you for being so interested in Mix and Match!
+  - `POST /reset-matches/<int:user_id>`: Resets users match history in db

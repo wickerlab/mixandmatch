@@ -1,4 +1,6 @@
 Flask==2.0.2
+Werkzeug==2.2.2
+websockets
 flasgger==0.9.5
 flask_session
 flask_cors

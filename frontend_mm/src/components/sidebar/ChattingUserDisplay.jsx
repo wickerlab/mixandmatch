@@ -27,9 +27,12 @@ const ChattingUserDisplay = ({newMessagesId}) => {
             });
 
             // Fetch matches from the /chat endpoint
-            const response = await axiosWithCookies.get("https://mixandmatch.wickerlab.org/api/chat");
+            // const response = await axiosWithCookies.get("https://mixandmatch.wickerlab.org/api/chat");
+            const response = await axiosWithCookies.get("http://127.0.0.1:5000/chat");
             const chatUsers = response.data.chat_users;
             const currentUserId = response.data.user_id;
+
+            console.log(chatUsers)
 
             // Update the matches state with the fetched data
             setChattingUser(chatUsers);
@@ -44,7 +47,7 @@ const ChattingUserDisplay = ({newMessagesId}) => {
             withCredentials: true
         });
 
-        const response = await axiosWithCookies.get("https://mixandmatch.wickerlab.org/api/logout");
+        const response = await axiosWithCookies.get("http://127.0.0.1:5000/logout");
         const success = response.status === 200;
         if (success) {
             navigate('/');

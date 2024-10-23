@@ -27,6 +27,7 @@ CREATE TABLE `message` (
   `message` varchar(2048) DEFAULT NULL,
   `update_time` timestamp(2) NOT NULL,
   `receiver_id` int NOT NULL,
+  `status` varchar(32) NOT NULL,
   KEY `receiver_id_idx` (`sender_id`,`receiver_id`),
   KEY `receiver_id_idx1` (`receiver_id`),
   CONSTRAINT `receiver_id` FOREIGN KEY (`receiver_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,

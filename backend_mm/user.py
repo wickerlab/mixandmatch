@@ -36,8 +36,8 @@ CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
 
 # Create a MySQL connection pool
 dbconfig = {
-    "user": 'root',  # MySQL username (CHANGE TO 'admin1' FOR DEPLOYMENT)
-    "password": 'mixnmatchmysql',  # MySQL password
+    "user": 'mixnmatch',  # MySQL username (CHANGE TO 'admin1' FOR DEPLOYMENT)
+    "password": 'mixnmatch',  # MySQL password
     "host": 'localhost',  # IP address or hostname
     "database": 'mixnmatch',  # MySQL database
     "pool_name": "mypool",
@@ -57,6 +57,9 @@ class UserAPI(MethodView):
     def login_required(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
+
+            print(session)
+            
             if 'email' not in session:
                 return jsonify({'message': 'Login required'}), 401
 
@@ -91,12 +94,38 @@ class UserAPI(MethodView):
             # Handle database errors
             return jsonify({'error': str(err)}), 500
 
+    def delete_user(self, user_id):
+
+        if user_id is None:
+            return 400
+        else:
+            print(user_id)
+            query = "DELETE FROM user WHERE id = %s"
+        try:
+            with self.get_connection() as cnx:
+                cursor = cnx.cursor(dictionary=True)
+                cursor.execute(query, (user_id,))
+                cnx.commit()
+
+                return jsonify({'message': 'user deleted'}), 200
+        except mysql.connector.Error as err:
+            # Handle database errors
+            return jsonify({'error': str(err)}), 500
+
     @swag_from('openapi.yml')
     def create_user(self):
+
+        print('signing up user')
+        print(request.form)
+
         # create a new user
         email = request.form.get('email')
         username = request.form.get('username')
         password = request.form.get('password')
+
+        print(email)
+        print(username)
+        print(password)
 
         # check if email has been registered
         email_query = "SELECT COUNT(*) FROM user WHERE email = '" + email + "'"
@@ -132,15 +161,18 @@ class UserAPI(MethodView):
         career = request.form.get('career')
         education = request.form.get('education')
         photo = request.form.get('photo')
-
-        update_query = "UPDATE user SET attr_age = %s, attr_gender = %s, attr_career = %s, attr_education = %s, photo = %s WHERE id = %s"
-        user_data = (age, gender, career, education, photo, user_id)
+        bio = request.form.get('bio')
+        update_query = "UPDATE user SET attr_age = %s, attr_gender = %s, attr_career = %s, attr_education = %s, imageURL = %s, bio = %s WHERE id = %s"
+        user_data = (age, gender, career, education, photo, bio, user_id)
+        
 
         try:
             with self.get_connection() as cnx:
                 cursor = cnx.cursor(dictionary=True)
                 cursor.execute(update_query, user_data)
                 cnx.commit()
+
+                print('user added')
 
                 # initialize empty user profile and history
                 user_data_2 = (user_id)
@@ -150,14 +182,14 @@ class UserAPI(MethodView):
                 query_gender = 'INSERT INTO user_history_gender (user_id) VALUES (%s)'
                 query_salary = 'INSERT INTO user_history_salary (user_id) VALUES (%s)'
                 query_profile = 'INSERT INTO user_profile (user_id) VALUES (%s)'
-                query_category = 'INSERT INTO user_category (user_id) VALUES (%s)'
+                # query_category = 'INSERT INTO user_category (user_id) VALUES (%s)'
                 cursor.execute(query_age, (user_data_2,))
                 cursor.execute(query_attractiveness, (user_data_2,))
                 cursor.execute(query_education, (user_data_2,))
                 cursor.execute(query_gender, (user_data_2,))
                 cursor.execute(query_salary, (user_data_2,))
                 cursor.execute(query_profile, (user_data_2,))
-                cursor.execute(query_category, (user_data_2,))
+                # cursor.execute(query_category, (user_data_2,))
                 cnx.commit()
 
                 return jsonify({'message': 'User attributes updated successfully!'}), 200
@@ -255,9 +287,7 @@ class UserAPI(MethodView):
                     WHEN m.user1_id = %s THEN m.user2_id
                     ELSE m.user1_id
                 END AS user_id,
-                u.username,
-                u.photo,
-                COUNT(CASE WHEN msg.status = 'unread' AND msg.receiver_id = %s THEN 1 ELSE NULL END) AS unread_count
+                u.username
             FROM
                 mixnmatch.match AS m
             INNER JOIN
@@ -267,24 +297,35 @@ class UserAPI(MethodView):
                     WHEN m.user1_id = %s THEN m.user2_id
                     ELSE m.user1_id
                 END = u.id
-            LEFT JOIN
-                mixnmatch.message AS msg
-            ON
-                (m.user1_id = msg.sender_id AND m.user2_id = msg.receiver_id)
-                OR (m.user1_id = msg.receiver_id AND m.user2_id = msg.sender_id)
+            # LEFT JOIN
+            #     mixnmatch.message AS msg
+            # ON
+            #     (m.user1_id = msg.sender_id AND m.user2_id = msg.receiver_id)
+            #     OR (m.user1_id = msg.receiver_id AND m.user2_id = msg.sender_id)
             WHERE
-                (%s IN (m.user1_id, m.user2_id))
-                AND (m.user1_match = 1 AND m.user2_match = 1)
-            GROUP BY
-                user_id, u.username, u.photo
+                %s IN (m.user1_id, m.user2_id)
+                AND m.user1_match = 1
+                AND m.user2_match = 1
+
         """
-        query_data = (user_id, user_id, user_id, user_id)
+        query_data = (user_id, user_id, user_id)
+
+        # print(query_data)
 
         try:
             with self.get_connection() as cnx:
+
+                print("connected")
+
                 cursor = cnx.cursor(dictionary=True)
+                # print(select_query)
                 cursor.execute(select_query, query_data)
+
+                print("executed")
+
                 chat_users = cursor.fetchall()
+
+                print(chat_users)
 
                 # Check if there are any results
                 if not chat_users:
@@ -343,6 +384,100 @@ class UserAPI(MethodView):
             # Handle exceptions appropriately (e.g., log errors)
             print("ErrorMessage", e)
             return jsonify({'message': str(e)}), 500
+        
+    def reset_chat_history(self, user_id):
+
+        try:
+            with self.get_connection() as cnx:
+                cursor = cnx.cursor(dictionary=True)
+
+                # Remove all message entries for the current user
+                delete_query = """
+                    DELETE FROM mixnmatch.message 
+                    WHERE sender_id = %s or receiver_id = %s
+                """
+                cursor.execute(delete_query, (user_id, user_id))
+
+                # Commit the changes
+                cnx.commit()
+
+        except mysql.connector.Error as err:
+            # Handle database errors
+            return jsonify({'error': str(err)}), 500
+
+        return jsonify({'message': 'Successfully removed all chat history with current user.'})
+
+    def remove_user_matches(self, user_id):
+        try:
+            with self.get_connection() as cnx:
+                cursor = cnx.cursor(dictionary=True)
+
+                # Remove all match entries for the current user
+                delete_query = """
+                    DELETE FROM mixnmatch.match 
+                    WHERE user1_id = %s or user2_id = %s
+                """
+                cursor.execute(delete_query, (user_id, user_id))
+
+                # Reset user preference profiles in the following tables:
+                # - user_history_age
+                # - user_history_salary
+                # - user_history_gender
+                # - user_history_education
+                # - user_history_attractiveness
+
+                reset_query_age = """
+                    UPDATE mixnmatch.user_history_age SET 
+                    category1_accept = 0000000000, category1_reject = 0000000000,
+                    category2_accept = 0000000000, category2_reject = 0000000000,
+                    category3_accept = 0000000000, category3_reject = 0000000000,
+                    category4_accept = 0000000000, category4_reject = 0000000000
+                    WHERE user_id = %s
+                """
+                reset_query_attractiveness = """
+                    UPDATE mixnmatch.user_history_attractiveness SET 
+                    received_accept = 0000000000, received_reject = 0000000000
+                    WHERE user_id = %s
+                """
+                reset_query_education = """
+                    UPDATE mixnmatch.user_history_education SET 
+                    bachelors_accept = 0000000000, bachelors_reject = 0000000000,
+                    masters_accept = 0000000000, masters_reject = 0000000000,
+                    doctoral_accept = 0000000000, doctoral_reject = 0000000000,
+                    diploma_accept = 0000000000, diploma_reject = 0000000000
+                    WHERE user_id = %s
+                """
+
+                reset_query_gender = """
+                    UPDATE mixnmatch.user_history_gender SET 
+                    male_accept = 0000000000, male_reject = 0000000000,
+                    female_accept = 0000000000, female_reject = 0000000000
+                    WHERE user_id = %s
+                """
+                reset_query_salary = """
+                    UPDATE mixnmatch.user_history_salary SET 
+                    category1_accept = 0000000000, category1_reject = 0000000000,
+                    category2_accept = 0000000000, category2_reject = 0000000000,
+                    category3_accept = 0000000000, category3_reject = 0000000000,
+                    category4_accept = 0000000000, category4_reject = 0000000000
+                    WHERE user_id = %s
+                """
+
+                # Execute the reset queries
+                cursor.execute(reset_query_age, (user_id,))
+                cursor.execute(reset_query_salary, (user_id,))
+                cursor.execute(reset_query_gender, (user_id,))
+                cursor.execute(reset_query_education, (user_id,))
+                cursor.execute(reset_query_attractiveness, (user_id,))
+
+                # Commit the changes
+                cnx.commit()
+
+        except mysql.connector.Error as err:
+            # Handle database errors
+            return jsonify({'error': str(err)}), 500
+
+        return jsonify({'message': 'Successfully removed all matches and reset preference profiles.'})
 
     # @app.route('/match/<int:other_user_id>', methods=['POST'])
     @login_required
@@ -393,7 +528,7 @@ class UserAPI(MethodView):
                     match_data = (user_id, other_user_id, match_bool, match_time)
 
                 elif match_class == 1:
-                    # If an incomplete match does not exist, create a new match entry
+                    # If an incomplete match does exist, update match entry
                     insert_query = "UPDATE mixnmatch.match SET user1_update_time = NOW(), user1_match = %s, user1_decision_time = %s WHERE (user1_id = %s AND user2_id = %s ) AND (user1_match IS NULL OR user2_match IS NULL)"
                     match_data = (match_bool, match_time, user_id, other_user_id)
 
@@ -448,11 +583,13 @@ class UserAPI(MethodView):
             with self.get_connection() as cnx:
                 cursor = cnx.cursor(dictionary=True)
                 # Query the database to get 15 random users excluding session user
-                user_id = session['user_id']['id']
-                query_category = 'SELECT category FROM mixnmatch.user_category WHERE user_id = %s'
-                cursor.execute(query_category, (user_id,))
-                category = cursor.fetchone()['category']
-                print(category)
+                # user_id = session['user_id']['id']
+                # query_category = 'SELECT category FROM mixnmatch.user_category WHERE user_id = %s'
+                # cursor.execute(query_category, (user_id,))
+                # category = cursor.fetchone()['category']
+                # print(category)
+
+                category = "None"
 
                 if category == 'BOT':
                     query = "SELECT * FROM user JOIN user_category ON (user.id = user_category.user_id) WHERE (user.id != " + str(session['user_id']['id']) + ") " \

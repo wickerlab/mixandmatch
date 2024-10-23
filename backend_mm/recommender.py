@@ -106,8 +106,8 @@ class UserPreference:
 
 def get_user_attributes_by_id(user_id):
     cnx = mysql.connector.connect(
-    user='root',  # MySQL username CHANEG TO 'admin1' FOR DEPLOYMENT 
-    password='mixnmatchmysql',  # MySQL password
+    user='mixnmatch',  # MySQL username CHANEG TO 'admin1' FOR DEPLOYMENT 
+    password='mixnmatch',  # MySQL password
     host='localhost',  # IP address or hostname
     database='mixnmatch'  # MySQL database
     )

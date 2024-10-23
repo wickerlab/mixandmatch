@@ -1,28 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "../../css/sidebar/ChattingUser.css";
+import axios from "axios";
 
 const ChattingUser = ({ match, handleIconClick, newMessagesId }) => {
-    const [imageLoaded, setImageLoaded] = useState(false);
+    const [imageURL, setImageURL] = useState("https://placehold.co/50x50");
     const [iconClicked, setIconClicked] = useState(false);
     const [className, setClassName] = useState("match-icon-no-message");
 
-    // Function to preload the image and set imageLoaded to true if successful
-    const preloadImage = (url) => {
-        const img = new Image();
-        img.src = url;
-        img.onload = () => {
-            setImageLoaded(true);
-        };
-        img.onerror = () => {
-            setImageLoaded(false);
-        };
-    };
-
-    // Check if character.url is valid, if not, use a placeholder image
-    const imageUrl = match.photo || "https://placehold.co/50x50";
-
-    // Preload the image
-    preloadImage(imageUrl);
 
     // Update the class name when newMessagesId changes
     useEffect(() => {
@@ -32,6 +16,24 @@ const ChattingUser = ({ match, handleIconClick, newMessagesId }) => {
         } else {
             setClassName("match-icon-no-message");
         }
+
+        // the match prop does not come with an imageURL property
+        // have to fetch the user data again to get the image
+        async function fetchProfilePicture(userID) {
+            try {
+                const axiosWithCookies = axios.create({
+                    withCredentials: true
+                })
+                const response = await axiosWithCookies.get(`http://127.0.0.1:5000/users/${userID}`);
+                console.log("inside", response.data);
+                const url = await response.data.user.imageURL;
+                setImageURL(url);
+            } catch (error) {
+                console.log("Error getting image", error);
+            }
+        }
+        fetchProfilePicture(match.user_id); 
+
     }, [newMessagesId, match.user_id]);
 
     const handleIconClickWrapper = () => {
@@ -45,17 +47,10 @@ const ChattingUser = ({ match, handleIconClick, newMessagesId }) => {
             className={className}
             onClick={handleIconClickWrapper} // Use the wrapper function
         >
-            {imageLoaded ? (
                 <img
-                    src={imageUrl}
+                    src={imageURL}
                     alt={match.name}
                     className="match-icon-image"/>
-            ) : (
-                <img
-                    src="https://placehold.co/40x40"
-                    alt="Placeholder"
-                    className="match-icon-image"/>
-            )}
         </div>
     );
 };
