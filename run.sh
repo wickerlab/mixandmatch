@@ -47,8 +47,41 @@ echo "Python venv started successfully"
 echo "Starting backend"
 cd "$SCRIPT_DIR/backend_mm" || exit 1
 python app.py &
+APP_PID=$!
 python chat.py &
+CHAT_PID=$!
 
 echo "Starting frontend"
 cd "$SCRIPT_DIR/frontend_mm" || exit 1
-npm run dev
+npm run dev &
+FRONTEND_PID=$!
+
+cleanup() {
+    echo "Stopping all processes..."
+    
+    if ps -p $APP_PID > /dev/null; then
+        echo "Killing backend app process: $APP_PID"
+        kill $APP_PID
+    fi
+    
+    if ps -p $CHAT_PID > /dev/null; then
+        echo "Killing backend chat process: $CHAT_PID"
+        kill $CHAT_PID
+    fi
+    
+    if ps -p $FRONTEND_PID > /dev/null; then
+        echo "Killing frontend process: $FRONTEND_PID"
+        kill $FRONTEND_PID
+    fi
+    
+    echo "All processes stopped"
+    exit 0
+}
+
+# Set up trap for Ctrl+C and other termination signals
+trap cleanup SIGINT SIGTERM
+
+# Wait for all processes
+wait $APP_PID
+wait $CHAT_PID
+wait $FRONTEND_PID
