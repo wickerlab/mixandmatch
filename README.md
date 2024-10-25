@@ -22,45 +22,89 @@ The repository is organized into the following key components:
 ## Getting Started
 
 
-Please ensure you have MySQL set up before you run these scripts
-Read `SQL.md` before proceeding
+Please ensure you have MySQL set up before you run these scripts \
+Read `SQL.md` before proceeding \
+You can setup either with the [Setup Script](#setup-script) or [manually](#manual-setup-no-scripts)
 
-### Scripts
+### Setup Script
 
-Use the script to set up:
-windows:
-`& "C:\Program Files\Git\bin\bash.exe" ./setup.sh`
+Run the command below to use a script to create a virtual environment and install dependencies 
+#### Windows:
+```bash
+& "C:\Program Files\Git\bin\bash.exe" ./setup.sh
+```
 
-mac:
-`sh ./setup.sh`
+#### Mac:
+```bash
+sh ./setup.sh
+```
 
-Use the script to run:
-windows:
-`& "C:\Program Files\Git\bin\bash.exe" ./run.sh`
 
-mac:
-`sh ./run.sh`
+### Manual Setup (no scripts)
+If the scripts do not work, do the following steps from the root folder to create a virtual environment and install dependencies:
+#### Windows Setup
+```bash
+# Backend setup
+cd backend_mm
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt 
+cd ..
+
+# Frontend setup
+cd frontend_mm
+npm i    
+
+```
+#### Mac Setup
+```bash
+# Backend setup
+cd backend_mm
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+cd ..
+
+# Frontend setup
+cd frontend_mm
+npm i
+```
 
 
 -----------------------------------------
 
-# Setting up local dev
-1. ensure venv is set up before installing requirements.txt, so no conflicts occur
-2. ensure SQL is running (go to services and start it)
-3. set up local SQL mixnmatch database and user access to that database (make user, password and database all called "mixnmatch")
-4. source the SQL dump file into your local mixnmatch database
+## MySQL setup
+After completing the above setup (`SQL.md`, installing frontend and backend dependencies), ensure the following before continuing:
+1. Ensure MySQL is running (go to services and start it)
+3. Set up local SQL mixnmatch database and user access to that database (make user, password and database all called "mixnmatch"), as in `SQL.md`
+4. source the SQL dump file (`./backend_mm/mysql_database/dump.sql`) into your local mixnmatch database to set it up
 
-# Note
+### Note
 For chat to work, both sides need to match first and chat.py needs to be running
 
 # Running local dev
-1. start venv 
-   1. windows: `.venv\Scripts\activate`
-   2. mac: `source venv/bin/activate`
-2. run `npm run start:frontend` in frontend directory in a console
-3. run `python app.py` in backend in a new console
-4. run `python chat.py` in backend in a new console
-5.  if persistent 401 errors, go to application tab in developer tools (under same tab as console), go to cookies, and delete all cookies, then try again. There appears to be a problem with duplicate cookies
+Once you have setup with either the scripts or manual setup above, either use the [Run Script](#run-script) or [manually run](#manual-run-no-scripts) MixnMatch.
+### Run Script
+
+#### Windows:
+```bash
+& "C:\Program Files\Git\bin\bash.exe" ./run.sh
+```
+
+#### Mac:
+```bash
+sh ./run.sh
+```
+
+### Manual Run (no scripts)
+
+1. Start venv from `./backend_mm`:
+   1. Windows: `.venv\Scripts\activate`
+   2. Mac: `source .venv/bin/activate`
+2. Run `python app.py` in `./backend_mm` in a new console
+3. Run `python chat.py` in `./backend_mm` in a new console
+4. Run  `npm run start:frontend` in `./frontend_mm` directory in a console
+5.  If there are persistent 401 errors, go to application tab in developer tools (under same tab as console), go to cookies, and delete all cookies, then try again. There appears to be a problem with duplicate cookies
 
 
 -----------------------------------------
