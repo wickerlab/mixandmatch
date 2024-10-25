@@ -2,9 +2,10 @@
 
 import TinderCard from "react-tinder-card";
 import React, {useState} from "react";
+import axios from "axios";
 
 const SwipingCard = React.forwardRef(({ character, handleSwipe, handleCardLeftScreen, swipe }, ref) => {
-
+    const [imageURL, setImageURL] = useState("https://placehold.co/600x400");
     const salaryMapping = {
         "UNDER15": "Under $15k",
         "15TO30": "$15k - $30k",
@@ -32,25 +33,23 @@ const SwipingCard = React.forwardRef(({ character, handleSwipe, handleCardLeftSc
         swipe('right');
     };
 
-    const [imageLoaded, setImageLoaded] = useState(false);
-
-    // Function to preload the image and set imageLoaded to true if successful
-    const preloadImage = (url) => {
-        const img = new Image();
-        img.src = url;
-        img.onload = () => {
-            setImageLoaded(true);
-        };
-        img.onerror = () => {
-            setImageLoaded(false);
-        };
-    };
+    // the url prop does not exist, so we fetch again
+    async function fetchProfilePicture(userID) {
+        try {
+            const axiosWithCookies = axios.create({
+                withCredentials: true
+            })
+            const response = await axiosWithCookies.get(`http://127.0.0.1:5000/users/${userID}`);
+            console.log("inside", response.data);
+            const url = await response.data.user.imageURL;
+            setImageURL(url);
+        } catch (error) {
+            console.log("Error getting image", error);
+        }
+    }
+    fetchProfilePicture(character.id); 
 
     // Check if character.url is valid, if not, use a placeholder image
-    const imageUrl = character.url || "https://placehold.co/600x400";
-
-    // Preload the image
-    preloadImage(imageUrl);
 
     return (
         <TinderCard
@@ -63,11 +62,7 @@ const SwipingCard = React.forwardRef(({ character, handleSwipe, handleCardLeftSc
         >
             <div className='card'>
                 <div className='image-half'>
-                    {imageLoaded ? (
-                        <img src={imageUrl} alt={character.name} />
-                    ) : (
-                        <img src="https://placehold.co/600x400" alt="Placeholder" />
-                    )}
+                    <img src={imageURL} alt={character.name} />
                 </div>
                 <div className='info-half'>
                     <div className='info-content'>

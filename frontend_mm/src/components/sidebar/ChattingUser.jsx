@@ -25,7 +25,6 @@ const ChattingUser = ({ match, handleIconClick, newMessagesId }) => {
                     withCredentials: true
                 })
                 const response = await axiosWithCookies.get(`http://127.0.0.1:5000/users/${userID}`);
-                console.log("inside", response.data);
                 const url = await response.data.user.imageURL;
                 setImageURL(url);
             } catch (error) {
