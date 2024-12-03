@@ -2,6 +2,8 @@
 
 Welcome to the Mix and Match research code repository. This repository contains the codebase for the Mix and Match platform, which explores the interplay between user behavior and recommendation algorithms in the context of online dating applications. Below, you'll find an overview of the repository structure and key components.
 
+This branch has been heavily edited by the Unsupervised Learners Capstone Team (2024 Sem 2) (Team 36)
+
 ## Repository Structure
 
 The repository is organized into the following key components:
@@ -19,48 +21,98 @@ The repository is organized into the following key components:
 
 ## Getting Started
 
-To run the Mix and Match platform and explore the research code, follow these steps:
 
-1. Clone the repository to your local machine:
+Please ensure you have MySQL set up before you run these scripts \
+Read `SQL.md` before proceeding \
+You can setup either with the [Setup Script](#setup-script) or [manually](#manual-setup-no-scripts)
 
-   ```bash
-   git clone <repository_url>
-   cd path/to/mixandmatch
-   ```
+### Setup Script
 
-2. Install the required dependencies for the frontend:
+Run the command below to use a script to create a virtual environment and install dependencies 
+#### Windows:
+```bash
+& "C:\Program Files\Git\bin\bash.exe" ./setup.sh
+```
 
-   ```bash
-   npm install
-   ``
+#### Mac:
+```bash
+sh ./setup.sh
+```
 
-3. Start the frontend development server:
 
-   ```bash
-   npm run start:frontend
-   ```
+### Manual Setup (no scripts)
+If the scripts do not work, do the following steps from the root folder to create a virtual environment and install dependencies:
+#### Windows Setup
+```bash
+# Backend setup
+cd backend_mm
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt 
+cd ..
 
-4. Install the required dependencies for the Flask API:
+# Frontend setup
+cd frontend_mm
+npm i    
 
-   ```bash
-   pip install -r requirements.txt
-   ```
+```
+#### Mac Setup
+```bash
+# Backend setup
+cd backend_mm
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+cd ..
 
-5. Run the Flask API:
+# Frontend setup
+cd frontend_mm
+npm i
+```
 
-   ```bash
-   python app.py
-   ```
-   
-5. Run the WebSocket:
 
-   ```bash
-   python chat.py
-   ```
+-----------------------------------------
 
+## MySQL setup
+After completing the above setup (`SQL.md`, installing frontend and backend dependencies), ensure the following before continuing:
+1. Ensure MySQL is running (go to services and start it)
+3. Set up local SQL mixnmatch database and user access to that database (make user, password and database all called "mixnmatch"), as in `SQL.md`
+4. source the SQL dump file (`./backend_mm/mysql_database/dump.sql`) into your local mixnmatch database to set it up
+
+### Note
+For chat to work, both sides need to match first and chat.py needs to be running
+
+# Running local dev
+Once you have setup with either the scripts or manual setup above, either use the [Run Script](#run-script) or [manually run](#manual-run-no-scripts) MixnMatch.
+### Run Script
+
+#### Windows:
+```bash
+& "C:\Program Files\Git\bin\bash.exe" ./run.sh
+```
+
+#### Mac:
+```bash
+sh ./run.sh
+```
+
+### Manual Run (no scripts)
+
+1. Start venv from `./backend_mm`:
+   1. Windows: `.venv\Scripts\activate`
+   2. Mac: `source .venv/bin/activate`
+2. Run `python app.py` in `./backend_mm` in a new console
+3. Run `python chat.py` in `./backend_mm` in a new console
+4. Run  `npm run start:frontend` in `./frontend_mm` directory in a console
+5.  If there are persistent 401 errors, go to application tab in developer tools (under same tab as console), go to cookies, and delete all cookies, then try again. There appears to be a problem with duplicate cookies
+
+
+-----------------------------------------
    
 
 The Mix and Match platform will be accessible at `http://localhost:5173`, and the API endpoints can be accessed locally at `http://localhost:5000` and WebSocket at `http://localhost:8765`.
+
+
 
 ## Key Endpoints
 
@@ -73,72 +125,10 @@ The Mix and Match platform will be accessible at `http://localhost:5173`, and th
   - `POST /onboarding/<int:user_id>`: Complete user onboarding.
   - `GET /chat`: Get user's chat conversations.
   - `POST /chat-history`: Get chat history.
+  - `POST /reset-chat/<int:user_id>`: Resets the users chat history
+  - `POST /delete-user/<int:user_id>`: Removes user from mixnmatch db
 
 - **Match Endpoints:**
   - `POST /matches/<int:other_user_id>`: Match with another user.
   - `GET /matches`: Get recommended users for matchmaking.
- 
-# Deployment
-
-This project is manually deployed to an Ubuntu server, and the deployment process involves several steps to ensure that the latest codebase is updated, the front end is built, and the necessary services are restarted. Follow these steps for a successful deployment:
-
-1. **Update the Codebase on the Ubuntu Machine:**
-   - SSH into your Ubuntu server using your preferred method.
-   - Navigate to the project directory on your server:
-
-     ```bash
-     cd /path/to/mixandmatch
-     ```
-
-   - Update the codebase from the remote repository:
-
-     ```bash
-     git pull
-     ```
-
-2. **Build the Frontend:**
-   - If you have changed the frontend code, you may need to rebuild it.
-   - Navigate to the frontend directory:
-
-     ```bash
-     cd /path/to/mixandmatch/frontend
-     ```
-
-   - Build the frontend:
-
-     ```bash
-     npm run build
-     ```
-
-3. **Restart Apache2:**
-   - Apache2 is used for serving the web application. Restart it to apply any changes:
-
-     ```bash
-     sudo service apache2 restart
-     ```
-
-4. **Restart the PM2 Bot:**
-   - The PM2 process manager is used to manage the backend services efficiently. Restart the bot service:
-
-     ```bash
-     pm2 restart bot
-     ```
-
-5. **Restart the PM2 Chat:**
-   - Similarly, restart the chat service managed by PM2:
-
-     ```bash
-     pm2 restart chat
-     ```
-
-Your Mix and Match platform should now be updated and running with the latest code changes. Please ensure that you perform these deployment steps whenever you make updates or changes to the project to keep it up-to-date and running smoothly.
-
-
-## Additional Information
-
-- The project uses various API communication technologies, including React, Flask, and Axios. The Flask API provides user authentication, user profile management, and matchmaking capabilities.
-- This codebase is a part of a research project focused on studying user behaviour and recommendation algorithms in online dating applications.
-
-You can explore the code, make improvements, and contribute to the ongoing research project. If you have any questions or need assistance, please don't hesitate to contact the project team.
-
-Thank you for being so interested in Mix and Match!
+  - `POST /reset-matches/<int:user_id>`: Resets users match history in db

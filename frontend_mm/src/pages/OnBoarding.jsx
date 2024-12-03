@@ -24,11 +24,11 @@ const OnBoarding = () => {
         user_id: '',
         first_name: '',
         age: '',
-        gender_identity: "woman",
+        gender_identity: '',
         degree: '',
         salary: '',
         url: '',
-        about: ''
+        bio: '',
     });
 
     const [ageValidation, setAgeValidation] = useState({
@@ -55,14 +55,16 @@ const OnBoarding = () => {
 
         const formDataToSend = new FormData();
         formDataToSend.append('age', formData.age);
-        if (formData.gender_identity === 'man') {
-            formDataToSend.append('gender', 'MALE');
-        }  else {
-            formDataToSend.append('gender', "FEMALE");
-        }
+        // if (formData.gender_identity === 'man') {
+        //     formDataToSend.append('gender', 'MALE');
+        // }  else {
+        //     formDataToSend.append('gender', "FEMALE");
+        // }
+        formDataToSend.append('gender', formData.gender_identity);
         formDataToSend.append('career', formData.salary);
         formDataToSend.append('education', formData.degree);
         formDataToSend.append('photo', formData.url);
+        formDataToSend.append('bio', formData.bio);
 
         // Make the POST request
         try {
@@ -70,8 +72,8 @@ const OnBoarding = () => {
                 console.error('User ID not found');
                 return;
             }
-
-             const response = await axios.post(`https://mixandmatch.wickerlab.org/api/onboarding/${userId}`, formDataToSend,{
+            console.log(formDataToSend);
+             const response = await axios.post(`http://127.0.0.1:5000/onboarding/${userId}`, formDataToSend,{
                  headers: {
                      'Content-Type': 'multipart/form-data'
                  },
@@ -158,7 +160,7 @@ const OnBoarding = () => {
                             name="gender_identity"
                             value={"MALE"}
                             onChange={handleChange}
-                            checked={formData.gender_identity === 'man'}/>
+                            checked={formData.gender_identity === 'MALE'}/>
                         <label htmlFor="man-gender-identity">Man</label>
 
                         <input
@@ -167,7 +169,7 @@ const OnBoarding = () => {
                             name="gender_identity"
                             value={"FEMALE"}
                             onChange={handleChange}
-                            checked={formData.gender_identity === 'woman'}/>
+                            checked={formData.gender_identity === 'FEMALE'}/>
                         <label htmlFor="woman-gender-identity">Woman</label>
 
                     </div>
@@ -203,14 +205,14 @@ const OnBoarding = () => {
                             </option>
                         ))}
                     </select>
-                    <label htmlFor="about">About me</label>
+                    <label htmlFor="bio">About me</label>
                     <input
-                        id="about"
+                        id="bio"
                         type="text"
-                        name="about"
+                        name="bio"
                         required={true}
                         placeholder="I like long walks.."
-                        value={formData.about}
+                        value={formData.bio}
                         onChange={handleChange}
                     />
                     <input type="submit"/>

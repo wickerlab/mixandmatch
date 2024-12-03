@@ -32,7 +32,7 @@ const ChatContainer = ({ currentUserId, clickedUser }) => {
         formData.append("clicked_user_id", clickedUser.user_id);
 
         try {
-            const response = await axios.post('https://mixandmatch.wickerlab.org/api/chat-history', formData, {
+            const response = await axios.post('http://127.0.0.1:5000/chat-history', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 },
@@ -51,7 +51,7 @@ const ChatContainer = ({ currentUserId, clickedUser }) => {
 
     const setupWebSocket = () => {
         // Create a WebSocket client and connect to your WebSocket server
-        ws.current = new W3CWebSocket(`wss://mixandmatch.wickerlab.org/ws/?sender_id=${currentUserId}`); // Include sender_id in the URL
+        ws.current = new W3CWebSocket(`http://localhost:8765/?sender_id=${currentUserId}`); // Include sender_id in the URL
 
         ws.current.onopen = () => {
             console.log("WebSocket Client Connected");
